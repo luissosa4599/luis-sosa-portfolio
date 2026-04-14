@@ -2,6 +2,7 @@
 
 import { useEffect } from "react"
 import Lenis from "lenis"
+import Snap from "lenis/snap"
 
 // Height of the fixed SiteHeader — keep in sync with h-14 (56px)
 const HEADER_OFFSET = -64
@@ -12,7 +13,20 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
 
     const lenis = new Lenis({ lerp: 0.08 })
 
-    // Intercept anchor clicks and route through Lenis for smooth scroll
+    // Snap only between Hero → Work. After Work, normal scroll resumes.
+    const snap = new Snap(lenis, {
+      type: "proximity",
+      distanceThreshold: "35%", // snap kicks in after scrolling 35% of the gap
+      duration: 1,
+    })
+
+    const hero = document.querySelector<HTMLElement>("#hero")
+    const work = document.querySelector<HTMLElement>("#work")
+
+    if (hero) snap.addElement(hero, { align: ["start"] })
+    if (work) snap.addElement(work, { align: ["start"] })
+
+    // Intercept anchor clicks and route through Lenis
     function onAnchorClick(e: MouseEvent) {
       const anchor = (e.target as HTMLElement).closest<HTMLAnchorElement>("a[href^='#']")
       if (!anchor) return
@@ -36,6 +50,7 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
     return () => {
       document.removeEventListener("click", onAnchorClick)
       cancelAnimationFrame(rafId)
+      snap.destroy()
       lenis.destroy()
     }
   }, [])
