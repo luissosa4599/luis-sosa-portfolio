@@ -17,11 +17,12 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Luis Sosa — Frontend Engineer",
   description:
-    "Frontend Engineer building dashboards and product interfaces — from client requirements to shipped product.",
+    "Frontend Engineer specializing in dashboards, data-heavy interfaces, and product UIs for remote teams.",
+  metadataBase: new URL("https://luissosa.dev"),
   openGraph: {
     title: "Luis Sosa — Frontend Engineer",
     description:
-      "Frontend Engineer building dashboards and product interfaces.",
+      "Frontend Engineer specializing in dashboards, data-heavy interfaces, and product UIs for remote teams.",
     url: "https://luissosa.dev",
     siteName: "Luis Sosa",
     locale: "en_US",
@@ -31,7 +32,8 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Luis Sosa — Frontend Engineer",
     description:
-      "Frontend Engineer building dashboards and product interfaces.",
+      "Frontend Engineer specializing in dashboards, data-heavy interfaces, and product UIs for remote teams.",
+    creator: "@luissosa4599",
   },
   robots: { index: true, follow: true },
 }
