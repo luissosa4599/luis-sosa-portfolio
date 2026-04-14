@@ -19,7 +19,7 @@ export function GlowCard({ children, className, scaleOnHover = false }: GlowCard
       animate="rest"
       className={cn(
         "relative overflow-hidden rounded-lg",
-        "border border-white/[0.08] bg-white/[0.03]",
+        "border border-border bg-surface",
         "group",
         className
       )}

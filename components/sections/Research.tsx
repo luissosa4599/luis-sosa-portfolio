@@ -44,7 +44,7 @@ export function Research() {
                 {entry.tags.map((tag) => (
                   <li
                     key={tag}
-                    className="px-2.5 py-0.5 rounded text-xs font-mono text-muted bg-white/[0.04] border border-white/[0.08]"
+                    className="px-2.5 py-0.5 rounded text-xs font-mono text-muted bg-surface-2 border border-border"
                   >
                     {tag}
                   </li>
