@@ -132,7 +132,7 @@ export function Hero() {
             >
               <a
                 href="#work"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-md bg-accent text-[hsl(213_85%_12%)] text-sm font-semibold hover:bg-accent/90 transition-colors duration-200"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-md bg-accent text-white text-sm font-semibold hover:bg-accent/90 transition-colors duration-200"
               >
                 View work
                 <ArrowRight size={15} />
