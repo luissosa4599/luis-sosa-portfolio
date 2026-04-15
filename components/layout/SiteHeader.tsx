@@ -3,26 +3,57 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { AnimatePresence, motion } from "framer-motion"
-import { Menu, X } from "lucide-react"
+import { Menu, X, BookOpen, Briefcase, Compass, Mail } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { ThemeToggle } from "@/components/primitives/ThemeToggle"
 import { Container } from "./Container"
 
 const NAV_LINKS = [
-  { label: "Research", href: "#research" },
-  { label: "Work", href: "#work" },
-  { label: "Approach", href: "#approach" },
-  { label: "Contact", href: "#contact" },
+  { label: "Research", href: "#research", icon: BookOpen },
+  { label: "Work", href: "#work", icon: Briefcase },
+  { label: "Approach", href: "#approach", icon: Compass },
+  { label: "Contact", href: "#contact", icon: Mail },
 ]
+
+function BracketLogo({ onClick }: { onClick?: () => void }) {
+  return (
+    <Link
+      href="/"
+      onClick={onClick}
+      className="font-mono text-sm font-semibold tracking-tight group"
+    >
+      <span className="text-accent">&lt;</span>
+      <span className="text-foreground group-hover:text-foreground/80 transition-colors px-px">LS</span>
+      <span className="text-accent">/&gt;</span>
+    </Link>
+  )
+}
 
 export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
+  const [activeSection, setActiveSection] = useState("")
 
+  // Scroll border + active section tracking
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 16)
-    window.addEventListener("scroll", onScroll, { passive: true })
-    return () => window.removeEventListener("scroll", onScroll)
+    const sectionIds = NAV_LINKS.map((l) => l.href.slice(1))
+
+    const update = () => {
+      setScrolled(window.scrollY > 16)
+
+      // The section whose top edge is within the upper 45% of the viewport is active
+      const threshold = window.scrollY + window.innerHeight * 0.45
+      let current = ""
+      for (const id of sectionIds) {
+        const el = document.getElementById(id)
+        if (el && el.offsetTop <= threshold) current = id
+      }
+      setActiveSection(current)
+    }
+
+    window.addEventListener("scroll", update, { passive: true })
+    update()
+    return () => window.removeEventListener("scroll", update)
   }, [])
 
   // Close menu on Escape
@@ -50,25 +81,36 @@ export function SiteHeader() {
       >
         <Container>
           <div className="flex h-14 items-center justify-between">
-            <Link
-              href="/"
-              className="text-sm font-medium tracking-tight text-foreground hover:text-foreground/80 transition-colors"
-              onClick={() => setOpen(false)}
-            >
-              Luis Sosa
-            </Link>
+            <BracketLogo onClick={() => setOpen(false)} />
 
             {/* Desktop nav */}
-            <nav className="hidden md:flex items-center gap-6">
-              {NAV_LINKS.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  className="text-sm text-muted hover:text-foreground transition-colors"
-                >
-                  {link.label}
-                </a>
-              ))}
+            <nav className="hidden md:flex items-center gap-1">
+              {NAV_LINKS.map((link) => {
+                const isActive = activeSection === link.href.slice(1)
+                return (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    className={cn(
+                      "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm transition-all duration-200",
+                      isActive
+                        ? "text-accent bg-accent/[0.08]"
+                        : "text-muted hover:text-foreground hover:bg-surface"
+                    )}
+                    style={
+                      isActive
+                        ? { boxShadow: "0 0 14px hsl(213 90% 53% / 0.22)" }
+                        : undefined
+                    }
+                  >
+                    <link.icon
+                      size={13}
+                      className={cn("shrink-0 transition-opacity duration-200", isActive ? "opacity-100" : "opacity-60")}
+                    />
+                    {link.label}
+                  </a>
+                )
+              })}
             </nav>
 
             <div className="flex items-center gap-3">
@@ -101,19 +143,29 @@ export function SiteHeader() {
           >
             <Container>
               <nav className="flex flex-col py-6 gap-1">
-                {NAV_LINKS.map((link, i) => (
-                  <motion.a
-                    key={link.href}
-                    href={link.href}
-                    initial={{ opacity: 0, x: -8 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.15, delay: i * 0.04 }}
-                    onClick={() => setOpen(false)}
-                    className="text-2xl font-medium tracking-tight text-foreground py-3 border-b border-border last:border-0 hover:text-accent transition-colors duration-150"
-                  >
-                    {link.label}
-                  </motion.a>
-                ))}
+                {NAV_LINKS.map((link, i) => {
+                  const isActive = activeSection === link.href.slice(1)
+                  return (
+                    <motion.a
+                      key={link.href}
+                      href={link.href}
+                      initial={{ opacity: 0, x: -8 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.15, delay: i * 0.04 }}
+                      onClick={() => setOpen(false)}
+                      className={cn(
+                        "flex items-center gap-3 text-2xl font-medium tracking-tight py-3 border-b border-border last:border-0 transition-colors duration-150",
+                        isActive ? "text-accent" : "text-foreground hover:text-accent"
+                      )}
+                    >
+                      <link.icon
+                        size={20}
+                        className={cn("shrink-0", isActive ? "text-accent" : "text-accent/60")}
+                      />
+                      {link.label}
+                    </motion.a>
+                  )
+                })}
               </nav>
             </Container>
           </motion.div>

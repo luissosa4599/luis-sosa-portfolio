@@ -12,8 +12,8 @@ export default function Home() {
       <SiteHeader />
       <main>
         <Hero />
-        <Projects />
         <Research />
+        <Projects />
         <Approach />
         <Contact />
       </main>
