@@ -1,4 +1,31 @@
+"use client"
+
 import { Lock, ArrowUpRight } from "lucide-react"
+import { useTheme } from "next-themes"
+import { useState, useEffect } from "react"
+import { SectionWrapper } from "@/components/layout/SectionWrapper"
+import { SectionLabel } from "@/components/primitives/SectionLabel"
+import { FadeIn } from "@/components/primitives/FadeIn"
+import { StaggerList } from "@/components/primitives/StaggerList"
+import { projects } from "@/lib/data/projects"
+
+function DashboardScreenshot() {
+  const { resolvedTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => { setMounted(true) }, [])
+
+  const src =
+    mounted && resolvedTheme === "light"
+      ? "/dashboard-light.png"
+      : "/dashboard-dark.png"
+  const alt =
+    mounted && resolvedTheme === "light"
+      ? "Operations dashboard — light mode"
+      : "Operations dashboard — dark mode"
+
+  // eslint-disable-next-line @next/next/no-img-element
+  return <img src={src} alt={alt} className="relative w-full h-auto rounded-t-lg" />
+}
 
 function GitHubIcon() {
   return (
@@ -7,13 +34,6 @@ function GitHubIcon() {
     </svg>
   )
 }
-import { SectionWrapper } from "@/components/layout/SectionWrapper"
-import { SectionLabel } from "@/components/primitives/SectionLabel"
-import { FadeIn } from "@/components/primitives/FadeIn"
-import { StaggerList } from "@/components/primitives/StaggerList"
-import { DashboardMockup } from "@/components/primitives/DashboardMockup"
-import { projects } from "@/lib/data/projects"
-import { cn } from "@/lib/utils"
 
 export function Projects() {
   const featured = projects.find((p) => p.featured)
@@ -33,7 +53,7 @@ export function Projects() {
         <FadeIn className="mt-12">
           <article className="group relative rounded-2xl border border-border bg-surface overflow-hidden transition-colors duration-300 hover:border-accent/25">
 
-            {/* Mockup preview */}
+            {/* Screenshot preview */}
             <div className="relative overflow-hidden bg-background px-6 pt-6 md:px-10 md:pt-10">
               {/* Glow */}
               <div
@@ -44,7 +64,7 @@ export function Projects() {
                     "radial-gradient(ellipse 60% 50% at 50% 100%, hsl(213 100% 70% / 0.07) 0%, transparent 70%)",
                 }}
               />
-              <DashboardMockup className="relative" />
+              <DashboardScreenshot />
             </div>
 
             {/* Info */}

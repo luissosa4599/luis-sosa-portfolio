@@ -5,7 +5,8 @@ import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 import { wordContainer, wordReveal, heroSequence } from "@/lib/motion"
 import { useReducedMotion } from "@/hooks/useReducedMotion"
-import { DashboardMockup } from "@/components/primitives/DashboardMockup"
+import { useTheme } from "next-themes"
+import { useState, useEffect } from "react"
 import { Container } from "@/components/layout/Container"
 
 // Headline split: word, whether it carries an accent style, and whether to force a line break after
@@ -21,6 +22,18 @@ const HEADLINE: { text: string; accent?: boolean; break?: boolean }[] = [
 
 export function Hero() {
   const reduced = useReducedMotion()
+  const { resolvedTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => { setMounted(true) }, [])
+
+  const dashboardSrc =
+    mounted && resolvedTheme === "light"
+      ? "/dashboard-light.png"
+      : "/dashboard-dark.png"
+  const dashboardAlt =
+    mounted && resolvedTheme === "light"
+      ? "Operations dashboard — light mode"
+      : "Operations dashboard — dark mode"
 
   const container = reduced
     ? { hidden: {}, visible: {} }
@@ -150,7 +163,11 @@ export function Hero() {
               }}
             />
 
-            <DashboardMockup
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={dashboardSrc}
+              alt={dashboardAlt}
+              className="w-full h-auto rounded-xl shadow-2xl"
               style={{
                 transform:
                   "perspective(900px) rotateY(-7deg) rotateX(3deg) translateZ(0)",

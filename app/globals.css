@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Tailwind v4: use .dark class (from next-themes) instead of prefers-color-scheme */
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* ─── Design tokens ───────────────────────────────────────────────────────── */
 
 @theme inline {
