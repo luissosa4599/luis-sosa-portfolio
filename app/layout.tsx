@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
 import { ThemeProvider } from "next-themes"
 import { SmoothScroll } from "@/components/layout/SmoothScroll"
+import { CommandPalette } from "@/components/primitives/CommandPalette"
 import "./globals.css"
 
 const geistSans = Geist({
@@ -54,8 +55,8 @@ export default function RootLayout({
           attribute="class"
           defaultTheme="dark"
           enableSystem={false}
-          disableTransitionOnChange
         >
+          <CommandPalette />
           <SmoothScroll>{children}</SmoothScroll>
         </ThemeProvider>
       </body>

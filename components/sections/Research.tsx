@@ -1,8 +1,8 @@
 "use client"
 
-import { useRef, useEffect, type ReactNode } from "react"
+import { useRef, useEffect, useState, type ReactNode } from "react"
 import { motion } from "framer-motion"
-import { Eye, ScanFace, Award, Search } from "lucide-react"
+import { Eye, ScanFace, Award, Search, Copy, Check } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Container } from "@/components/layout/Container"
 import { SectionLabel } from "@/components/primitives/SectionLabel"
@@ -187,6 +187,42 @@ function ParticleField({
   return null
 }
 
+// ─── Cite button ──────────────────────────────────────────────────────────
+
+function CiteButton({ entry }: { entry: typeof import("@/lib/data/research").research[number] }) {
+  const [copied, setCopied] = useState(false)
+
+  const bibtex = `@inproceedings{sosa2025dogs,
+  title={${entry.title}},
+  author={Sosa, Luis},
+  booktitle={${entry.venue}},
+  year={${entry.year}},
+  publisher={${entry.publisher}},
+  series={Communications in Computer and Information Science},
+  url={${entry.url}}
+}`
+
+  async function handleCopy() {
+    try {
+      await navigator.clipboard.writeText(bibtex)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    } catch {
+      // silently ignore
+    }
+  }
+
+  return (
+    <button
+      onClick={handleCopy}
+      className="inline-flex items-center gap-1.5 text-sm text-muted hover:text-foreground transition-colors duration-200"
+    >
+      {copied ? <Check size={13} className="text-accent" /> : <Copy size={13} />}
+      {copied ? "Copied!" : "Cite (BibTeX)"}
+    </button>
+  )
+}
+
 // ─── Main section ──────────────────────────────────────────────────────────────
 
 const seq = (i: number, reduced: boolean) =>
@@ -312,16 +348,18 @@ export function Research() {
               </ul>
             </motion.div>
 
-            {/* CTA */}
+            {/* CTA + Cite */}
             <motion.div
               variants={seq(5, reduced)}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
+              className="flex items-center gap-4 flex-wrap"
             >
               <AccentLink href={entry.url} external>
                 View publication
               </AccentLink>
+              <CiteButton entry={entry} />
             </motion.div>
           </div>
 

@@ -1,8 +1,9 @@
 "use client"
 
-import { Lock, ArrowUpRight } from "lucide-react"
+import { Lock, ArrowUpRight, ChevronDown } from "lucide-react"
 import { useTheme } from "next-themes"
 import { useState, useEffect } from "react"
+import { AnimatePresence, motion } from "framer-motion"
 import { SectionWrapper } from "@/components/layout/SectionWrapper"
 import { SectionLabel } from "@/components/primitives/SectionLabel"
 import { FadeIn } from "@/components/primitives/FadeIn"
@@ -36,6 +37,7 @@ function GitHubIcon() {
 }
 
 export function Projects() {
+  const [expanded, setExpanded] = useState(false)
   const featured = projects.find((p) => p.featured)
   const secondary = projects.filter((p) => !p.featured)
 
@@ -93,7 +95,7 @@ export function Projects() {
                 </ul>
               </div>
 
-              {/* Links */}
+              {/* Links + expand */}
               <div className="flex items-center gap-3 shrink-0">
                 {featured.githubUrl && (
                   <a
@@ -121,8 +123,58 @@ export function Projects() {
                     />
                   </a>
                 )}
+                {(featured.highlights || featured.role) && (
+                  <button
+                    onClick={() => setExpanded((v) => !v)}
+                    className="inline-flex items-center gap-1 text-sm font-medium text-muted hover:text-foreground transition-colors duration-200"
+                    aria-expanded={expanded}
+                  >
+                    {expanded ? "Less" : "More"}
+                    <motion.span
+                      animate={{ rotate: expanded ? 180 : 0 }}
+                      transition={{ duration: 0.2 }}
+                      className="inline-flex"
+                    >
+                      <ChevronDown size={14} />
+                    </motion.span>
+                  </button>
+                )}
               </div>
             </div>
+
+            {/* Expandable detail panel */}
+            <AnimatePresence initial={false}>
+              {expanded && (featured.highlights || featured.role) && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
+                  className="overflow-hidden"
+                >
+                  <div className="flex flex-col gap-4 px-6 pb-6 md:px-8 md:pb-8 pt-0 border-t border-border mt-0">
+                    <div className="pt-5 flex flex-col gap-4">
+                      {featured.role && (
+                        <p className="text-sm text-muted leading-relaxed">
+                          <span className="font-medium text-foreground">Role: </span>
+                          {featured.role}
+                        </p>
+                      )}
+                      {featured.highlights && (
+                        <ul className="flex flex-col gap-2">
+                          {featured.highlights.map((h) => (
+                            <li key={h} className="flex items-start gap-2.5 text-sm text-muted">
+                              <span className="mt-1.5 shrink-0 w-1 h-1 rounded-full bg-accent" />
+                              {h}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </article>
         </FadeIn>
       )}

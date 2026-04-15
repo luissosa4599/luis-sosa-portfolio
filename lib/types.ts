@@ -24,4 +24,6 @@ export interface ProjectEntry {
   githubUrl?: string
   featured: boolean
   private: boolean
+  highlights?: string[]
+  role?: string
 }

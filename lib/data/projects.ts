@@ -11,6 +11,13 @@ export const projects: ProjectEntry[] = [
     githubUrl: "https://github.com/luissosa4599/operations-dashboard",
     featured: true,
     private: false,
+    role: "Full-stack lead — designed the data model, built the API, and owned the entire frontend.",
+    highlights: [
+      "Real-time order tracking with WebSocket updates and optimistic UI",
+      "Analytics dashboard with custom Recharts components and date-range filtering",
+      "Role-based access control with per-route middleware on Laravel",
+      "Reduced order processing time by ~40% through workflow automation",
+    ],
   },
   {
     slug: "internal-platform",
