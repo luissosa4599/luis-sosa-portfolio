@@ -3,12 +3,13 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { AnimatePresence, motion } from "framer-motion"
-import { Menu, X, BookOpen, Briefcase, Compass, Mail } from "lucide-react"
+import { Menu, X, House, BookOpen, Briefcase, Compass, Mail } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { ThemeToggle } from "@/components/primitives/ThemeToggle"
 import { Container } from "./Container"
 
 const NAV_LINKS = [
+  { label: "Home", href: "#hero", icon: House },
   { label: "Research", href: "#research", icon: BookOpen },
   { label: "Work", href: "#work", icon: Briefcase },
   { label: "Approach", href: "#approach", icon: Compass },
@@ -43,7 +44,7 @@ export function SiteHeader() {
 
       // The section whose top edge is within the upper 45% of the viewport is active
       const threshold = window.scrollY + window.innerHeight * 0.45
-      let current = ""
+      let current = "hero"
       for (const id of sectionIds) {
         const el = document.getElementById(id)
         if (el && el.offsetTop <= threshold) current = id

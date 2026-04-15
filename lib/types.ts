@@ -1,6 +1,7 @@
 export interface ResearchEntry {
   title: string
   venue: string
+  publisher: string
   year: number
   abstract: string
   url: string
