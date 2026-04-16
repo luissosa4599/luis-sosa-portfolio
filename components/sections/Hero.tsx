@@ -6,7 +6,6 @@ import { wordReveal, heroSequence } from "@/lib/motion"
 import { useReducedMotion } from "@/hooks/useReducedMotion"
 import { Container } from "@/components/layout/Container"
 import { useLanguage } from "@/lib/i18n"
-import { contact } from "@/lib/data/contact"
 import type { Language } from "@/lib/language"
 
 const HEADLINE: Record<
@@ -172,7 +171,9 @@ export function Hero() {
                 {copy.contact}
               </a>
               <a
-                href={`mailto:${contact.email}?subject=Resume%20request%20from%20portfolio`}
+                href="/CV_eng_2026.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-md border border-border text-sm font-medium text-muted hover:text-foreground hover:border-border-strong transition-colors duration-200"
               >
                 {copy.resume}
