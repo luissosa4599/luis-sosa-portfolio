@@ -5,16 +5,23 @@ import Link from "next/link"
 import { AnimatePresence, motion } from "framer-motion"
 import { Menu, X, House, BookOpen, Briefcase, Compass, Mail } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { useLanguage } from "@/lib/i18n"
 import { ThemeToggle } from "@/components/primitives/ThemeToggle"
+import { LanguageToggle } from "@/components/primitives/LanguageToggle"
 import { Container } from "./Container"
 
+const NAV_LABELS = {
+  en: ["Home", "Work", "Research", "Approach", "Contact"],
+  es: ["Inicio", "Trabajo", "Research", "Enfoque", "Contacto"],
+} as const
+
 const NAV_LINKS = [
-  { label: "Home", href: "#hero", icon: House },
-  { label: "Work", href: "#work", icon: Briefcase },
-  { label: "Research", href: "#research", icon: BookOpen },
-  { label: "Approach", href: "#approach", icon: Compass },
-  { label: "Contact", href: "#contact", icon: Mail },
-]
+  { href: "#hero", icon: House },
+  { href: "#work", icon: Briefcase },
+  { href: "#research", icon: BookOpen },
+  { href: "#approach", icon: Compass },
+  { href: "#contact", icon: Mail },
+] as const
 
 function BracketLogo({ onClick }: { onClick?: () => void }) {
   return (
@@ -31,18 +38,21 @@ function BracketLogo({ onClick }: { onClick?: () => void }) {
 }
 
 function StatusBadge() {
+  const { language } = useLanguage()
+
   return (
     <span className="hidden md:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border border-emerald-500/20 bg-emerald-500/8 text-emerald-500">
       <span className="relative flex h-1.5 w-1.5">
         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
         <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500" />
       </span>
-      Open to bilingual roles
+      {language === "es" ? "Abierto a roles bilingües" : "Open to bilingual roles"}
     </span>
   )
 }
 
 export function SiteHeader() {
+  const { language } = useLanguage()
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
   const [activeSection, setActiveSection] = useState("")
@@ -123,13 +133,14 @@ export function SiteHeader() {
                       size={13}
                       className={cn("shrink-0 transition-opacity duration-200", isActive ? "opacity-100" : "opacity-60")}
                     />
-                    {link.label}
-                  </a>
-                )
-              })}
+                      {NAV_LABELS[language][NAV_LINKS.indexOf(link)]}
+                    </a>
+                  )
+                })}
             </nav>
 
             <div className="flex items-center gap-3">
+              <LanguageToggle />
               <ThemeToggle />
               {/* Hamburger — mobile only */}
               <button
@@ -178,7 +189,7 @@ export function SiteHeader() {
                         size={20}
                         className={cn("shrink-0", isActive ? "text-accent" : "text-accent/60")}
                       />
-                      {link.label}
+                      {NAV_LABELS[language][NAV_LINKS.indexOf(link)]}
                     </motion.a>
                   )
                 })}

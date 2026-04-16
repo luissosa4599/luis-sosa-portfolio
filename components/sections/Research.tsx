@@ -6,9 +6,11 @@ import { Eye, ScanFace, Award, Search, Copy, Check } from "lucide-react"
 import { Container } from "@/components/layout/Container"
 import { SectionLabel } from "@/components/primitives/SectionLabel"
 import { AccentLink } from "@/components/primitives/AccentLink"
-import { research } from "@/lib/data/research"
+import { getResearch } from "@/lib/data/research"
 import { useReducedMotion } from "@/hooks/useReducedMotion"
 import { heroSequence } from "@/lib/motion"
+import { useLanguage } from "@/lib/i18n"
+import type { ResearchEntry } from "@/lib/types"
 
 // ─── Dog silhouette ─────────────────────────────────────────────────────────────
 
@@ -187,7 +189,7 @@ function ParticleField({
 
 // ─── Cite button ──────────────────────────────────────────────────────────
 
-function CiteButton({ entry }: { entry: typeof import("@/lib/data/research").research[number] }) {
+function CiteButton({ entry }: { entry: ResearchEntry }) {
   const [copied, setCopied] = useState(false)
 
   const bibtex = `@inproceedings{sosa2025dogs,
@@ -229,10 +231,11 @@ const seq = (i: number, reduced: boolean) =>
     : heroSequence(i)
 
 export function Research() {
+  const { language } = useLanguage()
   const reduced = useReducedMotion()
   const particlesRef = useRef<HTMLDivElement>(null)
 
-  const entry = research[0]
+  const entry = getResearch(language)[0]
   if (!entry) return null
 
   return (
@@ -279,7 +282,7 @@ export function Research() {
               whileInView="visible"
               viewport={{ once: true }}
             >
-              <SectionLabel>Research</SectionLabel>
+              <SectionLabel>{language === "es" ? "Research" : "Research"}</SectionLabel>
             </motion.div>
 
             {/* Heading */}
@@ -290,7 +293,7 @@ export function Research() {
               viewport={{ once: true }}
               className="text-[clamp(2.2rem,4.5vw,3.4rem)] font-semibold tracking-tight leading-[1.1] text-foreground"
             >
-              Research Papers
+              {language === "es" ? "Publicaciones" : "Research Papers"}
             </motion.h2>
 
             {/* Paper title */}
@@ -322,9 +325,9 @@ export function Research() {
               viewport={{ once: true }}
               className="text-sm text-muted-2 leading-relaxed max-w-md"
             >
-              I include this work because it reflects how I approach product
-              problems: structured research, clear decision-making, and
-              shipping an actual system instead of stopping at the concept.
+              {language === "es"
+                ? "Incluyo este trabajo porque refleja cómo abordo problemas de producto: research estructurado, decisiones claras y la capacidad de llevar una idea hasta un sistema real."
+                : "I include this work because it reflects how I approach product problems: structured research, clear decision-making, and shipping an actual system instead of stopping at the concept."}
             </motion.p>
 
             {/* Year + venue + tags */}
@@ -346,7 +349,7 @@ export function Research() {
                   {entry.publisher}
                 </span>
               </div>
-              <ul className="flex flex-wrap gap-2" aria-label="Topics">
+              <ul className="flex flex-wrap gap-2" aria-label={language === "es" ? "Temas" : "Topics"}>
                 {entry.tags.map((tag) => (
                   <li
                     key={tag}
@@ -367,7 +370,7 @@ export function Research() {
               className="flex items-center gap-4 flex-wrap"
             >
               <AccentLink href={entry.url} external>
-                View publication
+                {language === "es" ? "Ver publicación" : "View publication"}
               </AccentLink>
               <CiteButton entry={entry} />
             </motion.div>

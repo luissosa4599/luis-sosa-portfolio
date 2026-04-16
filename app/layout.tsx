@@ -1,7 +1,9 @@
 import type { Metadata } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
 import { ThemeProvider } from "next-themes"
+import { LanguageTransition } from "@/components/layout/LanguageTransition"
 import { SmoothScroll } from "@/components/layout/SmoothScroll"
+import { LanguageProvider } from "@/lib/i18n"
 import "./globals.css"
 
 const geistSans = Geist({
@@ -55,7 +57,11 @@ export default function RootLayout({
           defaultTheme="dark"
           enableSystem={false}
         >
-          <SmoothScroll>{children}</SmoothScroll>
+          <LanguageProvider>
+            <LanguageTransition>
+              <SmoothScroll>{children}</SmoothScroll>
+            </LanguageTransition>
+          </LanguageProvider>
         </ThemeProvider>
       </body>
     </html>

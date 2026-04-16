@@ -5,18 +5,33 @@ import { ArrowRight } from "lucide-react"
 import { wordReveal, heroSequence } from "@/lib/motion"
 import { useReducedMotion } from "@/hooks/useReducedMotion"
 import { Container } from "@/components/layout/Container"
+import { useLanguage } from "@/lib/i18n"
 import { contact } from "@/lib/data/contact"
+import type { Language } from "@/lib/language"
 
-// Headline split: word, whether it carries an accent style, and whether to force a line break after
-const HEADLINE: { text: string; accent?: boolean; break?: boolean }[] = [
-  { text: "Frontend" },
-  { text: "engineer" },
-  { text: "for", break: true },
-  { text: "dashboards", accent: true },
-  { text: "&" },
-  { text: "data" },
-  { text: "products" },
-]
+const HEADLINE: Record<
+  Language,
+  { text: string; accent?: boolean; break?: boolean }[]
+> = {
+  en: [
+    { text: "Frontend" },
+    { text: "engineer" },
+    { text: "for", break: true },
+    { text: "dashboards", accent: true },
+    { text: "&" },
+    { text: "data" },
+    { text: "products" },
+  ],
+  es: [
+    { text: "Frontend" },
+    { text: "engineer" },
+    { text: "para", break: true },
+    { text: "dashboards", accent: true },
+    { text: "y" },
+    { text: "productos" },
+    { text: "de datos" },
+  ],
+}
 
 const CORE_STACK = [
   "Next.js",
@@ -27,7 +42,26 @@ const CORE_STACK = [
 ] as const
 
 export function Hero() {
+  const { language } = useLanguage()
   const reduced = useReducedMotion()
+  const copy = {
+    en: {
+      aria: "Frontend engineer for dashboards and data products",
+      subtitle:
+        "Frontend engineer focused on dashboards, internal tools, and product UI for teams working with complex workflows and data.",
+      projects: "See projects",
+      contact: "Get in touch",
+      resume: "Request resume",
+    },
+    es: {
+      aria: "Frontend engineer para dashboards y productos de datos",
+      subtitle:
+        "Frontend engineer enfocado en dashboards, herramientas internas y producto UI para equipos que trabajan con flujos complejos y datos.",
+      projects: "Ver proyectos",
+      contact: "Contactar",
+      resume: "Pedir CV",
+    },
+  }[language]
 
   const container = reduced
     ? { hidden: {}, visible: {} }
@@ -70,9 +104,9 @@ export function Hero() {
               initial="hidden"
               animate="visible"
               className="text-[clamp(2.4rem,5.5vw,4rem)] font-semibold tracking-tight leading-[1.1] text-foreground"
-              aria-label="Frontend engineer for dashboards & data products"
+              aria-label={copy.aria}
             >
-              {HEADLINE.map((word, i) => (
+              {HEADLINE[language].map((word, i) => (
                 <span key={i} className="inline">
                   <motion.span
                     variants={wordVariant}
@@ -97,8 +131,7 @@ export function Hero() {
               animate="visible"
               className="text-base text-muted leading-relaxed max-w-md"
             >
-              Frontend engineer focused on dashboards, internal tools, and
-              product UI for teams working with complex workflows and data.
+              {copy.subtitle}
             </motion.p>
 
             <motion.ul
@@ -129,20 +162,20 @@ export function Hero() {
                 href="#work"
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-md bg-accent text-white text-sm font-semibold hover:bg-accent/90 transition-colors duration-200"
               >
-                See projects
+                {copy.projects}
                 <ArrowRight size={15} />
               </a>
               <a
                 href="#contact"
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-md border border-border text-sm font-medium text-muted hover:text-foreground hover:border-border-strong transition-colors duration-200"
               >
-                Get in touch
+                {copy.contact}
               </a>
               <a
                 href={`mailto:${contact.email}?subject=Resume%20request%20from%20portfolio`}
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-md border border-border text-sm font-medium text-muted hover:text-foreground hover:border-border-strong transition-colors duration-200"
               >
-                Request resume
+                {copy.resume}
               </a>
             </motion.div>
           </div>

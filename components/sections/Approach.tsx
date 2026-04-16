@@ -5,17 +5,21 @@ import { Eye, Target, MessageSquare, Cpu } from "lucide-react"
 import { SectionWrapper } from "@/components/layout/SectionWrapper"
 import { SectionLabel } from "@/components/primitives/SectionLabel"
 import { FadeIn } from "@/components/primitives/FadeIn"
-import { approach } from "@/lib/data/approach"
+import { getApproach } from "@/lib/data/approach"
+import { useLanguage } from "@/lib/i18n"
 
 const ICONS = [Eye, Target, MessageSquare, Cpu]
 
 export function Approach() {
+  const { language } = useLanguage()
+  const approach = getApproach(language)
+
   return (
     <SectionWrapper id="approach">
       <FadeIn>
-        <SectionLabel>Approach</SectionLabel>
+        <SectionLabel>{language === "es" ? "Enfoque" : "Approach"}</SectionLabel>
         <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-foreground">
-          How I work
+          {language === "es" ? "Cómo trabajo" : "How I work"}
         </h2>
       </FadeIn>
 

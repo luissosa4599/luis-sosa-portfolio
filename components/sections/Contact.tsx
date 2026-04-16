@@ -1,7 +1,10 @@
+"use client"
+
 import { SectionWrapper } from "@/components/layout/SectionWrapper"
 import { FadeIn } from "@/components/primitives/FadeIn"
 import { Mail } from "lucide-react"
 import { contact } from "@/lib/data/contact"
+import { useLanguage } from "@/lib/i18n"
 
 const CONTACT_LINKS = [
   {
@@ -48,16 +51,18 @@ const CONTACT_LINKS = [
 ]
 
 export function Contact() {
+  const { language } = useLanguage()
+
   return (
     <SectionWrapper id="contact" containerSize="md">
       <FadeIn className="text-center flex flex-col items-center">
         <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-foreground">
-          Let&apos;s build something useful
+          {language === "es" ? "Construyamos algo útil" : "Let's build something useful"}
         </h2>
         <p className="mt-4 text-base text-muted leading-relaxed max-w-md">
-          I&apos;m looking for frontend and product engineering roles where I can
-          ship in English, collaborate across functions, and build clear
-          interfaces for complex products.
+          {language === "es"
+            ? "Estoy buscando roles de frontend y product engineering donde pueda trabajar en inglés, colaborar con distintas áreas y construir interfaces claras para productos complejos."
+            : "I'm looking for frontend and product engineering roles where I can ship in English, collaborate across functions, and build clear interfaces for complex products."}
         </p>
 
         {/* Contact buttons */}

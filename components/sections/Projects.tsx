@@ -5,7 +5,8 @@ import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react"
 import { motion } from "framer-motion"
 import { Container } from "@/components/layout/Container"
 import { SectionLabel } from "@/components/primitives/SectionLabel"
-import { projects } from "@/lib/data/projects"
+import { getProjects } from "@/lib/data/projects"
+import { useLanguage } from "@/lib/i18n"
 import type { ProjectEntry } from "@/lib/types"
 
 const GAP = 20 // px between cards
@@ -81,6 +82,8 @@ function ProjectVisual({ slug }: { slug: string }) {
 // ─── Card ─────────────────────────────────────────────────────────────────────
 
 function ProjectCard({ project, cardWidth }: { project: ProjectEntry; cardWidth: number }) {
+  const { language } = useLanguage()
+
   return (
     <div
       className="flex flex-col rounded-2xl overflow-hidden bg-surface border border-border hover:border-border-strong transition-colors duration-300 shrink-0"
@@ -148,14 +151,14 @@ function ProjectCard({ project, cardWidth }: { project: ProjectEntry; cardWidth:
           <h2 className="text-base font-semibold text-accent leading-snug">{project.title}</h2>
           {project.featured && (
             <span className="shrink-0 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-accent/10 text-accent border border-accent/20">
-              Featured
+              {language === "es" ? "Destacado" : "Featured"}
             </span>
           )}
         </div>
 
         <p className="text-sm text-muted leading-relaxed line-clamp-3">{project.description}</p>
 
-        <ul className="flex flex-wrap gap-2" aria-label="Technologies">
+        <ul className="flex flex-wrap gap-2" aria-label={language === "es" ? "Tecnologías" : "Technologies"}>
           {project.tags.slice(0, 4).map((tag) => (
             <li
               key={tag}
@@ -171,23 +174,6 @@ function ProjectCard({ project, cardWidth }: { project: ProjectEntry; cardWidth:
           )}
         </ul>
 
-        {project.role && (
-          <p className="text-sm text-muted line-clamp-2">
-            <span className="font-medium text-foreground">Role: </span>
-            {project.role}
-          </p>
-        )}
-
-        {project.highlights && (
-          <ul className="flex flex-col gap-2 border-t border-border pt-3">
-            {project.highlights.slice(0, 2).map((h) => (
-              <li key={h} className="flex items-start gap-2.5 text-sm text-muted">
-                <span className="mt-2 shrink-0 w-1 h-1 rounded-full bg-accent" />
-                {h}
-              </li>
-            ))}
-          </ul>
-        )}
       </div>
     </div>
   )
@@ -198,11 +184,13 @@ function ProjectCard({ project, cardWidth }: { project: ProjectEntry; cardWidth:
 const VISIBLE = 2 // cards shown at once on desktop
 
 export function Projects() {
+  const { language } = useLanguage()
   const [idx, setIdx] = useState(0)
   const [cardWidth, setCardWidth] = useState(320)
   const [visible, setVisible] = useState(VISIBLE)
   const trackRef = useRef<HTMLDivElement>(null)
   const resizeObserverRef = useRef<ResizeObserver | null>(null)
+  const projects = getProjects(language)
 
   const measure = useCallback(() => {
     if (!trackRef.current) return
@@ -240,7 +228,7 @@ export function Projects() {
 
           {/* Header row — mb-0 on SectionLabel to fix flex alignment */}
           <div className="flex items-center justify-between">
-            <SectionLabel className="mb-0">Work</SectionLabel>
+            <SectionLabel className="mb-0">{language === "es" ? "Trabajo" : "Work"}</SectionLabel>
             <div className="flex items-center gap-3">
               <span className="font-mono text-xs text-muted-2 tabular-nums">
                 {idx + 1}–{Math.min(idx + visible, projects.length)} / {projects.length}
@@ -281,7 +269,7 @@ export function Projects() {
           </div>
 
           {/* Dot indicators */}
-          <div className="flex justify-center gap-2" role="tablist" aria-label="Projects">
+          <div className="flex justify-center gap-2" role="tablist" aria-label={language === "es" ? "Proyectos" : "Projects"}>
             {Array.from({ length: maxIdx + 1 }).map((_, i) => (
               <button
                 key={i}
