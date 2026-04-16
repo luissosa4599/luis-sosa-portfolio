@@ -8,7 +8,7 @@ export const research: ResearchEntry[] = [
     publisher: "Springer Nature",
     year: 2025,
     abstract:
-      "Peer-reviewed paper accepted at HCI International — the world's largest Human-Computer Interaction conference — and published by Springer Nature in the Communications in Computer and Information Science series. Proposes a mobile system using biometric nose-print identification to locate lost dogs in Mexico City, where over 18,000 go missing annually. Validated in real-world conditions using computer vision and geolocation matching.",
+      "Peer-reviewed paper published through HCI International 2025 and Springer Nature. It presents a mobile system that uses biometric nose-print identification and geolocation matching to help locate lost dogs in Mexico City, validated in real-world conditions.",
     url: "https://link.springer.com/chapter/10.1007/978-3-032-12767-9_33",
     tags: ["Computer Vision", "Pattern Recognition", "HCI", "Mobile"],
   },

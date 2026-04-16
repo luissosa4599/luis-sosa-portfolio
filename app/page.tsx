@@ -20,8 +20,8 @@ export default function Home() {
       <SectionProgress />
       <main className="relative z-10">
         <Hero />
-        <Research />
         <Projects />
+        <Research />
         <Approach />
         <Contact />
       </main>

@@ -2,7 +2,6 @@ import type { Metadata } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
 import { ThemeProvider } from "next-themes"
 import { SmoothScroll } from "@/components/layout/SmoothScroll"
-import { CommandPalette } from "@/components/primitives/CommandPalette"
 import "./globals.css"
 
 const geistSans = Geist({
@@ -18,12 +17,12 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Luis Sosa — Frontend Engineer",
   description:
-    "Frontend Engineer specializing in dashboards, data-heavy interfaces, and product UIs for remote teams.",
+    "Frontend engineer building dashboards, internal tools, and product interfaces for data-heavy teams.",
   metadataBase: new URL("https://luissosa.dev"),
   openGraph: {
     title: "Luis Sosa — Frontend Engineer",
     description:
-      "Frontend Engineer specializing in dashboards, data-heavy interfaces, and product UIs for remote teams.",
+      "Frontend engineer building dashboards, internal tools, and product interfaces for data-heavy teams.",
     url: "https://luissosa.dev",
     siteName: "Luis Sosa",
     locale: "en_US",
@@ -33,7 +32,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Luis Sosa — Frontend Engineer",
     description:
-      "Frontend Engineer specializing in dashboards, data-heavy interfaces, and product UIs for remote teams.",
+      "Frontend engineer building dashboards, internal tools, and product interfaces for data-heavy teams.",
     creator: "@luissosa4599",
   },
   robots: { index: true, follow: true },
@@ -56,7 +55,6 @@ export default function RootLayout({
           defaultTheme="dark"
           enableSystem={false}
         >
-          <CommandPalette />
           <SmoothScroll>{children}</SmoothScroll>
         </ThemeProvider>
       </body>

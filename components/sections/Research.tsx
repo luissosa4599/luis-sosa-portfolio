@@ -3,11 +3,9 @@
 import { useRef, useEffect, useState, type ReactNode } from "react"
 import { motion } from "framer-motion"
 import { Eye, ScanFace, Award, Search, Copy, Check } from "lucide-react"
-import { cn } from "@/lib/utils"
 import { Container } from "@/components/layout/Container"
 import { SectionLabel } from "@/components/primitives/SectionLabel"
 import { AccentLink } from "@/components/primitives/AccentLink"
-import { FadeIn } from "@/components/primitives/FadeIn"
 import { research } from "@/lib/data/research"
 import { useReducedMotion } from "@/hooks/useReducedMotion"
 import { heroSequence } from "@/lib/motion"
@@ -281,7 +279,7 @@ export function Research() {
               whileInView="visible"
               viewport={{ once: true }}
             >
-              <SectionLabel>Publications</SectionLabel>
+              <SectionLabel>Research</SectionLabel>
             </motion.div>
 
             {/* Heading */}
@@ -317,9 +315,21 @@ export function Research() {
               {entry.abstract}
             </motion.p>
 
+            <motion.p
+              variants={seq(4, reduced)}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="text-sm text-muted-2 leading-relaxed max-w-md"
+            >
+              I include this work because it reflects how I approach product
+              problems: structured research, clear decision-making, and
+              shipping an actual system instead of stopping at the concept.
+            </motion.p>
+
             {/* Year + venue + tags */}
             <motion.div
-              variants={seq(4, reduced)}
+              variants={seq(5, reduced)}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
@@ -350,7 +360,7 @@ export function Research() {
 
             {/* CTA + Cite */}
             <motion.div
-              variants={seq(5, reduced)}
+              variants={seq(6, reduced)}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}

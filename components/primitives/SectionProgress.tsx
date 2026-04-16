@@ -5,8 +5,8 @@ import { AnimatePresence, motion } from "framer-motion"
 
 const SECTIONS = [
   { id: "hero", label: "Home" },
-  { id: "research", label: "Research" },
   { id: "work", label: "Work" },
+  { id: "research", label: "Research" },
   { id: "approach", label: "Approach" },
   { id: "contact", label: "Contact" },
 ]

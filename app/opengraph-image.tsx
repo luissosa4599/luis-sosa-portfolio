@@ -101,7 +101,7 @@ export default function OGImage() {
             }}
           />
           <span style={{ fontSize: 14, color: "#4DA6FF", fontWeight: 500 }}>
-            Available for opportunities
+            Open to frontend roles
           </span>
         </div>
       </div>

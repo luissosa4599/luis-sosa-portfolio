@@ -10,8 +10,8 @@ import { Container } from "./Container"
 
 const NAV_LINKS = [
   { label: "Home", href: "#hero", icon: House },
-  { label: "Research", href: "#research", icon: BookOpen },
   { label: "Work", href: "#work", icon: Briefcase },
+  { label: "Research", href: "#research", icon: BookOpen },
   { label: "Approach", href: "#approach", icon: Compass },
   { label: "Contact", href: "#contact", icon: Mail },
 ]
@@ -37,7 +37,7 @@ function StatusBadge() {
         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
         <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500" />
       </span>
-      Open to work
+      Open to bilingual roles
     </span>
   )
 }

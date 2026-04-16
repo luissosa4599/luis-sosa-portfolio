@@ -4,21 +4,21 @@ export const approach: ApproachPrinciple[] = [
   {
     index: "01",
     heading: "Clarity first",
-    body: "Interfaces should make decisions easier, not harder. I design for readability and reduce noise so the right information is always in front of the right person.",
+    body: "Interfaces should help people decide faster. I prioritize hierarchy, readable states, and the right information at the right moment instead of visual noise.",
   },
   {
     index: "02",
     heading: "Product thinking",
-    body: "I work from business requirements, not just design specs. That means understanding why a feature exists before deciding how it should behave.",
+    body: "I work from product and business context, not just mockups. Before building, I want to understand the workflow, the constraint, and the decision the interface needs to support.",
   },
   {
     index: "03",
     heading: "Direct communication",
-    body: "I stay in close contact with clients and teammates throughout the process — surfacing blockers early, translating technical constraints into plain language, and keeping everyone aligned.",
+    body: "I surface blockers early, translate technical tradeoffs clearly, and keep stakeholders aligned. Fast projects usually depend more on clean communication than on heroic coding.",
   },
   {
     index: "04",
     heading: "Systems awareness",
-    body: "Understanding what happens behind the interface — APIs, data flows, deployments — means I build frontend that works in production, not just in isolation.",
+    body: "Good frontend depends on understanding the system behind it. I work comfortably across APIs, data flow, and implementation constraints so the UI holds up in production.",
   },
 ]

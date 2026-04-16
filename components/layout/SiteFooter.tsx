@@ -1,19 +1,20 @@
 import { Container } from "./Container"
+import { contact } from "@/lib/data/contact"
 
 const FOOTER_LINKS = [
   {
     label: "GitHub",
-    href: "https://github.com/luissosa4599",
+    href: contact.github,
     external: true,
   },
   {
     label: "LinkedIn",
-    href: "https://www.linkedin.com/in/luis-sosa-320194403",
+    href: contact.linkedin,
     external: true,
   },
   {
     label: "Email",
-    href: "mailto:luis.sosa.4599@gmail.com",
+    href: `mailto:${contact.email}`,
     external: false,
   },
 ]

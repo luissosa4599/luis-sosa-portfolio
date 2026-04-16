@@ -1,13 +1,11 @@
 "use client"
 
 import { motion } from "framer-motion"
-import Link from "next/link"
 import { ArrowRight } from "lucide-react"
-import { wordContainer, wordReveal, heroSequence } from "@/lib/motion"
+import { wordReveal, heroSequence } from "@/lib/motion"
 import { useReducedMotion } from "@/hooks/useReducedMotion"
-import { useTheme } from "next-themes"
-import { useState, useEffect } from "react"
 import { Container } from "@/components/layout/Container"
+import { contact } from "@/lib/data/contact"
 
 // Headline split: word, whether it carries an accent style, and whether to force a line break after
 const HEADLINE: { text: string; accent?: boolean; break?: boolean }[] = [
@@ -20,20 +18,16 @@ const HEADLINE: { text: string; accent?: boolean; break?: boolean }[] = [
   { text: "products" },
 ]
 
+const CORE_STACK = [
+  "Next.js",
+  "React",
+  "TypeScript",
+  "Laravel",
+  "Product UI",
+] as const
+
 export function Hero() {
   const reduced = useReducedMotion()
-  const { resolvedTheme } = useTheme()
-  const [mounted, setMounted] = useState(false)
-  useEffect(() => { setMounted(true) }, [])
-
-  const dashboardSrc =
-    mounted && resolvedTheme === "light"
-      ? "/dashboard-light.png"
-      : "/dashboard-dark.png"
-  const dashboardAlt =
-    mounted && resolvedTheme === "light"
-      ? "Operations dashboard — light mode"
-      : "Operations dashboard — dark mode"
 
   const container = reduced
     ? { hidden: {}, visible: {} }
@@ -70,22 +64,6 @@ export function Hero() {
           {/* ── Left column ─────────────────────────────────────── */}
           <div className="flex flex-col gap-6">
 
-            {/* Availability badge */}
-            <motion.div
-              variants={seq(0)}
-              initial="hidden"
-              animate="visible"
-              className="flex"
-            >
-              <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-accent/20 bg-accent/[0.06] text-xs font-medium text-accent">
-                <span
-                  className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse"
-                  aria-hidden
-                />
-                Available for opportunities
-              </span>
-            </motion.div>
-
             {/* Headline — word-by-word stagger */}
             <motion.h1
               variants={container}
@@ -114,14 +92,31 @@ export function Hero() {
 
             {/* Subtitle */}
             <motion.p
-              variants={seq(1)}
+              variants={seq(0)}
               initial="hidden"
               animate="visible"
               className="text-base text-muted leading-relaxed max-w-md"
             >
-              I build fast, clear interfaces that make complex data accessible —
-              dashboards, internal tools, and product UIs for remote teams.
+              Frontend engineer focused on dashboards, internal tools, and
+              product UI for teams working with complex workflows and data.
             </motion.p>
+
+            <motion.ul
+              variants={seq(1)}
+              initial="hidden"
+              animate="visible"
+              className="flex flex-wrap gap-2 max-w-lg"
+              aria-label="Core stack"
+            >
+              {CORE_STACK.map((item) => (
+                <li
+                  key={item}
+                  className="rounded-full border border-border bg-surface px-3 py-1 text-xs font-mono text-muted"
+                >
+                  {item}
+                </li>
+              ))}
+            </motion.ul>
 
             {/* CTAs */}
             <motion.div
@@ -134,7 +129,7 @@ export function Hero() {
                 href="#work"
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-md bg-accent text-white text-sm font-semibold hover:bg-accent/90 transition-colors duration-200"
               >
-                View work
+                See projects
                 <ArrowRight size={15} />
               </a>
               <a
@@ -142,6 +137,12 @@ export function Hero() {
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-md border border-border text-sm font-medium text-muted hover:text-foreground hover:border-border-strong transition-colors duration-200"
               >
                 Get in touch
+              </a>
+              <a
+                href={`mailto:${contact.email}?subject=Resume%20request%20from%20portfolio`}
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-md border border-border text-sm font-medium text-muted hover:text-foreground hover:border-border-strong transition-colors duration-200"
+              >
+                Request resume
               </a>
             </motion.div>
           </div>
@@ -165,9 +166,19 @@ export function Hero() {
 
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={dashboardSrc}
-              alt={dashboardAlt}
-              className="w-full h-auto rounded-xl shadow-2xl"
+              src="/dashboard-dark.png"
+              alt="Operations dashboard preview"
+              className="theme-dark-only w-full h-auto rounded-xl shadow-2xl"
+              style={{
+                transform:
+                  "perspective(900px) rotateY(-7deg) rotateX(3deg) translateZ(0)",
+              }}
+            />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/dashboard-light.png"
+              alt="Operations dashboard preview"
+              className="theme-light-only w-full h-auto rounded-xl shadow-2xl"
               style={{
                 transform:
                   "perspective(900px) rotateY(-7deg) rotateX(3deg) translateZ(0)",

@@ -102,6 +102,22 @@ body {
   background-image: radial-gradient(circle, hsl(213 90% 53% / 0.10) 1px, transparent 1px);
 }
 
+.theme-dark-only {
+  display: block;
+}
+
+.theme-light-only {
+  display: none;
+}
+
+.light .theme-dark-only {
+  display: none;
+}
+
+.light .theme-light-only {
+  display: block;
+}
+
 /* ─── Scrollbar (dark) ────────────────────────────────────────────────────── */
 
 ::-webkit-scrollbar       { width: 6px; }
