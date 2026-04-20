@@ -23,6 +23,9 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       if (stored === "en" || stored === "es") {
         return stored
       }
+      // Fall back to browser/system language
+      const browserLang = navigator.language || ""
+      return browserLang.toLowerCase().startsWith("es") ? "es" : "en"
     }
 
     return "en"
