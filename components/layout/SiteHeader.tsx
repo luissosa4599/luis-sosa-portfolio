@@ -98,7 +98,7 @@ export function SiteHeader() {
         className={cn(
           "fixed inset-x-0 top-0 z-50 transition-all duration-300",
           scrolled || open
-            ? "bg-background/90 backdrop-blur-sm border-b border-border"
+            ? "bg-background/85 backdrop-blur-lg border-b border-border"
             : "bg-transparent"
         )}
       >
@@ -166,7 +166,7 @@ export function SiteHeader() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -6 }}
             transition={{ duration: 0.18, ease: [0, 0, 0.2, 1] }}
-            className="fixed inset-x-0 top-14 z-40 md:hidden bg-background/95 backdrop-blur-sm border-b border-border"
+            className="fixed inset-x-0 top-14 z-40 md:hidden bg-background/95 backdrop-blur-lg border-b border-border"
           >
             <Container>
               <nav className="flex flex-col py-6 gap-1">
