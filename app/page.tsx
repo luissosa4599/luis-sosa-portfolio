@@ -2,6 +2,7 @@ import { SiteHeader } from "@/components/layout/SiteHeader"
 import { SiteFooter } from "@/components/layout/SiteFooter"
 import { Hero } from "@/components/sections/Hero"
 import { About } from "@/components/sections/About"
+import { Skills } from "@/components/sections/Skills"
 import { Projects } from "@/components/sections/Projects"
 import { Research } from "@/components/sections/Research"
 import { Approach } from "@/components/sections/Approach"
@@ -23,6 +24,7 @@ export default function Home() {
       <main className="relative z-10">
         <Hero />
         <About />
+        <Skills />
         <Projects />
         <Research />
         <Approach />

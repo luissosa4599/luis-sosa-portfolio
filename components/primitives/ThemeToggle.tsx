@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import { useTheme } from "next-themes"
 import { Moon, Sun } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
@@ -11,6 +12,10 @@ interface ThemeToggleProps {
 
 export function ThemeToggle({ className }: ThemeToggleProps) {
   const { resolvedTheme, setTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => setMounted(true), [])
+
   const isDark = resolvedTheme === "dark"
 
   function toggle() {
@@ -21,6 +26,18 @@ export function ThemeToggle({ className }: ThemeToggleProps) {
     }, 600)
   }
 
+  // Avoid SSR mismatch — render placeholder until mounted
+  if (!mounted) {
+    return (
+      <div
+        className={cn(
+          "no-theme-transition flex h-8 w-8 items-center justify-center rounded-md",
+          className
+        )}
+      />
+    )
+  }
+
   return (
     <motion.button
       onClick={toggle}
@@ -28,7 +45,7 @@ export function ThemeToggle({ className }: ThemeToggleProps) {
       whileTap={{ scale: 0.88 }}
       transition={{ duration: 0.12 }}
       className={cn(
-        "no-theme-transition relative flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground overflow-hidden",
+        "no-theme-transition relative flex h-8 w-8 items-center justify-center rounded-md text-muted overflow-hidden",
         "hover:bg-accent/10 hover:text-foreground transition-colors",
         className
       )}
