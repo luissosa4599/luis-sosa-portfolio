@@ -111,7 +111,7 @@ export function Skills() {
   }[language]
 
   return (
-    <section id="skills" className="py-24 md:py-32">
+    <section id="skills" className="py-24 md:py-32 scroll-mt-20">
       <Container>
         {/* Heading */}
         <FadeIn>

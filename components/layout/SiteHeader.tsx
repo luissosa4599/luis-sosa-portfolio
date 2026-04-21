@@ -3,68 +3,52 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { AnimatePresence, motion } from "framer-motion"
-import { Menu, X, House, BookOpen, Briefcase, Compass, Mail } from "lucide-react"
+import { Menu, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useLanguage } from "@/lib/i18n"
 import { ThemeToggle } from "@/components/primitives/ThemeToggle"
 import { LanguageToggle } from "@/components/primitives/LanguageToggle"
-import { Container } from "./Container"
 
+// ── Nav config ───────────────────────────────────────────────────────────────
 const NAV_LABELS = {
-  en: ["Home", "Work", "Research", "Approach", "Contact"],
-  es: ["Inicio", "Trabajo", "Research", "Enfoque", "Contacto"],
+  en: ["Home", "About", "Work", "Skills", "Experience", "Research", "Contact"],
+  es: ["Inicio", "Sobre mí", "Proyectos", "Skills", "Experiencia", "Research", "Contacto"],
 } as const
 
 const NAV_LINKS = [
-  { href: "/#hero", icon: House },
-  { href: "/#work", icon: Briefcase },
-  { href: "/#research", icon: BookOpen },
-  { href: "/#approach", icon: Compass },
-  { href: "/#contact", icon: Mail },
+  { href: "/#hero",       section: "hero"       },
+  { href: "/#about",      section: "about"      },
+  { href: "/#work",       section: "work"       },
+  { href: "/#skills",     section: "skills"     },
+  { href: "/#experience", section: "experience" },
+  { href: "/#research",   section: "research"   },
+  { href: "/#contact",    section: "contact"    },
 ] as const
 
+// ── Logo ─────────────────────────────────────────────────────────────────────
 function BracketLogo({ onClick }: { onClick?: () => void }) {
   return (
     <Link
       href="/"
       onClick={onClick}
-      className="font-mono text-sm font-semibold tracking-tight group"
+      className="text-sm font-semibold tracking-tight text-foreground hover:text-foreground/80 transition-colors shrink-0"
     >
-      <span className="text-accent">&lt;</span>
-      <span className="text-foreground group-hover:text-foreground/80 transition-colors px-px">LS</span>
-      <span className="text-accent">/&gt;</span>
+      Luis Sosa
     </Link>
   )
 }
 
-function StatusBadge() {
-  const { language } = useLanguage()
-
-  return (
-    <span className="hidden md:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border border-emerald-500/20 bg-emerald-500/8 text-emerald-500">
-      <span className="relative flex h-1.5 w-1.5">
-        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-        <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500" />
-      </span>
-      {language === "es" ? "Abierto a roles bilingües" : "Open to bilingual roles"}
-    </span>
-  )
-}
-
+// ── Main export ───────────────────────────────────────────────────────────────
 export function SiteHeader() {
   const { language } = useLanguage()
-  const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
-  const [activeSection, setActiveSection] = useState("")
+  const [activeSection, setActiveSection] = useState("hero")
 
-  // Scroll border + active section tracking
+  // Active section tracking
   useEffect(() => {
-    const sectionIds = NAV_LINKS.map((l) => l.href.split("#")[1])
+    const sectionIds = NAV_LINKS.map((l) => l.section)
 
     const update = () => {
-      setScrolled(window.scrollY > 16)
-
-      // The section whose top edge is within the upper 45% of the viewport is active
       const threshold = window.scrollY + window.innerHeight * 0.45
       let current = "hero"
       for (const id of sectionIds) {
@@ -79,14 +63,16 @@ export function SiteHeader() {
     return () => window.removeEventListener("scroll", update)
   }, [])
 
-  // Close menu on Escape
+  // Escape to close
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setOpen(false) }
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false)
+    }
     document.addEventListener("keydown", onKey)
     return () => document.removeEventListener("keydown", onKey)
   }, [])
 
-  // Prevent body scroll when menu is open
+  // Lock body scroll when mobile menu is open
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : ""
     return () => { document.body.style.overflow = "" }
@@ -94,52 +80,50 @@ export function SiteHeader() {
 
   return (
     <>
-      <header
-        className={cn(
-          "fixed inset-x-0 top-0 z-50 transition-all duration-300",
-          scrolled || open
-            ? "bg-background/85 backdrop-blur-lg border-b border-border"
-            : "bg-transparent"
-        )}
-      >
-        <Container>
-          <div className="flex h-14 items-center justify-between">
-            <div className="flex items-center gap-3">
-              <BracketLogo onClick={() => setOpen(false)} />
-              <StatusBadge />
-            </div>
+      {/* ── Floating pill ─────────────────────────────────────────────────── */}
+      <header className="fixed top-4 inset-x-0 z-50 px-4 md:px-6">
+        <div className="max-w-6xl mx-auto">
+        <div
+          className={cn(
+            "rounded-2xl border border-border shadow-lg [background:hsl(220_12%_11%/0.88)] backdrop-blur-md",
+            "transition-shadow duration-300",
+            open && "rounded-b-none border-b-0"
+          )}
+        >
+          <div className="flex h-12 items-center justify-between px-4 md:px-5">
 
-            {/* Desktop nav */}
-            <nav className="hidden md:flex items-center gap-1">
-              {NAV_LINKS.map((link) => {
-                const isActive = activeSection === link.href.split("#")[1]
+            {/* Logo */}
+            <BracketLogo onClick={() => setOpen(false)} />
+
+            {/* Desktop nav — centered via flex-1 */}
+            <nav className="hidden md:flex flex-1 items-center justify-center gap-0.5">
+              {NAV_LINKS.map((link, i) => {
+                const isActive = activeSection === link.section
                 return (
                   <a
                     key={link.href}
                     href={link.href}
                     className={cn(
-                      "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm transition-all duration-200",
-                      isActive
-                        ? "text-accent bg-accent/[0.08]"
-                        : "text-muted hover:text-foreground hover:bg-surface"
+                      "relative px-3 py-1.5 rounded-2xl text-sm transition-colors duration-150",
+                      isActive ? "text-foreground font-semibold" : "text-muted hover:text-foreground"
                     )}
-                    style={
-                      isActive
-                        ? { boxShadow: "0 0 14px hsl(213 90% 53% / 0.22)" }
-                        : undefined
-                    }
                   >
-                    <link.icon
-                      size={13}
-                      className={cn("shrink-0 transition-opacity duration-200", isActive ? "opacity-100" : "opacity-60")}
-                    />
-                      {NAV_LABELS[language][NAV_LINKS.indexOf(link)]}
-                    </a>
-                  )
-                })}
+                    {isActive && (
+                      <motion.span
+                        layoutId="nav-highlight"
+                        className="absolute inset-0 rounded-2xl bg-accent/[0.22] border border-accent/30"
+                        style={{ boxShadow: "0 0 10px -5px var(--color-accent)" }}
+                        transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                      />
+                    )}
+                    <span className="relative z-10">{NAV_LABELS[language][i]}</span>
+                  </a>
+                )
+              })}
             </nav>
 
-            <div className="flex items-center gap-3">
+            {/* Right — toggles + CV + hamburger */}
+            <div className="flex items-center gap-2 shrink-0">
               <LanguageToggle />
               <ThemeToggle />
               {/* Hamburger — mobile only */}
@@ -148,58 +132,67 @@ export function SiteHeader() {
                 aria-label={open ? "Close menu" : "Open menu"}
                 aria-expanded={open}
                 onClick={() => setOpen((v) => !v)}
-                className="md:hidden flex items-center justify-center w-8 h-8 rounded-md text-muted hover:text-foreground transition-colors"
+                className="md:hidden flex items-center justify-center w-8 h-8 rounded-lg text-muted hover:text-foreground hover:bg-surface transition-colors"
               >
-                {open ? <X size={18} /> : <Menu size={18} />}
+                {open ? <X size={16} /> : <Menu size={16} />}
               </button>
             </div>
+
           </div>
-        </Container>
+
+          {/* ── Mobile menu — drops inline from the pill ─────────────────── */}
+          <AnimatePresence initial={false}>
+            {open && (
+              <motion.div
+                key="mobile-nav"
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+                className="overflow-hidden md:hidden border-t border-border"
+              >
+                <nav className="flex flex-col px-4 py-3 gap-0.5">
+                  {NAV_LINKS.map((link, i) => {
+                    const isActive = activeSection === link.section
+                    return (
+                      <motion.a
+                        key={link.href}
+                        href={link.href}
+                        initial={{ opacity: 0, x: -6 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.14, delay: i * 0.03 }}
+                        onClick={() => setOpen(false)}
+                        className={cn(
+                          "relative px-3 py-2.5 rounded-2xl text-sm transition-colors duration-150",
+                          isActive ? "text-foreground font-semibold" : "text-muted hover:text-foreground"
+                        )}
+                      >
+                        {isActive && (
+                          <motion.span
+                            layoutId="mobile-nav-highlight"
+                            className="absolute inset-0 rounded-2xl bg-accent/[0.22] border border-accent/30"
+                            style={{ boxShadow: "0 0 10px -5px var(--color-accent)" }}
+                            transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                          />
+                        )}
+                        <span className="relative z-10">{NAV_LABELS[language][i]}</span>
+                      </motion.a>
+                    )
+                  })}
+                </nav>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        {/* Rounded bottom corners when mobile menu is open */}
+        {open && (
+          <div className="rounded-b-2xl border-x border-b border-border backdrop-blur-md -mt-px h-2 [background:hsl(220_12%_11%/0.88)]" />
+        )}
+        </div>{/* /max-w-6xl */}
       </header>
 
-      {/* Mobile menu */}
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            key="mobile-menu"
-            initial={{ opacity: 0, y: -6 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -6 }}
-            transition={{ duration: 0.18, ease: [0, 0, 0.2, 1] }}
-            className="fixed inset-x-0 top-14 z-40 md:hidden bg-background/95 backdrop-blur-lg border-b border-border"
-          >
-            <Container>
-              <nav className="flex flex-col py-6 gap-1">
-                {NAV_LINKS.map((link, i) => {
-                  const isActive = activeSection === link.href.split("#")[1]
-                  return (
-                    <motion.a
-                      key={link.href}
-                      href={link.href}
-                      initial={{ opacity: 0, x: -8 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.15, delay: i * 0.04 }}
-                      onClick={() => setOpen(false)}
-                      className={cn(
-                        "flex items-center gap-3 text-2xl font-medium tracking-tight py-3 border-b border-border last:border-0 transition-colors duration-150",
-                        isActive ? "text-accent" : "text-foreground hover:text-accent"
-                      )}
-                    >
-                      <link.icon
-                        size={20}
-                        className={cn("shrink-0", isActive ? "text-accent" : "text-accent/60")}
-                      />
-                      {NAV_LABELS[language][NAV_LINKS.indexOf(link)]}
-                    </motion.a>
-                  )
-                })}
-              </nav>
-            </Container>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Backdrop */}
+      {/* Mobile backdrop */}
       <AnimatePresence>
         {open && (
           <motion.div
@@ -208,7 +201,7 @@ export function SiteHeader() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-30 md:hidden bg-background/40 backdrop-blur-[2px]"
+            className="fixed inset-0 z-40 md:hidden bg-background/40 backdrop-blur-[2px]"
             onClick={() => setOpen(false)}
           />
         )}

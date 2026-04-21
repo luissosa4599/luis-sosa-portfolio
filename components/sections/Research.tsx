@@ -239,7 +239,7 @@ export function Research() {
   if (!entry) return null
 
   return (
-    <section id="research" className="relative flex items-center min-h-[90svh] overflow-hidden">
+    <section id="research" className="relative flex items-center min-h-[90svh] overflow-hidden scroll-mt-20">
 
       {/* Particle field — full section */}
       <div

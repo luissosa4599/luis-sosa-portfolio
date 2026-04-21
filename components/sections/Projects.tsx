@@ -131,7 +131,7 @@ export function Projects() {
   const projects = getProjects(language)
 
   return (
-    <section id="work" className="py-24 md:py-32">
+    <section id="work" className="py-24 md:py-32 scroll-mt-20">
       <Container size="md">
         <FadeIn>
           <SectionLabel>{language === "es" ? "Trabajo" : "Work"}</SectionLabel>

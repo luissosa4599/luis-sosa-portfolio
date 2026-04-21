@@ -34,7 +34,7 @@ export function About() {
   }[language]
 
   return (
-    <section id="about" className="border-y border-border py-14">
+    <section id="about" className="border-y border-border py-14 scroll-mt-20">
       <Container>
         <FadeIn>
           <div className="flex flex-col sm:flex-row items-start gap-6">

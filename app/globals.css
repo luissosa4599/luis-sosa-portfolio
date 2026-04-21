@@ -11,9 +11,9 @@
   --font-mono: var(--font-geist-mono);
 
   /* Blue / Indigo accent */
-  --color-accent:      hsl(213 90% 53%);
-  --color-accent-glow: hsl(213 100% 70%);
-  --color-accent-deep: hsl(213 85% 35%);
+  --color-accent:      hsl(213 60% 50%);
+  --color-accent-glow: hsl(213 70% 65%);
+  --color-accent-deep: hsl(213 55% 32%);
 
   /* Neutral scale (shared dark/light) */
   --color-background:    var(--background);
@@ -38,8 +38,8 @@
 
 :root {
   --background:    hsl(220 14% 6%);
-  --surface:       hsl(220 12% 10%);
-  --surface-2:     hsl(220 11% 13%);
+  --surface:       hsl(220 12% 17%);
+  --surface-2:     hsl(220 11% 22%);
   --border-color:  hsl(0 0% 100% / 0.06);
   --border-strong: hsl(0 0% 100% / 0.10);
   --foreground:    hsl(0 0% 97%);
