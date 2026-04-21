@@ -16,11 +16,11 @@ const NAV_LABELS = {
 } as const
 
 const NAV_LINKS = [
-  { href: "#hero", icon: House },
-  { href: "#work", icon: Briefcase },
-  { href: "#research", icon: BookOpen },
-  { href: "#approach", icon: Compass },
-  { href: "#contact", icon: Mail },
+  { href: "/#hero", icon: House },
+  { href: "/#work", icon: Briefcase },
+  { href: "/#research", icon: BookOpen },
+  { href: "/#approach", icon: Compass },
+  { href: "/#contact", icon: Mail },
 ] as const
 
 function BracketLogo({ onClick }: { onClick?: () => void }) {
@@ -59,7 +59,7 @@ export function SiteHeader() {
 
   // Scroll border + active section tracking
   useEffect(() => {
-    const sectionIds = NAV_LINKS.map((l) => l.href.slice(1))
+    const sectionIds = NAV_LINKS.map((l) => l.href.split("#")[1])
 
     const update = () => {
       setScrolled(window.scrollY > 16)
@@ -112,7 +112,7 @@ export function SiteHeader() {
             {/* Desktop nav */}
             <nav className="hidden md:flex items-center gap-1">
               {NAV_LINKS.map((link) => {
-                const isActive = activeSection === link.href.slice(1)
+                const isActive = activeSection === link.href.split("#")[1]
                 return (
                   <a
                     key={link.href}
@@ -171,7 +171,7 @@ export function SiteHeader() {
             <Container>
               <nav className="flex flex-col py-6 gap-1">
                 {NAV_LINKS.map((link, i) => {
-                  const isActive = activeSection === link.href.slice(1)
+                  const isActive = activeSection === link.href.split("#")[1]
                   return (
                     <motion.a
                       key={link.href}

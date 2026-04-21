@@ -15,7 +15,7 @@ const HEADLINE: Record<
   en: [
     { text: "Frontend" },
     { text: "engineer" },
-    { text: "for", break: true },
+    { text: "for" },
     { text: "dashboards", accent: true },
     { text: "&" },
     { text: "data" },
@@ -24,7 +24,7 @@ const HEADLINE: Record<
   es: [
     { text: "Frontend" },
     { text: "engineer" },
-    { text: "para", break: true },
+    { text: "para" },
     { text: "dashboards", accent: true },
     { text: "y" },
     { text: "productos" },
@@ -50,7 +50,8 @@ export function Hero() {
         "Frontend engineer focused on dashboards, internal tools, and product UI for teams working with complex workflows and data.",
       projects: "See projects",
       contact: "Get in touch",
-      resume: "Request resume",
+      resume: "Download CV",
+      meta: "[X]+ years · Mexico City · CST (UTC-6) · Professional English",
     },
     es: {
       aria: "Frontend engineer para dashboards y productos de datos",
@@ -58,7 +59,8 @@ export function Hero() {
         "Frontend engineer enfocado en dashboards, herramientas internas y producto UI para equipos que trabajan con flujos complejos y datos.",
       projects: "Ver proyectos",
       contact: "Contactar",
-      resume: "Pedir CV",
+      resume: "Descargar CV",
+      meta: "[X]+ años · Ciudad de México · CST (UTC-6) · Inglés profesional",
     },
   }[language]
 
@@ -118,7 +120,7 @@ export function Hero() {
                   >
                     {word.text}
                   </motion.span>
-                  {word.break ? <br className="hidden sm:block" /> : " "}
+                  {" "}
                 </span>
               ))}
             </motion.h1>
@@ -131,6 +133,16 @@ export function Hero() {
               className="text-base text-muted leading-relaxed max-w-md"
             >
               {copy.subtitle}
+            </motion.p>
+
+            {/* Meta: years · location · English */}
+            <motion.p
+              variants={seq(0)}
+              initial="hidden"
+              animate="visible"
+              className="font-mono text-xs text-muted-2"
+            >
+              {copy.meta}
             </motion.p>
 
             <motion.ul

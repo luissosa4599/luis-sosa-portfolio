@@ -1,9 +1,11 @@
 import { SiteHeader } from "@/components/layout/SiteHeader"
 import { SiteFooter } from "@/components/layout/SiteFooter"
 import { Hero } from "@/components/sections/Hero"
+import { About } from "@/components/sections/About"
 import { Projects } from "@/components/sections/Projects"
 import { Research } from "@/components/sections/Research"
 import { Approach } from "@/components/sections/Approach"
+import { Testimonials } from "@/components/sections/Testimonials"
 import { Contact } from "@/components/sections/Contact"
 import { SectionProgress } from "@/components/primitives/SectionProgress"
 
@@ -20,9 +22,11 @@ export default function Home() {
       <SectionProgress />
       <main className="relative z-10">
         <Hero />
+        <About />
         <Projects />
         <Research />
         <Approach />
+        <Testimonials />
         <Contact />
       </main>
       <SiteFooter />

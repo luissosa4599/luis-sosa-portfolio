@@ -14,9 +14,22 @@ export interface ApproachPrinciple {
   body: string
 }
 
+export interface CaseStudyDecision {
+  title: string
+  body: string
+}
+
+export interface CaseStudyScreenshot {
+  src: string
+  srcLight?: string
+  alt: string
+  caption: string
+}
+
 export interface ProjectEntry {
   slug: string
   title: string
+  subtitle?: string
   description: string
   tags: string[]
   image?: string
@@ -24,6 +37,19 @@ export interface ProjectEntry {
   githubUrl?: string
   featured: boolean
   private: boolean
+  // Home card summary
   highlights?: string[]
+  // Case study meta (displayed as chips)
   role?: string
+  timeline?: string
+  teamSize?: string
+  // Case study content
+  context?: string
+  myRole?: string
+  keyDecisions?: CaseStudyDecision[]
+  screenshots?: CaseStudyScreenshot[]
+  challenges?: string
+  impact?: string[]
+  lessons?: string
+  loomUrl?: string
 }
