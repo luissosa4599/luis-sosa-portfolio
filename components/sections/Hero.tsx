@@ -1,6 +1,6 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { motion, type Variants } from "framer-motion"
 import { ArrowRight } from "lucide-react"
 import { heroSequence } from "@/lib/motion"
 import { useReducedMotion } from "@/hooks/useReducedMotion"
@@ -55,11 +55,15 @@ export function Hero() {
       ? { hidden: { opacity: 1, y: 0 }, visible: { opacity: 1, y: 0 } }
       : heroSequence(i)
 
-  const lineVariant = reduced
+  const lineVariant: Variants = reduced
     ? { hidden: { opacity: 1, y: 0 }, visible: { opacity: 1, y: 0 } }
     : {
         hidden: { opacity: 0, y: 24 },
-        visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] } },
+        visible: {
+          opacity: 1,
+          y: 0,
+          transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] as const },
+        },
       }
 
   const headlineContainer = reduced
@@ -72,7 +76,7 @@ export function Hero() {
   return (
     <section
       id="hero"
-      className="relative flex items-center min-h-svh pt-14 overflow-hidden"
+      className="relative flex items-center min-h-svh pt-20 overflow-hidden"
     >
       {/* Ambient glow — top-right */}
       <div
