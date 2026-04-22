@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, type ReactNode } from "react"
-import { motion } from "framer-motion"
+import { useRef, useState, type ReactNode } from "react"
+import { motion, useInView } from "framer-motion"
 import { Eye, ScanFace, Award, Search, Copy, Check } from "lucide-react"
 import { Container } from "@/components/layout/Container"
 import { SectionLabel } from "@/components/primitives/SectionLabel"
@@ -9,6 +9,7 @@ import { AccentLink } from "@/components/primitives/AccentLink"
 import { ScrollReveal } from "@/components/primitives/ScrollReveal"
 import { getResearch } from "@/lib/data/research"
 import { useReducedMotion } from "@/hooks/useReducedMotion"
+import { usePageReady } from "@/lib/page-ready"
 import { heroSequence } from "@/lib/motion"
 import { useLanguage } from "@/lib/i18n"
 import type { ResearchEntry } from "@/lib/types"
@@ -155,6 +156,27 @@ function CiteButton({ entry }: { entry: ResearchEntry }) {
   )
 }
 
+// ─── Detection circle reveal wrapper ──────────────────────────────────────────
+// Uses direct animate object values (not variant name strings) so Framer Motion
+// does NOT propagate them to descendants — this prevents killing the arcs' own
+// rotate animations, which would happen with string-based variant propagation.
+function DetectionCircleReveal({ reduced }: { reduced: boolean }) {
+  const ref = useRef<HTMLDivElement>(null)
+  const ready = usePageReady()
+  const inView = useInView(ref, { once: true, margin: "0px" })
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, scale: 0.75 }}
+      animate={inView && ready ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.75 }}
+      transition={{ duration: 0.7, ease: "easeOut", delay: 0.25 }}
+    >
+      <DetectionCircle reduced={reduced} />
+    </motion.div>
+  )
+}
+
 // ─── Main section ──────────────────────────────────────────────────────────────
 
 const seq = (i: number, reduced: boolean) =>
@@ -264,12 +286,7 @@ export function Research() {
               <Badge icon={<ScanFace size={22} />} wrapperStyle={{ bottom: "9%", right: "24%" }} />
 
               {/* Detection circle — centered */}
-              <ScrollReveal
-                variants={{ hidden: { opacity: 0, scale: 0.75 }, visible: { opacity: 1, scale: 1 } }}
-                transition={{ duration: 0.7, ease: "easeOut", delay: 0.25 }}
-              >
-                <DetectionCircle reduced={reduced} />
-              </ScrollReveal>
+              <DetectionCircleReveal reduced={reduced} />
             </div>
           </div>
 
