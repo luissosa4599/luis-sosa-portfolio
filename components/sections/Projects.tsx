@@ -2,10 +2,10 @@
 
 import Link from "next/link"
 import { ArrowUpRight } from "lucide-react"
-import { motion } from "framer-motion"
 import { Container } from "@/components/layout/Container"
 import { SectionLabel } from "@/components/primitives/SectionLabel"
 import { FadeIn } from "@/components/primitives/FadeIn"
+import { ScrollReveal } from "@/components/primitives/ScrollReveal"
 import { getProjects } from "@/lib/data/projects"
 import { useLanguage } from "@/lib/i18n"
 import { cardReveal } from "@/lib/motion"
@@ -188,16 +188,13 @@ export function Projects() {
 
         <div className="grid md:grid-cols-2 gap-6">
           {projects.map((project, i) => (
-            <motion.div
+            <ScrollReveal
               key={project.slug}
               variants={cardReveal}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
             >
               <ProjectCard project={project} />
-            </motion.div>
+            </ScrollReveal>
           ))}
         </div>
       </Container>

@@ -1,10 +1,10 @@
 "use client"
 
 import { FadeIn } from "@/components/primitives/FadeIn"
+import { ScrollReveal } from "@/components/primitives/ScrollReveal"
 import { Container } from "@/components/layout/Container"
 import { useLanguage } from "@/lib/i18n"
 import { cardReveal } from "@/lib/motion"
-import { motion } from "framer-motion"
 
 // ── Experience data ───────────────────────────────────────────────────────────
 type ExperienceItem = {
@@ -135,12 +135,9 @@ export function Experience() {
 
           <div className="flex flex-col gap-10">
             {EXPERIENCE.map((item, i) => (
-              <motion.div
+              <ScrollReveal
                 key={item.company}
                 variants={cardReveal}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
                 transition={{ delay: i * 0.09 }}
               >
                 <div className="flex gap-6">
@@ -218,7 +215,7 @@ export function Experience() {
                     )}
                   </div>
                 </div>
-              </motion.div>
+              </ScrollReveal>
             ))}
           </div>
         </div>

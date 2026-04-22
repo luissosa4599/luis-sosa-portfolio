@@ -1,10 +1,10 @@
 "use client"
 
-import { motion } from "framer-motion"
 import { Eye, Target, MessageSquare, Cpu } from "lucide-react"
 import { SectionWrapper } from "@/components/layout/SectionWrapper"
 import { SectionLabel } from "@/components/primitives/SectionLabel"
 import { FadeIn } from "@/components/primitives/FadeIn"
+import { ScrollReveal } from "@/components/primitives/ScrollReveal"
 import { getApproach } from "@/lib/data/approach"
 import { useLanguage } from "@/lib/i18n"
 
@@ -27,11 +27,10 @@ export function Approach() {
         {approach.map((principle, i) => {
           const Icon = ICONS[i]
           return (
-            <motion.article
+            <ScrollReveal
               key={principle.index}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              as="article"
+              variants={{ hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0 } }}
               transition={{ duration: 0.45, delay: i * 0.09, ease: "easeOut" }}
               className="group relative flex flex-col gap-6 rounded-2xl border border-border bg-surface p-7 md:p-8 overflow-hidden hover:border-accent/25 transition-colors duration-300"
             >
@@ -68,7 +67,7 @@ export function Approach() {
                 className="pointer-events-none absolute inset-x-0 bottom-0 h-px opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                 style={{ background: "linear-gradient(90deg, transparent, hsl(213 90% 53% / 0.45), transparent)" }}
               />
-            </motion.article>
+            </ScrollReveal>
           )
         })}
       </div>

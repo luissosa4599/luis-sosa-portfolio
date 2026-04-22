@@ -6,6 +6,7 @@ import { Eye, ScanFace, Award, Search, Copy, Check } from "lucide-react"
 import { Container } from "@/components/layout/Container"
 import { SectionLabel } from "@/components/primitives/SectionLabel"
 import { AccentLink } from "@/components/primitives/AccentLink"
+import { ScrollReveal } from "@/components/primitives/ScrollReveal"
 import { getResearch } from "@/lib/data/research"
 import { useReducedMotion } from "@/hooks/useReducedMotion"
 import { heroSequence } from "@/lib/motion"
@@ -175,27 +176,20 @@ export function Research() {
         <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
 
           {/* ── Left column — content ─────────────────────────────── */}
-          <div
+          {/* ScrollReveal owns the inView + ready gate; children cascade via variants */}
+          <ScrollReveal
+            variants={{ hidden: {}, visible: {} }}
             className="flex flex-col gap-6 rounded-2xl border border-border p-6 md:p-8 backdrop-blur-sm"
             style={{ backgroundColor: "var(--card-bg)" }}
           >
-
             {/* Section label */}
-            <motion.div
-              variants={seq(0, reduced)}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-            >
+            <motion.div variants={seq(0, reduced)}>
               <SectionLabel>{language === "es" ? "Research" : "Research"}</SectionLabel>
             </motion.div>
 
             {/* Heading */}
             <motion.h2
               variants={seq(1, reduced)}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
               className="text-[clamp(2.2rem,4.5vw,3.4rem)] font-semibold tracking-tight leading-[1.1] text-foreground"
             >
               {language === "es" ? "Publicaciones" : "Research Papers"}
@@ -204,9 +198,6 @@ export function Research() {
             {/* Paper title */}
             <motion.h3
               variants={seq(2, reduced)}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
               className="text-base md:text-lg font-medium text-muted leading-snug tracking-tight max-w-md"
             >
               {entry.title}
@@ -215,9 +206,6 @@ export function Research() {
             {/* Abstract */}
             <motion.p
               variants={seq(3, reduced)}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
               className="text-sm text-muted leading-relaxed max-w-md"
             >
               {entry.abstract}
@@ -225,9 +213,6 @@ export function Research() {
 
             <motion.p
               variants={seq(4, reduced)}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
               className="text-sm text-muted-2 leading-relaxed max-w-md"
             >
               {language === "es"
@@ -236,13 +221,7 @@ export function Research() {
             </motion.p>
 
             {/* Year + venue + tags */}
-            <motion.div
-              variants={seq(5, reduced)}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              className="flex flex-col gap-3"
-            >
+            <motion.div variants={seq(5, reduced)} className="flex flex-col gap-3">
               <div className="flex items-center gap-3 flex-wrap">
                 <span className="text-sm font-medium text-foreground tabular-nums">
                   {entry.year}
@@ -267,19 +246,13 @@ export function Research() {
             </motion.div>
 
             {/* CTA + Cite */}
-            <motion.div
-              variants={seq(6, reduced)}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              className="flex items-center gap-4 flex-wrap"
-            >
+            <motion.div variants={seq(6, reduced)} className="flex items-center gap-4 flex-wrap">
               <AccentLink href={entry.url} external>
                 {language === "es" ? "Ver publicación" : "View publication"}
               </AccentLink>
               <CiteButton entry={entry} />
             </motion.div>
-          </div>
+          </ScrollReveal>
 
           {/* ── Right column — detection visual ───────────────────── */}
           <div className="hidden md:flex items-center justify-center">
@@ -291,14 +264,12 @@ export function Research() {
               <Badge icon={<ScanFace size={22} />} wrapperStyle={{ bottom: "9%", right: "24%" }} />
 
               {/* Detection circle — centered */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.75 }}
-                whileInView={{ opacity: 1, scale: 1 }}
+              <ScrollReveal
+                variants={{ hidden: { opacity: 0, scale: 0.75 }, visible: { opacity: 1, scale: 1 } }}
                 transition={{ duration: 0.7, ease: "easeOut", delay: 0.25 }}
-                viewport={{ once: true }}
               >
                 <DetectionCircle reduced={reduced} />
-              </motion.div>
+              </ScrollReveal>
             </div>
           </div>
 
