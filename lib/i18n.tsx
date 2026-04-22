@@ -26,12 +26,10 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     const stored = window.localStorage.getItem(LANGUAGE_STORAGE_KEY)
     if (stored === "en" || stored === "es") {
       setLanguageState(stored)
-      return
     }
-    const browserLang = navigator.language || ""
-    if (browserLang.toLowerCase().startsWith("es")) {
-      setLanguageState("es")
-    }
+    // No auto-detection: navigator.language reflects OS region settings (e.g.
+    // es-419) even when the user's display language is English. Defaulting to
+    // English and letting the visitor choose via the toggle is more reliable.
   }, [])
 
   function setLanguage(nextLanguage: Language) {
