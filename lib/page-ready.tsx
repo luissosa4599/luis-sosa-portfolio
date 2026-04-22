@@ -5,12 +5,19 @@ import { createContext, useContext, useState, useEffect, type ReactNode } from "
 // Default true so any component outside PageReveal animates normally
 const PageReadyContext = createContext(true)
 
+// Module-level flag: once ready fires for the first time, skip the delay on
+// any subsequent mount (e.g. after LanguageTransition remounts the tree).
+let hasBeenReady = false
+
 export function PageReadyProvider({ children }: { children: ReactNode }) {
-  const [ready, setReady] = useState(false)
+  const [ready, setReady] = useState(hasBeenReady)
 
   useEffect(() => {
-    // Overlay animation: 50ms delay + 500ms fade = 550ms total, +10ms buffer
-    const id = setTimeout(() => setReady(true), 560)
+    if (hasBeenReady) return
+    const id = setTimeout(() => {
+      hasBeenReady = true
+      setReady(true)
+    }, 560)
     return () => clearTimeout(id)
   }, [])
 

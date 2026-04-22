@@ -40,7 +40,7 @@ export function FadeIn({
   const ref = useRef<HTMLDivElement>(null)
   const reduced = useReducedMotion()
   const ready = usePageReady()
-  const inView = useInView(ref, { once: true, margin: "-80px" })
+  const inView = useInView(ref, { once: true, margin: "0px" })
   const selected = variantMap[direction]
 
   const resolvedVariants: Variants = reduced

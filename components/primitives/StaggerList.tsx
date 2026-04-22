@@ -28,7 +28,7 @@ export function StaggerList({
   const ref = useRef<any>(null)
   const reduced = useReducedMotion()
   const ready = usePageReady()
-  const inView = useInView(ref, { once: true, margin: "-80px" })
+  const inView = useInView(ref, { once: true, margin: "0px" })
   const MotionTag = motion[Tag]
 
   if (reduced) {
