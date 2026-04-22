@@ -1,5 +1,6 @@
 "use client"
 
+import { useRef } from "react"
 import type { SimpleIcon } from "simple-icons"
 import {
   siVuedotjs, siNuxt, siReact, siAngular, siNextdotjs,
@@ -8,11 +9,12 @@ import {
   siDocker, siMysql, siSqlite, siLinux, siGooglecloud,
   siGit, siGithub, siPostman,
 } from "simple-icons"
-import { motion, type Variants } from "framer-motion"
+import { motion, useInView, type Variants } from "framer-motion"
 import { cn } from "@/lib/utils"
 import { FadeIn } from "@/components/primitives/FadeIn"
 import { Container } from "@/components/layout/Container"
 import { useLanguage } from "@/lib/i18n"
+import { usePageReady } from "@/lib/page-ready"
 
 // ── Animation variants ───────────────────────────────────────────────────────
 
@@ -130,9 +132,57 @@ const SKILL_GROUPS: SkillGroup[] = [
   },
 ]
 
+// ── Skill group item — own ref so useInView works inside a map ────────────────
+type Language = "en" | "es"
+
+function SkillGroupItem({
+  group,
+  language,
+  ready,
+}: {
+  group: SkillGroup
+  language: Language
+  ready: boolean
+}) {
+  const ref = useRef<HTMLDivElement>(null)
+  const inView = useInView(ref, { once: true, margin: "0px" })
+
+  return (
+    <motion.div
+      ref={ref}
+      variants={groupVariant}
+      initial="hidden"
+      animate={inView && ready ? "visible" : "hidden"}
+      className="w-full flex flex-col gap-4"
+    >
+      <motion.span
+        variants={labelVariant}
+        className="font-mono text-xs uppercase tracking-widest text-muted-2"
+      >
+        {group.category[language]}
+      </motion.span>
+
+      <motion.div variants={pillsRowVariant} className="flex flex-wrap gap-2.5">
+        {group.items.map(({ label, icon }) => (
+          <motion.span
+            key={label}
+            variants={pillVariant}
+            className="inline-flex items-center gap-2 rounded-lg border border-border px-3 py-1.5 text-sm font-mono text-muted hover:text-foreground hover:border-border-strong transition-colors duration-150 backdrop-blur-sm"
+            style={{ backgroundColor: "var(--badge-bg)" }}
+          >
+            {icon && <SkillIcon icon={icon} />}
+            {label}
+          </motion.span>
+        ))}
+      </motion.div>
+    </motion.div>
+  )
+}
+
 // ── Section ──────────────────────────────────────────────────────────────────
 export function Skills() {
   const { language } = useLanguage()
+  const ready = usePageReady()
 
   const copy = {
     en: {
@@ -148,7 +198,6 @@ export function Skills() {
   return (
     <section id="skills" className="py-24 md:py-32 scroll-mt-20">
       <Container size="md">
-        {/* Heading */}
         <FadeIn>
           <div className="mb-12">
             <h2 className="text-3xl font-semibold tracking-tight text-foreground">
@@ -158,40 +207,14 @@ export function Skills() {
           </div>
         </FadeIn>
 
-        {/* Skill groups */}
         <div className="flex flex-col gap-8">
           {SKILL_GROUPS.map((group) => (
-            <motion.div
+            <SkillGroupItem
               key={group.category.en}
-              variants={groupVariant}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-60px" }}
-              className="w-full flex flex-col gap-4"
-            >
-              {/* Category label */}
-              <motion.span
-                variants={labelVariant}
-                className="font-mono text-xs uppercase tracking-widest text-muted-2"
-              >
-                {group.category[language]}
-              </motion.span>
-
-              {/* Pills — nested stagger */}
-              <motion.div variants={pillsRowVariant} className="flex flex-wrap gap-2.5">
-                {group.items.map(({ label, icon }) => (
-                  <motion.span
-                    key={label}
-                    variants={pillVariant}
-                    className="inline-flex items-center gap-2 rounded-lg border border-border px-3 py-1.5 text-sm font-mono text-muted hover:text-foreground hover:border-border-strong transition-colors duration-150 backdrop-blur-sm"
-                    style={{ backgroundColor: "var(--badge-bg)" }}
-                  >
-                    {icon && <SkillIcon icon={icon} />}
-                    {label}
-                  </motion.span>
-                ))}
-              </motion.div>
-            </motion.div>
+              group={group}
+              language={language}
+              ready={ready}
+            />
           ))}
         </div>
       </Container>
