@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from "framer-motion"
 import { Menu, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useLanguage } from "@/lib/i18n"
+import { useMounted } from "@/hooks/useMounted"
 import { ThemeToggle } from "@/components/primitives/ThemeToggle"
 import { LanguageToggle } from "@/components/primitives/LanguageToggle"
 
@@ -41,6 +42,7 @@ function BracketLogo({ onClick }: { onClick?: () => void }) {
 // ── Main export ───────────────────────────────────────────────────────────────
 export function SiteHeader() {
   const { language } = useLanguage()
+  const mounted = useMounted()
   const [open, setOpen] = useState(false)
   const [activeSection, setActiveSection] = useState("hero")
 
@@ -81,14 +83,19 @@ export function SiteHeader() {
   return (
     <>
       {/* ── Floating pill ─────────────────────────────────────────────────── */}
-      <header className="fixed top-4 inset-x-0 z-50 px-4 md:px-6">
+      <motion.header
+        className="fixed top-4 inset-x-0 z-50 px-4 md:px-6"
+        initial={{ opacity: 0, y: -28 }}
+        animate={mounted ? { opacity: 1, y: 0 } : { opacity: 0, y: -28 }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
+      >
         <div className="max-w-6xl mx-auto">
         <div
           className={cn(
-            "rounded-2xl border border-border shadow-lg [background:hsl(220_12%_11%/0.88)] backdrop-blur-md",
-            "transition-shadow duration-300",
+            "rounded-2xl border border-border shadow-lg backdrop-blur-md transition-shadow duration-300",
             open && "rounded-b-none border-b-0"
           )}
+          style={{ background: "var(--nav-bg)" }}
         >
           <div className="flex h-12 items-center justify-between px-4 md:px-5">
 
@@ -111,8 +118,12 @@ export function SiteHeader() {
                     {isActive && (
                       <motion.span
                         layoutId="nav-highlight"
-                        className="absolute inset-0 rounded-2xl bg-accent/[0.22] border border-accent/30"
-                        style={{ boxShadow: "0 0 10px -5px var(--color-accent)" }}
+                        className="absolute inset-0 rounded-2xl"
+                        style={{
+                          background: "var(--nav-active-bg)",
+                          border: "1.5px solid var(--color-accent)",
+                          boxShadow: "var(--nav-active-shadow)",
+                        }}
                         transition={{ type: "spring", stiffness: 380, damping: 32 }}
                       />
                     )}
@@ -187,10 +198,10 @@ export function SiteHeader() {
 
         {/* Rounded bottom corners when mobile menu is open */}
         {open && (
-          <div className="rounded-b-2xl border-x border-b border-border backdrop-blur-md -mt-px h-2 [background:hsl(220_12%_11%/0.88)]" />
+          <div className="rounded-b-2xl border-x border-b border-border backdrop-blur-md -mt-px h-2" style={{ background: "var(--nav-bg)" }} />
         )}
         </div>{/* /max-w-6xl */}
-      </header>
+      </motion.header>
 
       {/* Mobile backdrop */}
       <AnimatePresence>

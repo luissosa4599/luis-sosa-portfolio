@@ -38,13 +38,24 @@
 
 :root {
   --background:    hsl(220 14% 6%);
-  --surface:       hsl(220 12% 17%);
-  --surface-2:     hsl(220 11% 22%);
+  --surface:       hsl(220 12% 11%);
+  --surface-2:     hsl(220 11% 15%);
   --border-color:  hsl(0 0% 100% / 0.06);
   --border-strong: hsl(0 0% 100% / 0.10);
   --foreground:    hsl(0 0% 97%);
   --muted:         hsl(220 8% 65%);
   --muted-2:       hsl(220 6% 45%);
+  --nav-bg:              hsl(220 12% 11% / 0.92);
+  --nav-active-bg:       radial-gradient(ellipse at center, hsl(213 70% 24%) 0%, hsl(213 65% 10%) 100%);
+  --nav-active-shadow:   0 0 14px -2px var(--color-accent), 0 0 4px -1px var(--color-accent);
+  /* ↓ Button / badge surface */
+  --btn-bg:              #1a1d23;
+  --btn-bg-hover:        #22262e;
+  --badge-bg:            #181a1d;
+  /* ↓ Card surface — semi-transparent so bg grid shows through */
+  --card-bg:             hsl(220 12% 11% / 0.22);
+  /* ↓ Dust particle color */
+  --dust-color:          hsl(0 0% 100%);
 }
 
 /* ─── Light mode ──────────────────────────────────────────────────────────── */
@@ -58,6 +69,14 @@
   --foreground:    hsl(220 20% 10%);
   --muted:         hsl(220 12% 38%);
   --muted-2:       hsl(220 10% 55%);
+  --nav-bg:              hsl(0 0% 98% / 0.88);
+  --nav-active-bg:       radial-gradient(ellipse at center, hsl(213 60% 88%) 0%, hsl(213 55% 95%) 100%);
+  --nav-active-shadow:   0 0 8px -3px var(--color-accent);
+  --btn-bg:              #e8eaf0;
+  --btn-bg-hover:        #d8dbe4;
+  --badge-bg:            #ecedf3;
+  --card-bg:             hsl(0 0% 100% / 0.22);
+  --dust-color:          hsl(220 20% 15%);
 }
 
 /* ─── Base styles ─────────────────────────────────────────────────────────── */
@@ -82,13 +101,42 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* ─── Research section — floating particle animation ─────────────────────── */
+/* ─── Page entrance overlay ───────────────────────────────────────────────── */
 
-@keyframes research-particle-drift {
-  0%   { transform: translateY(0px) rotate(0deg); opacity: 0; }
-  8%   { opacity: 1; }
-  92%  { opacity: 1; }
-  100% { transform: translateY(-420px) rotate(200deg); opacity: 0; }
+@keyframes overlay-out {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+/* ─── Dust particle animations — 4 variants for natural variation ────────── */
+
+@keyframes dust-float-a {
+  0%   { transform: translate(0px, 0px); }
+  30%  { transform: translate(9px, -48px); }
+  65%  { transform: translate(14px, -80px); }
+  100% { transform: translate(0px, 0px); }
+}
+
+@keyframes dust-float-b {
+  0%   { transform: translate(0px, 0px); }
+  35%  { transform: translate(-11px, -58px); }
+  70%  { transform: translate(-16px, -92px); }
+  100% { transform: translate(0px, 0px); }
+}
+
+@keyframes dust-float-c {
+  0%   { transform: translate(0px, 0px); }
+  25%  { transform: translate(7px, -36px); }
+  60%  { transform: translate(12px, -70px); }
+  80%  { transform: translate(4px, -82px); }
+  100% { transform: translate(0px, 0px); }
+}
+
+@keyframes dust-float-d {
+  0%   { transform: translate(0px, 0px); }
+  40%  { transform: translate(-8px, -44px); }
+  75%  { transform: translate(6px, -86px); }
+  100% { transform: translate(0px, 0px); }
 }
 
 /* ─── Dot-grid background ─────────────────────────────────────────────────── */

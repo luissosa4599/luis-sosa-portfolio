@@ -4,31 +4,28 @@ import { FadeIn } from "@/components/primitives/FadeIn"
 import { Container } from "@/components/layout/Container"
 import { useLanguage } from "@/lib/i18n"
 
-const PLACEHOLDER_COMPANIES = [
-  "[Empresa anterior A]",
-  "[Empresa anterior B]",
-]
+const PREVIOUS_COMPANIES = ["Cantilever", "Teleurban"]
 
 export function About() {
   const { language } = useLanguage()
 
   const copy = {
     en: {
-      role: "Frontend Engineer",
-      years: "[X]+ years shipping production software",
+      role: "Full Stack Developer",
+      years: "4+ years shipping production software",
       location: "Mexico City · CST (UTC-6)",
       english: "Professional English",
       availability: "Open to full-time remote",
-      bio: "[Placeholder: 2-3 sentences about your background, what you focus on, and what you're looking for. Keep it direct and professional — this is your business card, not a cover letter.]",
+      bio: "Full stack developer with 4+ years building production software. Focused on frontend — dashboards, internal tools, and data-heavy interfaces for teams with complex operational workflows. HCI researcher, published at HCI International 2025 (Springer Nature).",
       previously: "Previously at",
     },
     es: {
-      role: "Frontend Engineer",
-      years: "[X]+ años de software en producción",
+      role: "Full Stack Developer",
+      years: "4+ años de software en producción",
       location: "Ciudad de México · CST (UTC-6)",
       english: "Inglés profesional",
-      availability: "Disponible remoto full-time",
-      bio: "[Placeholder: 2-3 oraciones sobre tu background, en qué te especializas y qué estás buscando. Directo y profesional — esta es tu tarjeta de presentación.]",
+      availability: "Disponible para trabajo remoto",
+      bio: "Full stack developer con 4+ años construyendo software en producción. Me especializo en frontend: dashboards, herramientas internas e interfaces complejas para equipos con flujos de trabajo operativos. Investigador en HCI, publicado en HCI International 2025 (Springer Nature).",
       previously: "Anteriormente en",
     },
   }[language]
@@ -78,7 +75,7 @@ export function About() {
               {/* Previous companies */}
               <div className="flex flex-wrap items-center gap-2 mt-1">
                 <span className="text-xs text-muted-2">{copy.previously}:</span>
-                {PLACEHOLDER_COMPANIES.map((company) => (
+                {PREVIOUS_COMPANIES.map((company) => (
                   <span
                     key={company}
                     className="text-xs text-muted-2 border border-border rounded px-2 py-0.5"

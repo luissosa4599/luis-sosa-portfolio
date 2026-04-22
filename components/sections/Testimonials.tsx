@@ -40,7 +40,7 @@ export function Testimonials() {
           {language === "es" ? "Referencias" : "Testimonials"}
         </SectionLabel>
         <h2 className="mt-3 text-3xl md:text-4xl font-semibold tracking-tight text-foreground">
-          {language === "es" ? "Lo que dicen" : "What people say"}
+          {language === "es" ? "Lo que dicen de mi trabajo" : "What people say"}
         </h2>
       </FadeIn>
 

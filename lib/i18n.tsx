@@ -3,6 +3,7 @@
 import {
   createContext,
   useContext,
+  useEffect,
   useMemo,
   useState,
   type ReactNode,
@@ -17,19 +18,21 @@ interface LanguageContextValue {
 const LanguageContext = createContext<LanguageContextValue | null>(null)
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguageState] = useState<Language>(() => {
-    if (typeof window !== "undefined") {
-      const stored = window.localStorage.getItem(LANGUAGE_STORAGE_KEY)
-      if (stored === "en" || stored === "es") {
-        return stored
-      }
-      // Fall back to browser/system language
-      const browserLang = navigator.language || ""
-      return browserLang.toLowerCase().startsWith("es") ? "es" : "en"
-    }
+  // Always start with "en" — same on server and client — to avoid hydration
+  // mismatch. Read the real preference from localStorage after mount.
+  const [language, setLanguageState] = useState<Language>("en")
 
-    return "en"
-  })
+  useEffect(() => {
+    const stored = window.localStorage.getItem(LANGUAGE_STORAGE_KEY)
+    if (stored === "en" || stored === "es") {
+      setLanguageState(stored)
+      return
+    }
+    const browserLang = navigator.language || ""
+    if (browserLang.toLowerCase().startsWith("es")) {
+      setLanguageState("es")
+    }
+  }, [])
 
   function setLanguage(nextLanguage: Language) {
     setLanguageState(nextLanguage)

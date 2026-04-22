@@ -72,7 +72,7 @@ const LINK_ITEMS = [
   },
 ] as const
 
-const EMAIL = "luissosa4599@gmail.com"
+const EMAIL = "luis.sosa.4599@gmail.com"
 
 // ---------------------------------------------------------------------------
 // Shared class strings

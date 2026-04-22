@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef, useEffect, useState, type ReactNode } from "react"
+import { useState, type ReactNode } from "react"
 import { motion } from "framer-motion"
 import { Eye, ScanFace, Award, Search, Copy, Check } from "lucide-react"
 import { Container } from "@/components/layout/Container"
@@ -37,9 +37,7 @@ function DetectionCircle({ reduced }: { reduced: boolean }) {
         <motion.div
           key={i}
           className="absolute inset-0 rounded-full border border-accent/25"
-          animate={
-            reduced ? {} : { scale: [1, 1.35, 1.7], opacity: [0.35, 0.12, 0] }
-          }
+          animate={{ scale: [1, 1.35, 1.7], opacity: [0.35, 0.12, 0] }}
           transition={{ duration: 2.8, repeat: Infinity, delay: i * 0.9, ease: "easeOut" }}
         />
       ))}
@@ -69,122 +67,55 @@ function DetectionCircle({ reduced }: { reduced: boolean }) {
         <DogSilhouette className="relative w-40 h-40 md:w-52 md:h-52 text-accent/30" />
       </div>
 
-      {/* Spinning arc — inner ring, counter-clockwise */}
-      {!reduced && (
-        <motion.div
-          className="absolute inset-4 rounded-full pointer-events-none"
-          style={{
-            border: "1.5px solid transparent",
-            borderBottomColor: "hsl(213 90% 53% / 0.7)",
-            borderLeftColor: "hsl(213 90% 53% / 0.2)",
-          }}
-          animate={{ rotate: -360 }}
-          transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
-        />
-      )}
+      {/* Spinning arc — mid ring, counter-clockwise */}
+      <motion.div
+        className="absolute inset-4 rounded-full pointer-events-none z-10"
+        style={{
+          border: "2px solid transparent",
+          borderBottomColor: "hsl(213 90% 53% / 0.85)",
+          borderLeftColor: "hsl(213 90% 53% / 0.30)",
+        }}
+        animate={{ rotate: [0, -360] }}
+        transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
+      />
 
-      {/* Spinning arc — innermost, clockwise, slowest */}
-      {!reduced && (
-        <motion.div
-          className="absolute inset-10 rounded-full pointer-events-none"
-          style={{
-            border: "1px solid transparent",
-            borderTopColor: "hsl(213 90% 53% / 0.45)",
-            borderRightColor: "hsl(213 90% 53% / 0.12)",
-          }}
-          animate={{ rotate: 360 }}
-          transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-        />
-      )}
+      {/* Spinning arc — innermost, clockwise */}
+      <motion.div
+        className="absolute inset-8 rounded-full pointer-events-none z-10"
+        style={{
+          border: "1.5px solid transparent",
+          borderTopColor: "hsl(213 90% 53% / 0.70)",
+          borderRightColor: "hsl(213 90% 53% / 0.25)",
+        }}
+        animate={{ rotate: [0, 360] }}
+        transition={{ duration: 9, repeat: Infinity, ease: "linear" }}
+      />
     </div>
   )
 }
 
-// ─── Floating badge ────────────────────────────────────────────────────────────
+// ─── Static badge ─────────────────────────────────────────────────────────────
 
-function FloatingBadge({
+function Badge({
   icon,
-  delay = 0,
-  floatY = -6,
   wrapperStyle,
-  reduced,
 }: {
   icon: ReactNode
-  delay?: number
-  floatY?: number
   wrapperStyle?: React.CSSProperties
-  reduced: boolean
 }) {
   return (
-    <div className="absolute z-10" style={wrapperStyle}>
-      <motion.div
-        initial={{ opacity: 0, scale: 0.6 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.45, delay, ease: "easeOut" }}
-        viewport={{ once: true }}
+    <div className="absolute z-20" style={wrapperStyle}>
+      <div
+        className="w-14 h-14 rounded-full flex items-center justify-center backdrop-blur-sm text-accent/60"
+        style={{
+          backgroundColor: "hsl(213 90% 53% / 0.18)",
+          border: "1px solid hsl(213 90% 53% / 0.45)",
+        }}
       >
-        <motion.div
-          animate={reduced ? {} : { y: [0, floatY, 0] }}
-          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: delay + 0.6 }}
-          className="w-14 h-14 rounded-full flex items-center justify-center backdrop-blur-sm text-accent/50"
-          style={{
-            backgroundColor: "hsl(213 90% 53% / 0.22)",
-            border: "1px solid hsl(213 90% 53% / 0.40)",
-          }}
-        >
-          {icon}
-        </motion.div>
-      </motion.div>
+        {icon}
+      </div>
     </div>
   )
-}
-
-// ─── Particle field ────────────────────────────────────────────────────────────
-
-const SYMBOLS = [
-  "{", "}", "[", "]", "(", ")", "</>", "=",
-  "//", ";", "&&", "||", "=>",
-  "σ", "λ", "∇", "∑", "∂", "≈", "π", "∞",
-]
-
-function ParticleField({
-  containerRef,
-  reduced,
-}: {
-  containerRef: React.RefObject<HTMLDivElement | null>
-  reduced: boolean
-}) {
-  useEffect(() => {
-    if (reduced) return
-    const container = containerRef.current
-    if (!container) return
-
-    const created: HTMLElement[] = []
-
-    for (let i = 0; i < 30; i++) {
-      const el = document.createElement("span")
-      el.textContent = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)]
-      const opacity = (0.08 + Math.random() * 0.16).toFixed(2)
-      el.style.cssText = `
-        position: absolute;
-        left: ${Math.random() * 100}%;
-        bottom: -20px;
-        font-family: var(--font-mono, monospace);
-        font-size: ${11 + Math.random() * 8}px;
-        color: hsl(213 90% 53% / ${opacity});
-        pointer-events: none;
-        user-select: none;
-        animation: research-particle-drift ${10 + Math.random() * 12}s linear ${Math.random() * 15}s infinite;
-        will-change: transform, opacity;
-      `
-      container.appendChild(el)
-      created.push(el)
-    }
-
-    return () => created.forEach((el) => el.remove())
-  }, [containerRef, reduced])
-
-  return null
 }
 
 // ─── Cite button ──────────────────────────────────────────────────────────
@@ -233,7 +164,6 @@ const seq = (i: number, reduced: boolean) =>
 export function Research() {
   const { language } = useLanguage()
   const reduced = useReducedMotion()
-  const particlesRef = useRef<HTMLDivElement>(null)
 
   const entry = getResearch(language)[0]
   if (!entry) return null
@@ -241,39 +171,14 @@ export function Research() {
   return (
     <section id="research" className="relative flex items-center min-h-[90svh] overflow-hidden scroll-mt-20">
 
-      {/* Particle field — full section */}
-      <div
-        ref={particlesRef}
-        className="absolute inset-0 pointer-events-none"
-        aria-hidden
-      />
-      <ParticleField containerRef={particlesRef} reduced={reduced} />
-
-      {/* Ambient glow — top-left */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -top-40 -left-40 w-[600px] h-[600px] rounded-full"
-        style={{
-          background:
-            "radial-gradient(circle, hsl(213 100% 70% / 0.06) 0%, transparent 65%)",
-        }}
-      />
-
-      {/* Ambient glow — bottom-right */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -bottom-20 -right-20 w-[500px] h-[500px] rounded-full"
-        style={{
-          background:
-            "radial-gradient(circle, hsl(213 100% 70% / 0.05) 0%, transparent 65%)",
-        }}
-      />
-
       <Container className="w-full py-24">
         <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
 
           {/* ── Left column — content ─────────────────────────────── */}
-          <div className="flex flex-col gap-6">
+          <div
+            className="flex flex-col gap-6 rounded-2xl border border-border p-6 md:p-8 backdrop-blur-sm"
+            style={{ backgroundColor: "var(--card-bg)" }}
+          >
 
             {/* Section label */}
             <motion.div
@@ -380,23 +285,10 @@ export function Research() {
           <div className="hidden md:flex items-center justify-center">
             <div className="relative w-[480px] h-[520px] flex items-center justify-center">
 
-              {/* Badge 1: Eye — top, left of center */}
-              <FloatingBadge
-                icon={<Eye size={22} />}
-                delay={0.6}
-                floatY={-8}
-                reduced={reduced}
-                wrapperStyle={{ top: "9%", left: "26%" }}
-              />
-
-              {/* Badge 2: Search — right side, mid-high */}
-              <FloatingBadge
-                icon={<Search size={22} />}
-                delay={0.85}
-                floatY={-5}
-                reduced={reduced}
-                wrapperStyle={{ top: "30%", right: "3%" }}
-              />
+              <Badge icon={<Eye size={22} />}      wrapperStyle={{ top: "9%",  left: "26%" }} />
+              <Badge icon={<Search size={22} />}   wrapperStyle={{ top: "30%", right: "3%" }} />
+              <Badge icon={<Award size={22} />}    wrapperStyle={{ bottom: "26%", left: "4%" }} />
+              <Badge icon={<ScanFace size={22} />} wrapperStyle={{ bottom: "9%", right: "24%" }} />
 
               {/* Detection circle — centered */}
               <motion.div
@@ -407,24 +299,6 @@ export function Research() {
               >
                 <DetectionCircle reduced={reduced} />
               </motion.div>
-
-              {/* Badge 3: Award — left side, mid-low */}
-              <FloatingBadge
-                icon={<Award size={22} />}
-                delay={1.0}
-                floatY={-6}
-                reduced={reduced}
-                wrapperStyle={{ bottom: "26%", left: "4%" }}
-              />
-
-              {/* Badge 4: ScanFace — bottom, right of center */}
-              <FloatingBadge
-                icon={<ScanFace size={22} />}
-                delay={0.7}
-                floatY={-4}
-                reduced={reduced}
-                wrapperStyle={{ bottom: "9%", right: "24%" }}
-              />
             </div>
           </div>
 

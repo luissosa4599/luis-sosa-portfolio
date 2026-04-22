@@ -38,12 +38,12 @@ const approachByLanguage: Record<Language, ApproachPrinciple[]> = {
     {
       index: "03",
       heading: "Comunicación directa",
-      body: "Levanto bloqueos temprano, explico tradeoffs técnicos con claridad y mantengo alineados a los stakeholders. Los proyectos rápidos suelen depender más de buena comunicación que de código heroico.",
+      body: "Identifico y escalo los bloqueos temprano, explico tradeoffs técnicos con claridad y mantengo alineados a los involucrados. Los proyectos exitosos suelen depender más de buena comunicación que de código heroico.",
     },
     {
       index: "04",
       heading: "Visión de sistema",
-      body: "Un buen frontend depende de entender el sistema detrás. Me muevo cómodo entre APIs, flujo de datos y restricciones de implementación para que la UI aguante en producción.",
+      body: "Un buen frontend depende de entender el sistema que lo sostiene. Trabajo con comodidad entre APIs, flujo de datos y restricciones de implementación para que la UI se mantenga sólida en producción.",
     },
   ],
 }

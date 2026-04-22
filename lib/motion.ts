@@ -11,33 +11,44 @@ export const transition = {
 
 // ─── Reveal variants ─────────────────────────────────────────────────────────
 
-/** Standard scroll-reveal: fade + 16px vertical lift */
+/** Standard scroll-reveal: fade + lift. Matches hero style, faster duration. */
 export const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 16 },
+  hidden: { opacity: 0, y: 32 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.5, ease: transition.easeOut },
+    transition: { duration: 0.45, ease: transition.easeOut },
+  },
+}
+
+/** Card reveal — adds a subtle scale for a more tactile entrance */
+export const cardReveal: Variants = {
+  hidden: { opacity: 0, y: 28, scale: 0.97 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { duration: 0.45, ease: transition.easeOut },
   },
 }
 
 /** Reveal from left — used for text columns */
 export const fadeLeft: Variants = {
-  hidden: { opacity: 0, x: -20 },
+  hidden: { opacity: 0, x: -28 },
   visible: {
     opacity: 1,
     x: 0,
-    transition: { duration: 0.5, ease: transition.easeOut },
+    transition: { duration: 0.45, ease: transition.easeOut },
   },
 }
 
 /** Reveal from right — used for image columns */
 export const fadeRight: Variants = {
-  hidden: { opacity: 0, x: 20 },
+  hidden: { opacity: 0, x: 28 },
   visible: {
     opacity: 1,
     x: 0,
-    transition: { duration: 0.5, ease: transition.easeOut },
+    transition: { duration: 0.45, ease: transition.easeOut },
   },
 }
 
@@ -46,7 +57,7 @@ export const fadeIn: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { duration: 0.4, ease: transition.ease },
+    transition: { duration: 0.35, ease: transition.ease },
   },
 }
 
@@ -115,9 +126,9 @@ export const heroSequence = (index: number): Variants => ({
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.5,
+      duration: 0.55,
       ease: transition.easeOut,
-      delay: 0.3 + index * 0.1,
+      delay: 0.55 + index * 0.12,
     },
   },
 })

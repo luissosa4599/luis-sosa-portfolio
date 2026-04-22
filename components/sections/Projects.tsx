@@ -8,6 +8,7 @@ import { SectionLabel } from "@/components/primitives/SectionLabel"
 import { FadeIn } from "@/components/primitives/FadeIn"
 import { getProjects } from "@/lib/data/projects"
 import { useLanguage } from "@/lib/i18n"
+import { cardReveal } from "@/lib/motion"
 import type { ProjectEntry } from "@/lib/types"
 
 // ─── Visuals ──────────────────────────────────────────────────────────────────
@@ -36,27 +37,74 @@ function DashboardVisual() {
 function SalvaLomitosVisual() {
   return (
     <div
-      className="w-full h-full flex items-center justify-center relative overflow-hidden"
+      className="w-full h-full flex flex-col items-center justify-center gap-4 relative overflow-hidden px-6"
       style={{
         background:
-          "linear-gradient(135deg, hsl(213 90% 53% / 0.12) 0%, hsl(250 80% 55% / 0.08) 100%)",
+          "linear-gradient(135deg, hsl(213 90% 53% / 0.10) 0%, hsl(250 80% 55% / 0.06) 100%)",
       }}
     >
+      {/* Subtle grid */}
       <div
         className="absolute inset-0"
+        aria-hidden
         style={{
           backgroundImage:
-            "linear-gradient(hsl(213 90% 53% / 0.06) 1px, transparent 1px), linear-gradient(90deg, hsl(213 90% 53% / 0.06) 1px, transparent 1px)",
+            "linear-gradient(hsl(213 90% 53% / 0.05) 1px, transparent 1px), linear-gradient(90deg, hsl(213 90% 53% / 0.05) 1px, transparent 1px)",
           backgroundSize: "24px 24px",
         }}
       />
-      <svg viewBox="0 0 80 80" className="w-20 h-20 relative z-10" aria-hidden fill="none">
-        <ellipse cx="24" cy="18" rx="7" ry="8" fill="hsl(213 90% 53% / 0.35)" />
-        <ellipse cx="42" cy="13" rx="7" ry="8" fill="hsl(213 90% 53% / 0.35)" />
-        <ellipse cx="59" cy="18" rx="7" ry="8" fill="hsl(213 90% 53% / 0.35)" />
-        <ellipse cx="14" cy="33" rx="6" ry="7" fill="hsl(213 90% 53% / 0.35)" />
-        <ellipse cx="42" cy="52" rx="20" ry="18" fill="hsl(213 90% 53% / 0.45)" />
-      </svg>
+
+      {/* Publication badge */}
+      <div className="relative z-10 flex flex-col items-center gap-3 text-center">
+        <span
+          className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-mono border"
+          style={{
+            borderColor: "hsl(213 90% 53% / 0.35)",
+            background: "hsl(213 90% 53% / 0.10)",
+            color: "hsl(213 90% 70%)",
+          }}
+        >
+          HCI International 2025 · Springer Nature
+        </span>
+
+        {/* Stats row */}
+        <div className="flex items-center gap-5">
+          {[
+            { value: "92%", label: "accuracy" },
+            { value: "60+", label: "dogs" },
+            { value: "8mo", label: "research" },
+          ].map(({ value, label }) => (
+            <div key={label} className="flex flex-col items-center gap-0.5">
+              <span
+                className="text-2xl font-semibold tabular-nums"
+                style={{ color: "hsl(213 90% 65%)" }}
+              >
+                {value}
+              </span>
+              <span className="text-[10px] font-mono uppercase tracking-widest text-muted-2">
+                {label}
+              </span>
+            </div>
+          ))}
+        </div>
+
+        {/* Tags */}
+        <div className="flex flex-wrap justify-center gap-1.5 max-w-[220px]">
+          {["Computer Vision", "React Native", "OpenCV", "Python"].map((t) => (
+            <span
+              key={t}
+              className="text-[10px] font-mono px-2 py-0.5 rounded border"
+              style={{
+                borderColor: "hsl(213 90% 53% / 0.25)",
+                background: "hsl(213 90% 53% / 0.07)",
+                color: "hsl(213 90% 70% / 0.8)",
+              }}
+            >
+              {t}
+            </span>
+          ))}
+        </div>
+      </div>
     </div>
   )
 }
@@ -75,12 +123,13 @@ function ProjectCard({ project }: { project: ProjectEntry }) {
   return (
     <Link
       href={`/work/${project.slug}`}
-      className="group flex flex-col rounded-2xl overflow-hidden bg-surface border border-border hover:border-accent/30 transition-all duration-300 h-full"
+      className="group flex flex-col rounded-2xl overflow-hidden border border-border hover:border-accent/30 transition-all duration-300 h-full backdrop-blur-sm"
+      style={{ backgroundColor: "var(--card-bg)" }}
     >
       {/* Visual */}
       <div className="relative overflow-hidden" style={{ height: 220 }}>
         <ProjectVisual slug={project.slug} />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-surface/70 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[var(--card-bg)] pointer-events-none" />
         {project.featured && (
           <span className="absolute top-3 right-3 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-accent/10 text-accent border border-accent/20">
             {language === "es" ? "Destacado" : "Featured"}
@@ -141,10 +190,11 @@ export function Projects() {
           {projects.map((project, i) => (
             <motion.div
               key={project.slug}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              variants={cardReveal}
+              initial="hidden"
+              whileInView="visible"
               viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: i * 0.1, ease: "easeOut" }}
+              transition={{ delay: i * 0.1 }}
             >
               <ProjectCard project={project} />
             </motion.div>

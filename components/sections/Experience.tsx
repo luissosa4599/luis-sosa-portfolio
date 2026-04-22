@@ -3,6 +3,8 @@
 import { FadeIn } from "@/components/primitives/FadeIn"
 import { Container } from "@/components/layout/Container"
 import { useLanguage } from "@/lib/i18n"
+import { cardReveal } from "@/lib/motion"
+import { motion } from "framer-motion"
 
 // ── Experience data ───────────────────────────────────────────────────────────
 type ExperienceItem = {
@@ -30,8 +32,8 @@ const EXPERIENCE: ExperienceItem[] = [
       ],
       es: [
         "Entregué proyectos multidisciplinarios bajo deadlines ajustados y ciclos de revisión estructurados",
-        "Desarrollo frontend en Vue.js y Nuxt en entorno de equipo colaborativo",
-        "Apliqué buenas prácticas de Git y flujos con servidores remotos para entregas confiables",
+        "Desarrollé el frontend con Vue.js y Nuxt en un entorno de equipo colaborativo",
+        "Apliqué buenas prácticas de Git y flujos de trabajo en servidor remoto para entregas consistentes",
       ],
     },
     stack: ["Vue", "Nuxt", "TypeScript", "Git"],
@@ -102,11 +104,11 @@ export function Experience() {
   const copy = {
     en: {
       title: "Experience",
-      subtitle: "Five years shipping production software — from internship to full-stack lead.",
+      subtitle: "Four years shipping production software — from internship to full-stack lead.",
     },
     es: {
       title: "Experiencia",
-      subtitle: "Cinco años enviando software a producción — de prácticas a full-stack.",
+      subtitle: "Cuatro años construyendo software en producción — de pasante a full-stack.",
     },
   }[language]
 
@@ -133,7 +135,14 @@ export function Experience() {
 
           <div className="flex flex-col gap-10">
             {EXPERIENCE.map((item, i) => (
-              <FadeIn key={item.company} delay={i * 0.08}>
+              <motion.div
+                key={item.company}
+                variants={cardReveal}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.09 }}
+              >
                 <div className="flex gap-6">
                   {/* Dot */}
                   <div className="relative z-10 shrink-0 mt-1.5">
@@ -146,7 +155,10 @@ export function Experience() {
                   </div>
 
                   {/* Card */}
-                  <div className="flex-1 rounded-xl border border-border bg-surface p-5 sm:p-6 -mt-px transition-colors duration-200 hover:border-accent/40 hover:bg-surface-2">
+                  <div
+                    className="flex-1 rounded-xl border border-border p-5 sm:p-6 -mt-px transition-all duration-200 hover:border-accent/40 backdrop-blur-sm"
+                    style={{ backgroundColor: "var(--card-bg)" }}
+                  >
 
                     {/* Top row: role + date */}
                     <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-1 mb-1">
@@ -206,7 +218,7 @@ export function Experience() {
                     )}
                   </div>
                 </div>
-              </FadeIn>
+              </motion.div>
             ))}
           </div>
         </div>

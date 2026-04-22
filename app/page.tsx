@@ -10,16 +10,20 @@ import { Approach } from "@/components/sections/Approach"
 import { Testimonials } from "@/components/sections/Testimonials"
 import { Contact } from "@/components/sections/Contact"
 import { SectionProgress } from "@/components/primitives/SectionProgress"
+import { DustField } from "@/components/primitives/DustField"
+import { PageReveal } from "@/components/primitives/PageReveal"
+import { BackToTop } from "@/components/primitives/BackToTop"
 
 export default function Home() {
   return (
-    <>
+    <PageReveal>
       {/* Dot-grid background — fixed, full page */}
       <div
         aria-hidden
         className="dot-grid fixed inset-0 pointer-events-none z-0"
         style={{ maskImage: "radial-gradient(ellipse 80% 80% at 50% 50%, black 20%, transparent 100%)" }}
       />
+      <DustField />
       <SiteHeader />
       <SectionProgress />
       <main className="relative z-10">
@@ -34,6 +38,7 @@ export default function Home() {
         <Contact />
       </main>
       <SiteFooter />
-    </>
+      <BackToTop />
+    </PageReveal>
   )
 }
