@@ -1,8 +1,10 @@
 "use client"
 
-import { motion } from "framer-motion"
-import { staggerContainer, viewport } from "@/lib/motion"
+import { useRef } from "react"
+import { motion, useInView } from "framer-motion"
+import { staggerContainer } from "@/lib/motion"
 import { useReducedMotion } from "@/hooks/useReducedMotion"
+import { usePageReady } from "@/lib/page-ready"
 import { cn } from "@/lib/utils"
 
 interface StaggerListProps {
@@ -22,7 +24,11 @@ export function StaggerList({
   delay = 0,
   as: Tag = "div",
 }: StaggerListProps) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const ref = useRef<any>(null)
   const reduced = useReducedMotion()
+  const ready = usePageReady()
+  const inView = useInView(ref, { once: true, margin: "-80px" })
   const MotionTag = motion[Tag]
 
   if (reduced) {
@@ -31,10 +37,10 @@ export function StaggerList({
 
   return (
     <MotionTag
+      ref={ref}
       variants={staggerContainer(stagger, delay)}
       initial="hidden"
-      whileInView="visible"
-      viewport={viewport}
+      animate={inView && ready ? "visible" : "hidden"}
       className={cn(className)}
     >
       {children}
