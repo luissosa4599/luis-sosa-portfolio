@@ -11,7 +11,7 @@ const approachByLanguage: Record<Language, ApproachPrinciple[]> = {
     {
       index: "02",
       heading: "Product thinking",
-      body: "I work from product and business context, not just mockups. Before building, I want to understand the workflow, the constraint, and the decision the interface needs to support.",
+      body: "I work from product and business context, not just mockups. Before building, I want to understand the workflow, the constraints, and the decision the interface needs to support.",
     },
     {
       index: "03",

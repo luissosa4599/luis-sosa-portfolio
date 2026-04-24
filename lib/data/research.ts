@@ -10,7 +10,7 @@ const researchByLanguage: Record<Language, ResearchEntry[]> = {
       publisher: "Springer Nature",
       year: 2025,
       abstract:
-        "Peer-reviewed paper published through HCI International 2025 and Springer Nature. It presents a mobile system that uses biometric nose-print identification and geolocation matching to help locate lost dogs in Mexico City, validated in real-world conditions.",
+        "Peer-reviewed paper presented at HCI International 2025 and published by Springer Nature. It presents a mobile system that uses biometric nose-print identification and geolocation matching to help locate lost dogs in Mexico City, validated in real-world conditions.",
       url: "https://link.springer.com/chapter/10.1007/978-3-032-12767-9_33",
       tags: ["Computer Vision", "Pattern Recognition", "HCI", "Mobile"],
     },

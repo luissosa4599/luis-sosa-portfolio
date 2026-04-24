@@ -7,7 +7,7 @@ import { Experience } from "@/components/sections/Experience"
 import { Projects } from "@/components/sections/Projects"
 import { Research } from "@/components/sections/Research"
 import { Approach } from "@/components/sections/Approach"
-import { Testimonials } from "@/components/sections/Testimonials"
+// import { Testimonials } from "@/components/sections/Testimonials"
 import { Contact } from "@/components/sections/Contact"
 import { SectionProgress } from "@/components/primitives/SectionProgress"
 import { DustField } from "@/components/primitives/DustField"
@@ -34,7 +34,7 @@ export default function Home() {
         <Experience />
         <Research />
         <Approach />
-        <Testimonials />
+        {/* <Testimonials /> */}
         <Contact />
       </main>
       <SiteFooter />

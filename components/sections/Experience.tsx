@@ -27,16 +27,16 @@ const EXPERIENCE: ExperienceItem[] = [
     bullets: {
       en: [
         "Delivered multidisciplinary projects under tight deadlines and structured code-review cycles",
-        "Frontend development in Vue.js and Nuxt within a collaborative team environment",
+        "Built and delivered full-stack features with React on the frontend and Laravel on the backend",
         "Applied Git best practices and remote server workflows for consistent, reliable releases",
       ],
       es: [
         "Entregué proyectos multidisciplinarios bajo deadlines ajustados y ciclos de revisión estructurados",
-        "Desarrollé el frontend con Vue.js y Nuxt en un entorno de equipo colaborativo",
+        "Construí y entregué funcionalidades full-stack con React en el frontend y Laravel en el backend",
         "Apliqué buenas prácticas de Git y flujos de trabajo en servidor remoto para entregas consistentes",
       ],
     },
-    stack: ["Vue", "Nuxt", "TypeScript", "Git"],
+    stack: ["React", "Laravel", "TypeScript", "Git"],
   },
   {
     year:        { en: "2024 — 2025",   es: "2024 — 2025" },
@@ -46,17 +46,17 @@ const EXPERIENCE: ExperienceItem[] = [
     companyUrl:  "https://cantilever.com.mx/",
     bullets: {
       en: [
-        "Built and maintained full-stack web applications with React and Laravel",
-        "Designed responsive frontend interfaces integrated with backend APIs",
+        "Built and maintained frontend modules in Vue.js and Nuxt, ensuring consistency with design specs and UX requirements",
+        "Designed responsive interfaces integrated with backend APIs",
         "Contributed to business workflow automation and delivery pipelines",
       ],
       es: [
-        "Construí y mantuve aplicaciones web full-stack con React y Laravel",
-        "Diseñé interfaces frontend responsivas integradas con APIs backend",
+        "Construí y mantuve módulos de frontend con Vue.js y Nuxt, asegurando consistencia con las especificaciones de diseño y UX",
+        "Diseñé interfaces responsivas integradas con APIs backend",
         "Contribuí a la automatización de flujos de negocio y pipelines de entrega",
       ],
     },
-    stack: ["React", "Laravel", "PHP", "MySQL"],
+    stack: ["Vue", "Nuxt", "TypeScript", "PHP"],
   },
   {
     year:        { en: "2023 — 2024",   es: "2023 — 2024" },
@@ -67,7 +67,7 @@ const EXPERIENCE: ExperienceItem[] = [
     bullets: {
       en: [
         "Developed and maintained cross-platform desktop applications for internal business use",
-        "Implemented backend solutions across Python, C#, Java and PHP stacks",
+        "Implemented backend solutions in Python, C#, Java, and PHP",
       ],
       es: [
         "Desarrollé y mantuve aplicaciones de escritorio multiplataforma para uso interno",
@@ -104,7 +104,7 @@ export function Experience() {
   const copy = {
     en: {
       title: "Experience",
-      subtitle: "Four years shipping production software — from internship to full-stack lead.",
+      subtitle: "Three years shipping production software — from intern to full-stack developer.",
     },
     es: {
       title: "Experiencia",

@@ -62,7 +62,7 @@ export function Contact() {
         <p className="mt-4 text-base text-muted leading-relaxed max-w-md">
           {language === "es"
             ? "Estoy buscando roles de frontend y product engineering donde pueda trabajar en inglés, colaborar con distintas áreas y construir interfaces claras para productos complejos."
-            : "I'm looking for frontend and product engineering roles where I can ship in English, collaborate across functions, and build clear interfaces for complex products."}
+            : "I'm looking for frontend and product engineering roles where I can work in English, collaborate across functions, and build clear interfaces for complex products."}
         </p>
 
         {/* Contact buttons */}

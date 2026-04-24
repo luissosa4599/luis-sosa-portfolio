@@ -12,16 +12,16 @@ export function About() {
   const copy = {
     en: {
       role: "Full Stack Developer",
-      years: "4+ years shipping production software",
+      years: "3+ years shipping production software",
       location: "Mexico City · CST (UTC-6)",
       english: "Professional English",
       availability: "Open to full-time remote",
-      bio: "Full stack developer with 4+ years building production software. Focused on frontend — dashboards, internal tools, and data-heavy interfaces for teams with complex operational workflows. HCI researcher, published at HCI International 2025 (Springer Nature).",
+      bio: "Full stack developer with 3+ years building production software. Focused on frontend — dashboards, internal tools, and data-heavy interfaces for teams with complex operational workflows. HCI researcher, published at HCI International 2025 (Springer Nature).",
       previously: "Previously at",
     },
     es: {
       role: "Full Stack Developer",
-      years: "4+ años de software en producción",
+      years: "3+ años de software en producción",
       location: "Ciudad de México · CST (UTC-6)",
       english: "Inglés profesional",
       availability: "Disponible para trabajo remoto",
