@@ -101,6 +101,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* ─── Spinning arcs (Research section) ────────────────────────────────────── */
+
+@keyframes spin-cw  { to { transform: rotate(360deg);  } }
+@keyframes spin-ccw { to { transform: rotate(-360deg); } }
+
 /* ─── Page entrance overlay ───────────────────────────────────────────────── */
 
 @keyframes overlay-out {

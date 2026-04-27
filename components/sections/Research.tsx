@@ -70,27 +70,25 @@ function DetectionCircle({ reduced }: { reduced: boolean }) {
       </div>
 
       {/* Spinning arc — mid ring, counter-clockwise */}
-      <motion.div
+      <div
         className="absolute inset-4 rounded-full pointer-events-none z-10"
         style={{
           border: "2px solid transparent",
           borderBottomColor: "hsl(213 90% 53% / 0.85)",
           borderLeftColor: "hsl(213 90% 53% / 0.30)",
+          animation: "spin-ccw 6s linear infinite",
         }}
-        animate={{ rotate: [0, -360] }}
-        transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
       />
 
       {/* Spinning arc — innermost, clockwise */}
-      <motion.div
+      <div
         className="absolute inset-8 rounded-full pointer-events-none z-10"
         style={{
           border: "1.5px solid transparent",
           borderTopColor: "hsl(213 90% 53% / 0.70)",
           borderRightColor: "hsl(213 90% 53% / 0.25)",
+          animation: "spin-cw 9s linear infinite",
         }}
-        animate={{ rotate: [0, 360] }}
-        transition={{ duration: 9, repeat: Infinity, ease: "linear" }}
       />
     </div>
   )
