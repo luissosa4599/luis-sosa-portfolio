@@ -5,16 +5,20 @@ import { ScrollReveal } from "@/components/primitives/ScrollReveal"
 import { Container } from "@/components/layout/Container"
 import { useLanguage } from "@/lib/i18n"
 import { cardReveal } from "@/lib/motion"
+import { ExternalLink } from "lucide-react"
 
 // ── Experience data ───────────────────────────────────────────────────────────
+type BulletItem = string | { text: string; linkText: string; href: string }
+
 type ExperienceItem = {
   year:        { en: string; es: string }
   role:        { en: string; es: string }
   company:     string          // short name (shown in gray)
   companyFull: string          // corporate legal name (linked)
   companyUrl?: string
-  bullets:     { en: string[]; es: string[] }
+  bullets:     { en: BulletItem[]; es: BulletItem[] }
   stack:       string[]
+  pdf?:        { url: string; label: { en: string; es: string } }
 }
 
 const EXPERIENCE: ExperienceItem[] = [
@@ -65,15 +69,19 @@ const EXPERIENCE: ExperienceItem[] = [
       en: [
         "Introduced unit testing (Jest) on a Vue 2 legacy codebase past LTS, safeguarding data integrity for utility meter readings and billing calculations across CFE government systems.",
         "Delivered frontend modules under strict public procurement deadlines for Mexico's national electric utility (CFE).",
-        "Co-author of ICE Management 2.0, officially registered with INDAUTOR — Reg. No. 03-2025-112411030100-01.",
+        { text: "Co-author of ICE Management 2.0, officially registered with INDAUTOR — ", linkText: "Reg. No. 03-2025-112411030100-01", href: "/indautor-ice-management.pdf" },
       ],
       es: [
         "Introduje pruebas unitarias (Jest) en un codebase Vue 2 fuera de soporte LTS, garantizando la integridad de datos de medidores eléctricos y cálculos de facturación en sistemas de CFE.",
         "Entregué módulos frontend bajo estrictos plazos de licitación pública para la Comisión Federal de Electricidad (CFE).",
-        "Coautor de ICE Management 2.0, registrado ante el INDAUTOR — Reg. No. 03-2025-112411030100-01.",
+        { text: "Coautor de ICE Management 2.0, registrado ante el INDAUTOR — ", linkText: "Reg. No. 03-2025-112411030100-01", href: "/indautor-ice-management.pdf" },
       ],
     },
     stack: ["Vue.js", "Nuxt", "Vuex", "GraphQL", "Jest", "Docker", "AWS"],
+    pdf: {
+      url:   "/indautor-ice-management.pdf",
+      label: { en: "View INDAUTOR certificate", es: "Ver certificado INDAUTOR" },
+    },
   },
   {
     year:        { en: "2022 — 2023", es: "2022 — 2023" },
@@ -212,7 +220,19 @@ export function Experience() {
                             style={{ background: "var(--color-accent)" }}
                             aria-hidden
                           />
-                          {bullet}
+                          {typeof bullet === "string" ? bullet : (
+                            <span>
+                              {bullet.text}
+                              <a
+                                href={bullet.href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-accent hover:underline underline-offset-2"
+                              >
+                                {bullet.linkText}
+                              </a>
+                            </span>
+                          )}
                         </li>
                       ))}
                     </ul>
@@ -229,6 +249,19 @@ export function Experience() {
                           </span>
                         ))}
                       </div>
+                    )}
+
+                    {/* Certificate link */}
+                    {item.pdf && (
+                      <a
+                        href={item.pdf.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-3 inline-flex items-center gap-1.5 text-xs text-muted-2 hover:text-accent transition-colors duration-150"
+                      >
+                        <ExternalLink size={12} />
+                        {item.pdf.label[language]}
+                      </a>
                     )}
                   </div>
                 </div>
