@@ -31,6 +31,10 @@ export function Hero() {
   const { language } = useLanguage()
   const reduced = useReducedMotion()
   const mounted = useMounted()
+  // Don't apply reduced-motion variants until mounted — the server has no
+  // access to prefers-reduced-motion, so using it during SSR/hydration causes
+  // a variants mismatch between server and client.
+  const effectiveReduced = mounted && reduced
   const [titleIndex, setTitleIndex] = useState(0)
 
   useEffect(() => {
@@ -69,23 +73,23 @@ export function Hero() {
   const skip = { hidden: { opacity: 1, y: 0, scale: 1, x: 0 }, visible: { opacity: 1, y: 0, scale: 1, x: 0 } }
 
   const v = {
-    greeting: reduced ? skip : {
+    greeting: effectiveReduced ? skip : {
       hidden:  { opacity: 0, y: 20 },
       visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: transition.easeOut, delay: 0.25 } },
     },
-    name: reduced ? skip : {
+    name: effectiveReduced ? skip : {
       hidden:  { opacity: 0, y: 52, scale: 0.92 },
       visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.85, ease: transition.easeOut, delay: 0.42 } },
     },
-    title: reduced ? skip : {
+    title: effectiveReduced ? skip : {
       hidden:  { opacity: 0, y: 16 },
       visible: { opacity: 1, y: 0, transition: { duration: 0.5,  ease: transition.easeOut, delay: 0.88 } },
     },
-    subtitle: reduced ? skip : {
+    subtitle: effectiveReduced ? skip : {
       hidden:  { opacity: 0, y: 28 },
       visible: { opacity: 1, y: 0, transition: { duration: 0.6,  ease: transition.easeOut, delay: 1.1  } },
     },
-    ctas: reduced ? skip : {
+    ctas: effectiveReduced ? skip : {
       hidden:  { opacity: 0, y: 22 },
       visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: transition.easeOut, delay: 1.32 } },
     },
@@ -141,9 +145,9 @@ export function Hero() {
             <AnimatePresence mode="wait">
               <motion.span
                 key={`${language}-${titleIndex}`}
-                initial={reduced ? false : { opacity: 0, y: 8 }}
+                initial={effectiveReduced ? false : { opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={reduced ? undefined : { opacity: 0, y: -8 }}
+                exit={effectiveReduced ? undefined : { opacity: 0, y: -8 }}
                 transition={{ duration: 0.35, ease: transition.easeOut }}
                 className="text-lg font-mono text-accent"
               >
