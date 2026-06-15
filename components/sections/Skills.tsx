@@ -97,6 +97,13 @@ const SKILL_GROUPS: SkillGroup[] = [
     ],
   },
   {
+    category: { en: "State Management", es: "Estado" },
+    items: [
+      { label: "Vuex" },
+      { label: "Pinia" },
+    ],
+  },
+  {
     category: { en: "Backend", es: "Backend" },
     items: [
       { label: "Node.js",    icon: siNodedotjs },

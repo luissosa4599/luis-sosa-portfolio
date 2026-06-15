@@ -21,7 +21,7 @@ export function About() {
     },
     es: {
       role: "Ingeniero Frontend",
-      years: "4+ años de software en producción",
+      years: "4 años de software en producción",
       location: "Ciudad de México · CST (UTC-6)",
       english: "Inglés profesional",
       availability: "Disponible para trabajo remoto",
