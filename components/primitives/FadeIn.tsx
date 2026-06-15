@@ -1,7 +1,7 @@
 "use client"
 
-import { useRef } from "react"
-import { motion, useInView, type Variants } from "framer-motion"
+import { useRef, useEffect } from "react"
+import { motion, useInView, useAnimation, type Variants } from "framer-motion"
 import { fadeUp, fadeLeft, fadeRight, fadeIn } from "@/lib/motion"
 import { useReducedMotion } from "@/hooks/useReducedMotion"
 import { usePageReady } from "@/lib/page-ready"
@@ -41,6 +41,7 @@ export function FadeIn({
   const reduced = useReducedMotion()
   const ready = usePageReady()
   const inView = useInView(ref, { once: true, margin: "0px" })
+  const controls = useAnimation()
   const selected = variantMap[direction]
 
   const resolvedVariants: Variants = reduced
@@ -58,6 +59,10 @@ export function FadeIn({
       }
     : selected
 
+  useEffect(() => {
+    if (inView && ready) controls.start("visible")
+  }, [inView, ready, controls])
+
   if (asChild) {
     return (
       <motion.div variants={resolvedVariants} className={cn(className)}>
@@ -71,7 +76,7 @@ export function FadeIn({
       ref={ref}
       variants={resolvedVariants}
       initial="hidden"
-      animate={inView && ready ? "visible" : "hidden"}
+      animate={controls}
       className={cn(className)}
     >
       {children}

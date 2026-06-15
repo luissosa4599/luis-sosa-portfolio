@@ -1,7 +1,7 @@
 "use client"
 
-import { useRef } from "react"
-import { motion, useInView } from "framer-motion"
+import { useRef, useEffect } from "react"
+import { motion, useInView, useAnimation } from "framer-motion"
 import { staggerContainer } from "@/lib/motion"
 import { useReducedMotion } from "@/hooks/useReducedMotion"
 import { usePageReady } from "@/lib/page-ready"
@@ -29,7 +29,12 @@ export function StaggerList({
   const reduced = useReducedMotion()
   const ready = usePageReady()
   const inView = useInView(ref, { once: true, margin: "0px" })
+  const controls = useAnimation()
   const MotionTag = motion[Tag]
+
+  useEffect(() => {
+    if (inView && ready) controls.start("visible")
+  }, [inView, ready, controls])
 
   if (reduced) {
     return <Tag className={cn(className)}>{children}</Tag>
@@ -40,7 +45,7 @@ export function StaggerList({
       ref={ref}
       variants={staggerContainer(stagger, delay)}
       initial="hidden"
-      animate={inView && ready ? "visible" : "hidden"}
+      animate={controls}
       className={cn(className)}
     >
       {children}
