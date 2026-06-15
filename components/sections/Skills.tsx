@@ -4,10 +4,10 @@ import { useRef } from "react"
 import type { SimpleIcon } from "simple-icons"
 import {
   siVuedotjs, siNuxt, siReact, siAngular, siNextdotjs,
-  siTypescript, siJavascript, siHtml5, siCss, siTailwindcss,
-  siNodedotjs, siPhp, siLaravel, siPython, siGo, siOpenjdk, siDotnet,
-  siDocker, siMysql, siSqlite, siLinux, siGooglecloud,
-  siGit, siGithub, siPostman,
+  siTypescript, siJavascript, siHtml5, siCss, siTailwindcss, siSass,
+  siNodedotjs, siPhp, siLaravel, siPython, siOpenjdk, siDotnet,
+  siDocker, siMysql, siSqlite, siLinux,
+  siGit, siGithub, siPostman, siGraphql, siJest,
 } from "simple-icons"
 import { motion, useInView, type Variants } from "framer-motion"
 import { cn } from "@/lib/utils"
@@ -92,6 +92,7 @@ const SKILL_GROUPS: SkillGroup[] = [
       { label: "JavaScript",   icon: siJavascript  },
       { label: "HTML5",        icon: siHtml5       },
       { label: "CSS",          icon: siCss         },
+      { label: "SCSS",         icon: siSass        },
       { label: "Tailwind CSS", icon: siTailwindcss },
     ],
   },
@@ -102,7 +103,6 @@ const SKILL_GROUPS: SkillGroup[] = [
       { label: "PHP",        icon: siPhp       },
       { label: "Laravel",    icon: siLaravel   },
       { label: "Python",     icon: siPython    },
-      { label: "Go",         icon: siGo        },
       { label: "Java",       icon: siOpenjdk   },
       { label: ".NET · C#",  icon: siDotnet    },
     ],
@@ -110,13 +110,12 @@ const SKILL_GROUPS: SkillGroup[] = [
   {
     category: { en: "Infrastructure", es: "Infraestructura" },
     items: [
-      { label: "Docker",     icon: siDocker      },
-      { label: "MySQL",      icon: siMysql       },
-      { label: "SQL Server", icon: siSqlite      },
-      { label: "Azure"                           },
-      { label: "AWS"                             },
-      { label: "Linux",      icon: siLinux       },
-      { label: "GCP",        icon: siGooglecloud },
+      { label: "Docker",     icon: siDocker },
+      { label: "MySQL",      icon: siMysql  },
+      { label: "SQL Server", icon: siSqlite },
+      { label: "Azure"                      },
+      { label: "AWS"                        },
+      { label: "Linux",      icon: siLinux  },
     ],
   },
   {
@@ -125,6 +124,8 @@ const SKILL_GROUPS: SkillGroup[] = [
       { label: "Git",           icon: siGit     },
       { label: "GitHub",        icon: siGithub  },
       { label: "Postman",       icon: siPostman },
+      { label: "GraphQL",       icon: siGraphql },
+      { label: "Jest",          icon: siJest    },
       { label: "Agile · Scrum"                  },
       { label: "REST APIs"                      },
       { label: "Code Review"                    },

@@ -19,65 +19,82 @@ type ExperienceItem = {
 
 const EXPERIENCE: ExperienceItem[] = [
   {
-    year:        { en: "2025 — Present", es: "2025 — Hoy"  },
-    role:        { en: "Full Stack Developer", es: "Full Stack Developer" },
+    year:        { en: "2025 — Present", es: "2025 — Hoy" },
+    role:        { en: "Frontend Engineer", es: "Ingeniero Frontend" },
+    company:     "OM Payments",
+    companyFull: "OM Payments / Grupo Cumulus",
+    bullets: {
+      en: [
+        "Leading frontend modernization of 4 fintech platforms by centralizing component configuration and standardizing UI patterns, reducing maintenance effort across the board.",
+        "Rebuilding product interfaces from single-screen layouts to fully responsive designs across mobile, tablet, and desktop.",
+      ],
+      es: [
+        "Lidero la modernización frontend de 4 plataformas fintech centralizando la configuración de componentes y estandarizando patrones de UI, reduciendo el esfuerzo de mantenimiento.",
+        "Reconstruyo interfaces de diseño de pantalla única a diseños completamente responsivos para móvil, tablet y escritorio.",
+      ],
+    },
+    stack: ["Angular", "TypeScript", "SCSS", "PrimeNG", "SQL Server", "Azure"],
+  },
+  {
+    year:        { en: "2024 — 2025", es: "2024 — 2025" },
+    role:        { en: "Full-Stack Engineer", es: "Ingeniero Full-Stack" },
     company:     "IFD Tech",
-    companyFull: "IFD Technologies",
+    companyFull: "IFD Technologies Inc.",
     companyUrl:  "https://ifd.com.mx/es/",
     bullets: {
       en: [
-        "Delivered multidisciplinary projects under tight deadlines and structured code-review cycles",
-        "Built and delivered full-stack features with React on the frontend and Laravel on the backend",
-        "Applied Git best practices and remote server workflows for consistent, reliable releases",
+        "Solely owned a client engagement end-to-end — requirements, architecture, development, and delivery — translating technical decisions into business language for direct client communication.",
+        "Delivered on schedule across 5 simultaneous client accounts while adapting to evolving requirements.",
+        "Participated in client-facing kickoff meetings, weekly sprint reviews, and feature scoping sessions.",
       ],
       es: [
-        "Entregué proyectos multidisciplinarios bajo deadlines ajustados y ciclos de revisión estructurados",
-        "Construí y entregué funcionalidades full-stack con React en el frontend y Laravel en el backend",
-        "Apliqué buenas prácticas de Git y flujos de trabajo en servidor remoto para entregas consistentes",
+        "Gestioné de forma autónoma un proyecto completo de principio a fin — requerimientos, arquitectura, desarrollo y entrega — traduciendo decisiones técnicas a lenguaje de negocio con el cliente.",
+        "Entregué en tiempo y forma en 5 cuentas de cliente simultáneas, adaptándome a requerimientos cambiantes.",
+        "Participé en juntas de arranque, revisiones semanales de sprint y sesiones de definición de funcionalidades.",
       ],
     },
-    stack: ["React", "Laravel", "TypeScript", "Git"],
+    stack: ["React", "TailwindCSS", "Laravel", "GraphQL", "Docker", "AWS"],
   },
   {
-    year:        { en: "2024 — 2025",   es: "2024 — 2025" },
-    role:        { en: "Junior Developer", es: "Junior Developer" },
+    year:        { en: "2023 — 2024", es: "2023 — 2024" },
+    role:        { en: "Software Engineer", es: "Ingeniero de Software" },
     company:     "Cantilever",
     companyFull: "Distribuciones Cantilever S. de R.L. de C.V.",
     companyUrl:  "https://cantilever.com.mx/",
     bullets: {
       en: [
-        "Built and maintained frontend modules in Vue.js and Nuxt, ensuring consistency with design specs and UX requirements",
-        "Designed responsive interfaces integrated with backend APIs",
-        "Contributed to business workflow automation and delivery pipelines",
+        "Introduced unit testing (Jest) on a Vue 2 legacy codebase past LTS, safeguarding data integrity for utility meter readings and billing calculations across CFE government systems.",
+        "Delivered frontend modules under strict public procurement deadlines for Mexico's national electric utility (CFE).",
+        "Co-author of ICE Management 2.0, officially registered with INDAUTOR — Reg. No. 03-2025-112411030100-01.",
       ],
       es: [
-        "Construí y mantuve módulos de frontend con Vue.js y Nuxt, asegurando consistencia con las especificaciones de diseño y UX",
-        "Diseñé interfaces responsivas integradas con APIs backend",
-        "Contribuí a la automatización de flujos de negocio y pipelines de entrega",
+        "Introduje pruebas unitarias (Jest) en un codebase Vue 2 fuera de soporte LTS, garantizando la integridad de datos de medidores eléctricos y cálculos de facturación en sistemas de CFE.",
+        "Entregué módulos frontend bajo estrictos plazos de licitación pública para la Comisión Federal de Electricidad (CFE).",
+        "Coautor de ICE Management 2.0, registrado ante el INDAUTOR — Reg. No. 03-2025-112411030100-01.",
       ],
     },
-    stack: ["Vue", "Nuxt", "TypeScript", "PHP"],
+    stack: ["Vue.js", "Nuxt", "Vuex", "GraphQL", "Jest", "Docker", "AWS"],
   },
   {
-    year:        { en: "2023 — 2024",   es: "2023 — 2024" },
-    role:        { en: "Programming Intern", es: "Practicante de Programación" },
+    year:        { en: "2022 — 2023", es: "2022 — 2023" },
+    role:        { en: "Junior Developer", es: "Desarrollador Junior" },
     company:     "Teleurban",
     companyFull: "Grupo Tele Urban",
     companyUrl:  "https://grupoteleurban.com/",
     bullets: {
       en: [
-        "Developed and maintained cross-platform desktop applications for internal business use",
-        "Implemented backend solutions in Python, C#, Java, and PHP",
+        "Developed and maintained internal business applications supporting operational workflows across multiple departments.",
+        "Collaborated with senior engineers on feature implementation, debugging, and system maintenance.",
       ],
       es: [
-        "Desarrollé y mantuve aplicaciones de escritorio multiplataforma para uso interno",
-        "Implementé soluciones backend en Python, C#, Java y PHP",
+        "Desarrollé y mantuve aplicaciones internas de negocio que soportan flujos operativos en múltiples departamentos.",
+        "Colaboré con ingenieros senior en implementación de funcionalidades, depuración y mantenimiento de sistemas.",
       ],
     },
     stack: ["Python", "C#", "Java", "PHP"],
   },
   {
-    year:        { en: "2018 — 2024",   es: "2018 — 2024" },
+    year:        { en: "2018 — 2024", es: "2018 — 2024" },
     role:        { en: "B.S. Computer Systems Engineering", es: "Ing. en Sistemas Computacionales" },
     company:     "ESCOM IPN",
     companyFull: "ESCOM IPN",
@@ -104,11 +121,11 @@ export function Experience() {
   const copy = {
     en: {
       title: "Experience",
-      subtitle: "Three years shipping production software — from intern to full-stack developer.",
+      subtitle: "Four years shipping production software — from junior developer to frontend engineer.",
     },
     es: {
       title: "Experiencia",
-      subtitle: "Cuatro años construyendo software en producción — de pasante a full-stack.",
+      subtitle: "Cuatro años construyendo software en producción — de desarrollador junior a ingeniero frontend.",
     },
   }[language]
 

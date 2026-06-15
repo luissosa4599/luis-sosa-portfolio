@@ -53,7 +53,7 @@ export function Hero() {
       greeting: "Hi, I'm",
       name: "Luis Sosa",
       subtitle:
-        "Full stack developer with 3+ years shipping production interfaces. Focused on dashboards, internal tools, and data products for teams that work with complex workflows.",
+        "Full stack developer with 4+ years shipping production interfaces. Focused on dashboards, internal tools, and data products for teams that work with complex workflows.",
       projects: "Selected work",
       contact:  "Get in touch",
       resume:   "Download CV",

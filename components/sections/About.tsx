@@ -4,28 +4,28 @@ import { FadeIn } from "@/components/primitives/FadeIn"
 import { Container } from "@/components/layout/Container"
 import { useLanguage } from "@/lib/i18n"
 
-const PREVIOUS_COMPANIES = ["Cantilever", "Teleurban"]
+const PREVIOUS_COMPANIES = ["IFD Technologies", "Cantilever"]
 
 export function About() {
   const { language } = useLanguage()
 
   const copy = {
     en: {
-      role: "Full Stack Developer",
-      years: "3+ years shipping production software",
+      role: "Frontend Engineer",
+      years: "4+ years shipping production software",
       location: "Mexico City · CST (UTC-6)",
       english: "Professional English",
       availability: "Open to full-time remote",
-      bio: "Full stack developer with 3+ years building production software. Focused on frontend — dashboards, internal tools, and data-heavy interfaces for teams with complex operational workflows. HCI researcher, published at HCI International 2025 (Springer Nature).",
+      bio: "Frontend Engineer with 4+ years building production software in fintech, payments, and government. Focused on dashboards, internal tools, and data-heavy interfaces. HCI researcher, published at HCI International 2025 (Springer Nature).",
       previously: "Previously at",
     },
     es: {
-      role: "Full Stack Developer",
-      years: "3+ años de software en producción",
+      role: "Ingeniero Frontend",
+      years: "4+ años de software en producción",
       location: "Ciudad de México · CST (UTC-6)",
       english: "Inglés profesional",
       availability: "Disponible para trabajo remoto",
-      bio: "Full stack developer con 4+ años construyendo software en producción. Me especializo en frontend: dashboards, herramientas internas e interfaces complejas para equipos con flujos de trabajo operativos. Investigador en HCI, publicado en HCI International 2025 (Springer Nature).",
+      bio: "Ingeniero Frontend con más de 4 años construyendo software en producción en fintech, pagos y gobierno. Especializado en dashboards, herramientas internas e interfaces complejas. Investigador en HCI, publicado en HCI International 2025 (Springer Nature).",
       previously: "Anteriormente en",
     },
   }[language]
