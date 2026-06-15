@@ -23,7 +23,7 @@ const TITLES = {
     "Frontend Engineer",
     "Ingeniero en Sistemas",
     "Investigador en HCI",
-    "Implementador UI/UX",
+    "Desarrollador UI/UX",
   ],
 }
 

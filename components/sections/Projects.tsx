@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { ArrowUpRight } from "lucide-react"
+import { ArrowUpRight, ExternalLink } from "lucide-react"
 import { Container } from "@/components/layout/Container"
 import { SectionLabel } from "@/components/primitives/SectionLabel"
 import { FadeIn } from "@/components/primitives/FadeIn"
@@ -160,13 +160,28 @@ function ProjectCard({ project }: { project: ProjectEntry }) {
           ))}
         </div>
 
-        {/* CTA */}
-        <div className="mt-auto flex items-center gap-1.5 text-sm font-medium text-accent">
-          {language === "es" ? "Leer caso de estudio" : "Read case study"}
-          <ArrowUpRight
-            size={14}
-            className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200"
-          />
+        {/* CTAs */}
+        <div className="mt-auto flex items-center justify-between gap-3 flex-wrap">
+          <div className="flex items-center gap-1.5 text-sm font-medium text-accent">
+            {language === "es" ? "Leer caso de estudio" : "Read case study"}
+            <ArrowUpRight
+              size={14}
+              className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200"
+            />
+          </div>
+
+          {project.url && (
+            <a
+              href={project.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              className="inline-flex items-center gap-1.5 text-xs text-muted-2 hover:text-accent transition-colors duration-150"
+            >
+              <ExternalLink size={12} />
+              {language === "es" ? "Abrir proyecto" : "Open project"}
+            </a>
+          )}
         </div>
       </div>
     </Link>

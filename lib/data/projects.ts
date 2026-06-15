@@ -10,7 +10,7 @@ const projectsByLanguage: Record<Language, ProjectEntry[]> = {
       description:
         "A full-stack operations platform for a logistics workflow, covering order intake, live status tracking, role-based access, and reporting for internal teams.",
       tags: ["Next.js", "TypeScript", "Laravel", "PostgreSQL", "Recharts"],
-      url: "https://operations-dashboard-gules.vercel.app/catalogos",
+      url: "https://operations-dashboard-gules.vercel.app/login",
       githubUrl: "https://github.com/luissosa4599/operations-dashboard",
       featured: true,
       private: false,
@@ -111,7 +111,7 @@ const projectsByLanguage: Record<Language, ProjectEntry[]> = {
       description:
         "Una plataforma full-stack de operaciones para un flujo logístico, cubriendo ingreso de órdenes, seguimiento en vivo, control de acceso por roles y reporteo para equipos internos.",
       tags: ["Next.js", "TypeScript", "Laravel", "PostgreSQL", "Recharts"],
-      url: "https://operations-dashboard-gules.vercel.app/catalogos",
+      url: "https://operations-dashboard-gules.vercel.app/login",
       githubUrl: "https://github.com/luissosa4599/operations-dashboard",
       featured: true,
       private: false,
