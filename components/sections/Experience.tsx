@@ -23,24 +23,28 @@ type ExperienceItem = {
 
 const EXPERIENCE: ExperienceItem[] = [
   {
-    year:        { en: "2025 — Present", es: "2025 — Hoy" },
-    role:        { en: "Frontend Engineer", es: "Ingeniero Frontend" },
+    year:        { en: "Apr 2026 — Present", es: "Abr 2026 — Presente" },
+    role:        { en: "Full-Stack Engineer", es: "Ingeniero Full-Stack" },
     company:     "OM Payments",
     companyFull: "OM Payments / Grupo Cumulus",
     bullets: {
       en: [
-        "Leading frontend modernization of 4 fintech platforms by centralizing component configuration and standardizing UI patterns, reducing maintenance effort across the board.",
-        "Rebuilding product interfaces from single-screen layouts to fully responsive designs across mobile, tablet, and desktop.",
+        "Leading the modernization of 4 production fintech platforms by centralizing component configuration and standardizing UI patterns, reducing maintenance overhead and accelerating feature delivery.",
+        "Rebuilding payment platform interfaces from desktop-centric applications into fully responsive experiences across mobile, tablet, and desktop.",
+        "Working directly with business stakeholders to define requirements, prioritize enhancements, and deliver customer-facing features.",
+        "Establishing reusable UI standards and shared component practices across multiple fintech products, improving consistency and long-term maintainability.",
       ],
       es: [
-        "Lidero la modernización frontend de 4 plataformas fintech centralizando la configuración de componentes y estandarizando patrones de UI, reduciendo el esfuerzo de mantenimiento.",
-        "Reconstruyo interfaces de diseño de pantalla única a diseños completamente responsivos para móvil, tablet y escritorio.",
+        "Lidero la modernización de 4 plataformas fintech en producción centralizando la configuración de componentes y estandarizando patrones de UI, reduciendo costos de mantenimiento y acelerando la entrega de funcionalidades.",
+        "Transformo interfaces de plataformas de pago originalmente diseñadas para escritorio en experiencias completamente responsivas para móvil, tablet y escritorio.",
+        "Colaboro directamente con stakeholders de negocio para definir requerimientos, priorizar mejoras y entregar funcionalidades orientadas al cliente.",
+        "Establezco estándares de UI reutilizables y prácticas de componentes compartidos en múltiples productos fintech, mejorando la consistencia y el mantenimiento a largo plazo.",
       ],
     },
-    stack: ["Angular", "TypeScript", "SCSS", "PrimeNG", "SQL Server", "Azure"],
+    stack: ["Angular", "TypeScript", "SCSS", "PrimeNG", "Design Systems", "SQL Server", "Azure"],
   },
   {
-    year:        { en: "2024 — 2025", es: "2024 — 2025" },
+    year:        { en: "Oct 2025 — Apr 2026", es: "Oct 2025 — Abr 2026" },
     role:        { en: "Full-Stack Engineer", es: "Ingeniero Full-Stack" },
     company:     "IFD Tech",
     companyFull: "IFD Technologies Inc.",
@@ -57,10 +61,10 @@ const EXPERIENCE: ExperienceItem[] = [
         "Participé en juntas de arranque, revisiones semanales de sprint y sesiones de definición de funcionalidades.",
       ],
     },
-    stack: ["React", "TailwindCSS", "Laravel", "GraphQL", "Docker", "AWS"],
+    stack: ["React", "TailwindCSS", "Laravel", "REST APIs", "GraphQL", "Docker", "AWS"],
   },
   {
-    year:        { en: "2023 — 2024", es: "2023 — 2024" },
+    year:        { en: "Apr 2024 — Oct 2025", es: "Abr 2024 — Oct 2025" },
     role:        { en: "Software Engineer", es: "Ingeniero de Software" },
     company:     "Cantilever",
     companyFull: "Distribuciones Cantilever S. de R.L. de C.V.",
@@ -77,14 +81,14 @@ const EXPERIENCE: ExperienceItem[] = [
         { text: "Coautor de ICE Management 2.0, registrado ante el INDAUTOR — ", linkText: "Reg. No. 03-2025-112411030100-01", href: "/indautor-ice-management.pdf" },
       ],
     },
-    stack: ["Vue.js", "Nuxt", "Vuex", "GraphQL", "Jest", "Docker", "AWS"],
+    stack: ["Vue.js", "Nuxt", "Vuex", "GraphQL", "Docker", "AWS", "Jest", "SSH"],
     pdf: {
       url:   "/indautor-ice-management.pdf",
       label: { en: "View INDAUTOR certificate", es: "Ver certificado INDAUTOR" },
     },
   },
   {
-    year:        { en: "2022 — 2023", es: "2022 — 2023" },
+    year:        { en: "Jul 2022 — Apr 2024", es: "Jul 2022 — Abr 2024" },
     role:        { en: "Junior Developer", es: "Desarrollador Junior" },
     company:     "Teleurban",
     companyFull: "Grupo Tele Urban",
@@ -129,11 +133,11 @@ export function Experience() {
   const copy = {
     en: {
       title: "Experience",
-      subtitle: "Four years shipping production software — from junior developer to frontend engineer.",
+      subtitle: "Four years shipping production software — from junior developer to full-stack engineer.",
     },
     es: {
       title: "Experiencia",
-      subtitle: "Cuatro años construyendo software en producción — de desarrollador junior a ingeniero frontend.",
+      subtitle: "Cuatro años construyendo software en producción — de desarrollador junior a ingeniero full-stack.",
     },
   }[language]
 

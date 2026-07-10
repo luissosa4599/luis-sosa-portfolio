@@ -11,21 +11,21 @@ export function About() {
 
   const copy = {
     en: {
-      role: "Frontend Engineer",
+      role: "Full-Stack Engineer",
       years: "4+ years shipping production software",
       location: "Mexico City · CST (UTC-6)",
       english: "Professional English",
       availability: "Open to full-time remote",
-      bio: "Frontend Engineer with 4+ years building production software in fintech, payments, and government. Focused on dashboards, internal tools, and data-heavy interfaces. HCI researcher, published at HCI International 2025 (Springer Nature).",
+      bio: "Full-Stack Engineer with 4+ years building production software in fintech, payments, and government. Hired directly by a client after leading delivery at IFD Technologies. Focused on dashboards, internal tools, and data-heavy interfaces, with backend exposure in Laravel, Node.js, and GraphQL. HCI researcher, published at HCI International 2025 (Springer Nature).",
       previously: "Previously at",
     },
     es: {
-      role: "Ingeniero Frontend",
+      role: "Ingeniero Full-Stack",
       years: "4 años de software en producción",
       location: "Ciudad de México · CST (UTC-6)",
       english: "Inglés profesional",
       availability: "Disponible para trabajo remoto",
-      bio: "Ingeniero Frontend con más de 4 años construyendo software en producción en fintech, pagos y gobierno. Especializado en dashboards, herramientas internas e interfaces complejas. Investigador en HCI, publicado en HCI International 2025 (Springer Nature).",
+      bio: "Ingeniero Full-Stack con más de 4 años construyendo software en producción en fintech, pagos y gobierno. Contratado directamente por un cliente tras liderar la entrega de proyectos en IFD Technologies. Especializado en dashboards, herramientas internas e interfaces complejas, con experiencia backend en Laravel, Node.js y GraphQL. Investigador en HCI, publicado en HCI International 2025 (Springer Nature).",
       previously: "Anteriormente en",
     },
   }[language]
