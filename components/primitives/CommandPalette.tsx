@@ -67,7 +67,7 @@ const LINK_ITEMS = [
   {
     id: "linkedin",
     label: "LinkedIn",
-    url: "https://linkedin.com/in/luis-sosa-5204b5377",
+    url: "https://linkedin.com/in/luis-sosa-dev/",
     icon: LinkedInIcon,
   },
 ] as const

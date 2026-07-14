@@ -191,7 +191,7 @@ export function Hero() {
               {copy.contact}
             </a>
             <a
-              href={language === "en" ? "/CV_Luis_Sosa_EN.pdf" : "/CV_Luis_Sosa_ES.pdf"}
+              href={language === "en" ? "/CV_Luis_Sosa.pdf" : "/CV_Luis_Alberto.pdf"}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-md border border-border text-sm font-medium text-muted hover:text-foreground transition-colors duration-200"
