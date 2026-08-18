@@ -29,19 +29,19 @@ const EXPERIENCE: ExperienceItem[] = [
     companyFull: "OM Payments / Grupo Cumulus",
     bullets: {
       en: [
-        "Leading the modernization of 4 production fintech platforms by centralizing component configuration and standardizing UI patterns, reducing maintenance overhead and accelerating feature delivery.",
-        "Rebuilding payment platform interfaces from desktop-centric applications into fully responsive experiences across mobile, tablet, and desktop.",
-        "Working directly with business stakeholders to define requirements, prioritize enhancements, and deliver customer-facing features.",
-        "Establishing reusable UI standards and shared component practices across multiple fintech products, improving consistency and long-term maintainability.",
+        "Owning the end-to-end implementation of a production SPEI transfer platform — mobile app, .NET backend, banking integration, security architecture, certification, and deployment — for a system processing real customer funds.",
+        "Implementing the banking integration across 7 certification blocks and 13 technical specifications, covering 24 integration endpoints required to enable production SPEI transfers.",
+        "Building secure payment processing with .NET 10, Azure SQL, Azure Key Vault, and RSA/AES encryption, including reconciliation and explicit handling of successful, rejected, and unconfirmed transactions.",
+        "Leading modernization across 4 production fintech platforms, standardizing reusable components, design tokens, and responsive layouts across web, desktop, and mobile.",
       ],
       es: [
-        "Lidero la modernización de 4 plataformas fintech en producción centralizando la configuración de componentes y estandarizando patrones de UI, reduciendo costos de mantenimiento y acelerando la entrega de funcionalidades.",
-        "Transformo interfaces de plataformas de pago originalmente diseñadas para escritorio en experiencias completamente responsivas para móvil, tablet y escritorio.",
-        "Colaboro directamente con stakeholders de negocio para definir requerimientos, priorizar mejoras y entregar funcionalidades orientadas al cliente.",
-        "Establezco estándares de UI reutilizables y prácticas de componentes compartidos en múltiples productos fintech, mejorando la consistencia y el mantenimiento a largo plazo.",
+        "Soy responsable de la implementación integral de una plataforma de transferencias SPEI en producción — app móvil, backend en .NET, integración bancaria, arquitectura de seguridad, certificación y despliegue — para un sistema que procesa fondos reales de clientes.",
+        "Implemento la integración bancaria a través de 7 bloques de certificación y 13 especificaciones técnicas, cubriendo 24 endpoints de integración requeridos para habilitar las transferencias SPEI en producción.",
+        "Desarrollo el procesamiento seguro de pagos con .NET 10, Azure SQL, Azure Key Vault y cifrado RSA/AES, incluyendo conciliación y manejo explícito de transacciones exitosas, rechazadas y no confirmadas.",
+        "Lidero la modernización de 4 plataformas fintech en producción, estandarizando componentes reutilizables, design tokens y layouts responsivos en web, desktop y mobile.",
       ],
     },
-    stack: ["Angular", "TypeScript", "SCSS", "PrimeNG", "Design Systems", "SQL Server", "Azure"],
+    stack: [".NET 10", "ASP.NET Core", ".NET MAUI", "C#", "Angular 19", "TypeScript", "Azure SQL", "Azure Key Vault", "SCSS", "PrimeNG"],
   },
   {
     year:        { en: "Oct 2025 — Apr 2026", es: "Oct 2025 — Abr 2026" },

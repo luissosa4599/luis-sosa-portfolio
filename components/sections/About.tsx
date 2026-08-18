@@ -16,7 +16,7 @@ export function About() {
       location: "Mexico City · CST (UTC-6)",
       english: "Professional English",
       availability: "Open to full-time remote",
-      bio: "Full-Stack Engineer with 4+ years building production software in fintech, payments, and government. Hired directly by a client after leading delivery at IFD Technologies. Focused on dashboards, internal tools, and data-heavy interfaces, with backend exposure in Laravel, Node.js, and GraphQL. HCI researcher, published at HCI International 2025 (Springer Nature).",
+      bio: "Full-Stack Engineer with 4+ years building and modernizing production systems in fintech, payments, and government. Currently leading a production SPEI banking integration and modernization across 4 fintech platforms at OM Payments, after transitioning from a consulting engagement at IFD Technologies to a direct-hire role. HCI researcher, published at HCI International 2025 (Springer Nature).",
       previously: "Previously at",
     },
     es: {
@@ -25,7 +25,7 @@ export function About() {
       location: "Ciudad de México · CST (UTC-6)",
       english: "Inglés profesional",
       availability: "Disponible para trabajo remoto",
-      bio: "Ingeniero Full-Stack con más de 4 años construyendo software en producción en fintech, pagos y gobierno. Contratado directamente por un cliente tras liderar la entrega de proyectos en IFD Technologies. Especializado en dashboards, herramientas internas e interfaces complejas, con experiencia backend en Laravel, Node.js y GraphQL. Investigador en HCI, publicado en HCI International 2025 (Springer Nature).",
+      bio: "Ingeniero Full-Stack con más de 4 años construyendo y modernizando sistemas en producción para fintech, pagos y gobierno. Actualmente lidero una integración bancaria SPEI en producción y la modernización de 4 plataformas fintech en OM Payments, tras la transición de una consultoría en IFD Technologies a una posición directa. Investigador en HCI, publicado en HCI International 2025 (Springer Nature).",
       previously: "Anteriormente en",
     },
   }[language]

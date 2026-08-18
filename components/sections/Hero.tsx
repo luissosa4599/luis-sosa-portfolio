@@ -53,7 +53,7 @@ export function Hero() {
       greeting: "Hi, I'm",
       name: "Luis Sosa",
       subtitle:
-        "Full stack developer with 4+ years shipping production interfaces. Focused on dashboards, internal tools, and data products for teams that work with complex workflows.",
+        "Full stack developer with 4+ years shipping production software in fintech and payments — from banking integrations to internal tools, across web and mobile.",
       projects: "Selected work",
       contact:  "Get in touch",
       resume:   "Download CV",
@@ -62,7 +62,7 @@ export function Hero() {
       greeting: "Hola, soy",
       name: "Luis Sosa",
       subtitle:
-        "Full stack developer con 4 años construyendo interfaces en producción. Enfocado en dashboards, herramientas internas y productos de datos para equipos con flujos de trabajo complejos.",
+        "Full stack developer con 4 años construyendo software en producción para fintech y pagos — desde integraciones bancarias hasta herramientas internas, en web y mobile.",
       projects: "Ver proyectos",
       contact:  "Contáctame",
       resume:   "Descargar CV",

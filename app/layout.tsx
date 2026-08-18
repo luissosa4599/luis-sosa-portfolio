@@ -17,14 +17,14 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: "Luis Sosa — Frontend Engineer",
+  title: "Luis Sosa — Full-Stack Engineer",
   description:
-    "Frontend engineer building dashboards, internal tools, and product interfaces for data-heavy teams.",
+    "Full-stack engineer with 4+ years building production software in fintech, payments, and government.",
   metadataBase: new URL("https://luissosa.dev"),
   openGraph: {
-    title: "Luis Sosa — Frontend Engineer",
+    title: "Luis Sosa — Full-Stack Engineer",
     description:
-      "Frontend engineer building dashboards, internal tools, and product interfaces for data-heavy teams.",
+      "Full-stack engineer with 4+ years building production software in fintech, payments, and government.",
     url: "https://luissosa.dev",
     siteName: "Luis Sosa",
     locale: "en_US",
@@ -32,9 +32,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Luis Sosa — Frontend Engineer",
+    title: "Luis Sosa — Full-Stack Engineer",
     description:
-      "Frontend engineer building dashboards, internal tools, and product interfaces for data-heavy teams.",
+      "Full-stack engineer with 4+ years building production software in fintech, payments, and government.",
     creator: "@luissosa4599",
   },
   robots: { index: true, follow: true },
