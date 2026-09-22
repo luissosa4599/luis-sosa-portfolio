@@ -4,6 +4,80 @@ import type { Language } from "@/lib/language"
 const projectsByLanguage: Record<Language, ProjectEntry[]> = {
   en: [
     {
+      slug: "tempo",
+      title: "Tempo",
+      subtitle: "Cross-platform booking engine for shared spaces — iOS, Android and Web",
+      description:
+        "A real-time booking platform for shared spaces, shipped to iOS, Android and Web from one TypeScript codebase, with a .NET 10 backend, a notification microservice and a live Android app on Google Play.",
+      tags: ["React Native", "Expo", "TypeScript", ".NET 10", "PostgreSQL", "Google Cloud"],
+      url: "https://tempo-cyan-alpha.vercel.app",
+      githubUrl: "https://github.com/luissosa4599/booking-platform",
+      featured: true,
+      private: false,
+      role: "Solo Full-stack Engineer",
+      timeline: "1 month",
+      teamSize: "Solo",
+      context:
+        "Booking a shared space — a study cubicle, a reading room, an auditorium — usually means queues, spreadsheets or slow apps that show availability nobody trusts. When two people want the last seat, most systems either overbook or fail with an unhelpful error.\n\nTempo lets you book, in one tap, a space that's free right now, from a list or a map sorted by distance. It also has an automatic waitlist, push reminders and a QR pass for check-in. There are two roles: guests search, book, cancel and check in; hosts publish spaces with photos, a weekly schedule and a map location, block time slots and scan guests' QR codes at the door. The demo is seeded with realistic data from UNAM and IPN campuses.",
+      myRole:
+        "I built the whole product on my own: domain model and API design, the .NET 10 backend and its worker service, the React Native app for three platforms, the test suites, the CI pipeline, the cloud infrastructure and the Google Play release.\n\nThat included the less visible work that production needs: OAuth consent-screen publishing, API-key scoping, signing certificates, a privacy policy with an account-deletion flow, the Data Safety form and store listing assets.",
+      keyDecisions: [
+        {
+          title: "Optimistic concurrency and idempotency instead of locks",
+          body: "Seat conflicts are handled with PostgreSQL's native xmin system column as a row version, so two users racing for the last seat never overbook — one gets a 409. POST /bookings requires an Idempotency-Key, and a unique index resolves two identical requests racing each other without a 500. Every 409 carries nearby alternative slots with capacity, so the app turns a failure into a one-tap retry.",
+        },
+        {
+          title: "Transactional Outbox and a separate worker",
+          body: "Cancelling a booking writes an outbox row in the same transaction as the cancellation, so a 'slot opened' event is never lost even if the worker is down. A separately deployed .NET worker promotes the next person on the waitlist, sends reminders 30 minutes before each booking, dedupes every send and cleans up dead push tokens on its own.",
+        },
+        {
+          title: "Security in the API, not in the client",
+          body: "Short-lived JWTs with rotating refresh tokens: reusing an old token revokes the user's whole token chain. Identity always comes from the token, never from client-supplied IDs, and another user's resource returns 404 as if it didn't exist. Photos upload straight to Cloud Storage through keyless V4 signed URLs, the Calendar refresh token is encrypted with AES-256-GCM, and a per-IP rate limiter covers every endpoint.",
+        },
+        {
+          title: "One offline-first codebase, three layouts",
+          body: "Expo Router and NativeWind run the same screens on phone, tablet and desktop: a bottom tab bar, a side rail, or a master–detail view with the selection kept in the URL. TanStack Query persists the cache so the app stays usable offline — stale data is stamped 'updated X ago', and favorites and check-ins queue until the connection returns.",
+        },
+        {
+          title: "Scale-to-zero infrastructure",
+          body: "The API runs on Cloud Run, the worker as a Cloud Run Job triggered by Cloud Scheduler, PostgreSQL on Neon with separate production and dev branches, and the web app on Vercel. Everything scales to zero and runs for about $0 a month, with budget alerts in place.",
+        },
+      ],
+      screenshots: [
+        {
+          src: "/tempo/explore-map-dark.jpg",
+          srcLight: "/tempo/explore-map-light.jpg",
+          alt: "Tempo Explore map view on desktop with a selected space",
+          caption:
+            "Explore on desktop: live map of available spaces, colored by status, with the selected space's slots in the side panel",
+        },
+        {
+          src: "/tempo/explore-list-dark.jpg",
+          srcLight: "/tempo/explore-list-light.jpg",
+          alt: "Tempo Explore list view with the detail pane",
+          caption:
+            "List view sorted by distance, next-booking banner and a master–detail pane for one-tap booking",
+        },
+        {
+          src: "/tempo/resource-dark.jpg",
+          srcLight: "/tempo/resource-light.jpg",
+          alt: "Tempo space detail screen with photos and time slots",
+          caption: "Space detail: photo carousel, party size, day picker and live remaining capacity per slot",
+        },
+      ],
+      challenges:
+        "The hardest bugs came from the gaps between platforms, not from any single one. On web, React Native's Modal renders through a DOM portal, so theme colors defined as CSS variables never reached anything inside a sheet: buttons and highlights silently rendered with no color at all. The gesture system also never delivered mouse-drag events, so custom sliders didn't move. I fixed the first at the root by resolving colors in JavaScript and applying them as inline styles, and the second by layering an invisible native range input over the themed slider.\n\nThe undo-cancel flow had its own race: after the delete succeeded, the stale cache briefly showed the cancelled booking again before the refetch landed. I fixed it by patching the cache in the same tick as the success. None of these bugs showed up in a screenshot — each needed an end-to-end run that waited the real five seconds, or reading the computed styles directly.",
+      impact: [
+        "Live in production: web app, API, worker and an Android app on Google Play (internal and closed testing)",
+        "~121 integration tests against a real PostgreSQL via Testcontainers, plus Playwright end-to-end tests in light and dark mode",
+        "CI with 4 parallel jobs on every push: API tests, app checks, Docker builds and end-to-end",
+        "3 platforms from a single TypeScript codebase",
+        "~$0/month operating cost on scale-to-zero infrastructure",
+      ],
+      lessons:
+        "Test on a real device early. The web build and the emulator both looked fine, but the Play Store build had a black map and a Google Sign-In that hung. The cause was that Google re-signs the app with its own Play App Signing certificate, and that SHA-1 wasn't allowed on the API keys. Now I treat the release-signed build on real hardware as its own environment, not as a formality after web works.",
+    },
+    {
       slug: "operations-dashboard",
       title: "Operations Dashboard",
       subtitle: "Full-stack operations platform for a logistics company",
@@ -104,6 +178,80 @@ const projectsByLanguage: Record<Language, ProjectEntry[]> = {
   ],
 
   es: [
+    {
+      slug: "tempo",
+      title: "Tempo",
+      subtitle: "Motor de reservas multiplataforma para espacios compartidos — iOS, Android y Web",
+      description:
+        "Una plataforma de reservas en tiempo real para espacios compartidos, publicada en iOS, Android y Web desde una sola base de código en TypeScript, con backend en .NET 10, un microservicio de notificaciones y una app Android en Google Play.",
+      tags: ["React Native", "Expo", "TypeScript", ".NET 10", "PostgreSQL", "Google Cloud"],
+      url: "https://tempo-cyan-alpha.vercel.app",
+      githubUrl: "https://github.com/luissosa4599/booking-platform",
+      featured: true,
+      private: false,
+      role: "Ingeniero Full-stack (solo)",
+      timeline: "1 mes",
+      teamSize: "Solo",
+      context:
+        "Apartar un espacio compartido — un cubículo, una sala de lectura, un auditorio — suele implicar filas, hojas de cálculo o apps lentas con una disponibilidad en la que nadie confía. Cuando dos personas quieren el último lugar, la mayoría de los sistemas sobrevenden o fallan con un error poco útil.\n\nCon Tempo reservas en un toque un espacio libre ahora mismo, desde una lista o un mapa ordenados por cercanía. Además tiene lista de espera automática, recordatorios push y un pase QR para registrar la entrada. Hay dos roles: el huésped busca, reserva, cancela y registra su entrada; el anfitrión publica espacios con fotos, horario semanal y ubicación en mapa, bloquea horarios y escanea los QR en la puerta. El demo trae datos realistas de campus de la UNAM y del IPN.",
+      myRole:
+        "Construí el producto completo yo solo: modelo de dominio y diseño de la API, el backend en .NET 10 y su servicio worker, la app en React Native para tres plataformas, las suites de pruebas, el pipeline de CI, la infraestructura en la nube y la publicación en Google Play.\n\nEso incluyó el trabajo menos visible que exige producción: publicar la pantalla de consentimiento de OAuth, restringir las llaves de API, certificados de firma, una política de privacidad con flujo de eliminación de cuenta, el formulario de seguridad de datos y el material gráfico de la ficha de la tienda.",
+      keyDecisions: [
+        {
+          title: "Concurrencia optimista e idempotencia en lugar de bloqueos",
+          body: "Los conflictos por lugar se resuelven con la columna de sistema xmin de PostgreSQL como versión de fila: dos usuarios que compiten por el último lugar nunca sobrevenden, uno recibe un 409. POST /bookings exige un Idempotency-Key, y un índice único resuelve dos peticiones idénticas simultáneas sin llegar a un 500. Cada 409 incluye horarios alternativos cercanos con cupo, así que la app convierte el error en un reintento de un toque.",
+        },
+        {
+          title: "Transactional Outbox y un worker independiente",
+          body: "Al cancelar una reserva se escribe un registro de outbox en la misma transacción que la cancelación, así que el evento de 'se liberó un lugar' nunca se pierde aunque el worker esté caído. Un worker de .NET desplegado por separado promueve a la siguiente persona de la lista de espera, manda recordatorios 30 minutos antes de cada reserva, evita envíos duplicados y limpia solo los tokens de push inválidos.",
+        },
+        {
+          title: "La seguridad vive en la API, no en el cliente",
+          body: "JWT de corta duración con refresh tokens rotativos: reutilizar un token viejo revoca toda la cadena del usuario. La identidad siempre sale del token, nunca de IDs que manda el cliente, y el recurso de otro usuario responde 404 como si no existiera. Las fotos se suben directo a Cloud Storage con URLs firmadas V4 sin llaves, el token de Calendar se cifra con AES-256-GCM y hay rate limiting por IP en todos los endpoints.",
+        },
+        {
+          title: "Una sola base de código offline-first, tres layouts",
+          body: "Expo Router y NativeWind corren las mismas pantallas en teléfono, tablet y escritorio: barra de pestañas, barra lateral o vista maestro-detalle con la selección guardada en la URL. TanStack Query persiste el caché para que la app siga usable sin conexión: los datos viejos se marcan con 'actualizado hace X' y los favoritos y check-ins quedan en cola hasta que vuelve la red.",
+        },
+        {
+          title: "Infraestructura que escala a cero",
+          body: "La API corre en Cloud Run, el worker como Cloud Run Job disparado por Cloud Scheduler, PostgreSQL en Neon con ramas separadas de producción y desarrollo, y la web en Vercel. Todo escala a cero y cuesta alrededor de $0 al mes, con alertas de presupuesto configuradas.",
+        },
+      ],
+      screenshots: [
+        {
+          src: "/tempo/explore-map-dark.jpg",
+          srcLight: "/tempo/explore-map-light.jpg",
+          alt: "Vista de mapa de Explorar en Tempo, en escritorio, con un espacio seleccionado",
+          caption:
+            "Explorar en escritorio: mapa en vivo de espacios disponibles, coloreados por estado, con los horarios del espacio seleccionado en el panel lateral",
+        },
+        {
+          src: "/tempo/explore-list-dark.jpg",
+          srcLight: "/tempo/explore-list-light.jpg",
+          alt: "Vista de lista de Explorar en Tempo con el panel de detalle",
+          caption:
+            "Lista ordenada por cercanía, aviso de la próxima reserva y panel maestro-detalle para reservar con un toque",
+        },
+        {
+          src: "/tempo/resource-dark.jpg",
+          srcLight: "/tempo/resource-light.jpg",
+          alt: "Pantalla de detalle de un espacio en Tempo con fotos y horarios",
+          caption: "Detalle del espacio: carrusel de fotos, número de personas, selector de día y cupo restante en vivo por horario",
+        },
+      ],
+      challenges:
+        "Los bugs más difíciles salieron de las diferencias entre plataformas, no de una sola. En web, el Modal de React Native se renderiza a través de un portal del DOM, así que los colores del tema definidos como variables CSS nunca llegaban a lo que había dentro de una hoja: botones y resaltados se pintaban sin color, sin ningún error. Además, el sistema de gestos nunca entregaba el arrastre del mouse, así que los sliders no se movían. El primero lo resolví de raíz, resolviendo los colores en JavaScript y aplicándolos como estilos en línea; el segundo, poniendo un input de rango nativo invisible encima del slider con el tema de la app.\n\nEl flujo de cancelar con deshacer tenía su propia condición de carrera: después de que el borrado tenía éxito, el caché viejo mostraba por un momento la reserva cancelada antes de que llegara la recarga. Lo resolví actualizando el caché en el mismo tick del éxito. Ninguno de estos bugs aparecía en una captura: cada uno necesitó una prueba end-to-end que esperara los cinco segundos reales, o leer directamente los estilos calculados.",
+      impact: [
+        "En producción: web, API, worker y app Android en Google Play (pruebas internas y cerradas)",
+        "~121 pruebas de integración contra PostgreSQL real con Testcontainers, más pruebas end-to-end con Playwright en modo claro y oscuro",
+        "CI con 4 jobs en paralelo en cada push: pruebas de API, chequeos de la app, builds de Docker y end-to-end",
+        "3 plataformas desde una sola base de código en TypeScript",
+        "~$0/mes de costo operativo con infraestructura que escala a cero",
+      ],
+      lessons:
+        "Probar pronto en un dispositivo real. La web y el emulador se veían bien, pero la versión de Play Store tenía el mapa en negro y el inicio de sesión con Google se quedaba colgado. La causa: Google vuelve a firmar la app con su propio certificado de Play App Signing, y ese SHA-1 no estaba permitido en las llaves de API. Ahora trato el build firmado para release en hardware real como un entorno propio, no como un trámite después de que la web funciona.",
+    },
     {
       slug: "operations-dashboard",
       title: "Operations Dashboard",

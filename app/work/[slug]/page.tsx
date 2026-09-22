@@ -2,6 +2,7 @@ import { CaseStudyView } from "@/components/sections/CaseStudyView"
 
 export async function generateStaticParams() {
   return [
+    { slug: "tempo" },
     { slug: "operations-dashboard" },
     { slug: "salva-lomitos" },
   ]

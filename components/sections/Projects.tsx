@@ -34,6 +34,27 @@ function DashboardVisual() {
   )
 }
 
+function TempoVisual() {
+  return (
+    <>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/tempo/explore-map-dark.jpg"
+        alt=""
+        aria-hidden
+        className="theme-dark-only h-full w-full object-cover object-left-top"
+      />
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/tempo/explore-map-light.jpg"
+        alt=""
+        aria-hidden
+        className="theme-light-only h-full w-full object-cover object-left-top"
+      />
+    </>
+  )
+}
+
 function SalvaLomitosVisual() {
   return (
     <div
@@ -110,6 +131,7 @@ function SalvaLomitosVisual() {
 }
 
 function ProjectVisual({ slug }: { slug: string }) {
+  if (slug === "tempo") return <TempoVisual />
   if (slug === "operations-dashboard") return <DashboardVisual />
   if (slug === "salva-lomitos") return <SalvaLomitosVisual />
   return null
