@@ -12,18 +12,18 @@ import { useLanguage } from "@/lib/i18n"
 // ── Rotating titles ───────────────────────────────────────────────────────────
 const TITLES = {
   en: [
-    "Full Stack Developer",
-    "Frontend Engineer",
-    "Systems Engineer",
+    "Full-Stack Software Engineer",
+    "Angular · React · .NET",
+    "Fintech & Payments",
+    "Mobile · .NET MAUI · React Native",
     "HCI Researcher",
-    "UI/UX Implementer",
   ],
   es: [
-    "Full Stack Developer",
-    "Frontend Engineer",
-    "Ingeniero en Sistemas",
+    "Ingeniero de Software Full-Stack",
+    "Angular · React · .NET",
+    "Fintech y Pagos",
+    "Móvil · .NET MAUI · React Native",
     "Investigador en HCI",
-    "Desarrollador UI/UX",
   ],
 }
 
@@ -53,7 +53,7 @@ export function Hero() {
       greeting: "Hi, I'm",
       name: "Luis Sosa",
       subtitle:
-        "Full stack developer with 4+ years shipping production software in fintech and payments — from banking integrations to internal tools, across web and mobile.",
+        "Full-stack software engineer with 4+ years building and modernizing production systems across fintech, payments, SaaS, and enterprise — from banking integrations to web and mobile apps.",
       projects: "Selected work",
       contact:  "Get in touch",
       resume:   "Download CV",
@@ -62,7 +62,7 @@ export function Hero() {
       greeting: "Hola, soy",
       name: "Luis Sosa",
       subtitle:
-        "Full stack developer con 4 años construyendo software en producción para fintech y pagos — desde integraciones bancarias hasta herramientas internas, en web y mobile.",
+        "Ingeniero de software full-stack con más de 4 años desarrollando y modernizando sistemas en producción para fintech, pagos, SaaS y empresas — desde integraciones bancarias hasta apps web y móviles.",
       projects: "Ver proyectos",
       contact:  "Contáctame",
       resume:   "Descargar CV",

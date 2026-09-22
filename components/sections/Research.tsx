@@ -125,7 +125,7 @@ function CiteButton({ entry }: { entry: ResearchEntry }) {
 
   const bibtex = `@inproceedings{sosa2025dogs,
   title={${entry.title}},
-  author={Sosa, Luis},
+  author={Sosa, Luis and others},
   booktitle={${entry.venue}},
   year={${entry.year}},
   publisher={${entry.publisher}},

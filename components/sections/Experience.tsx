@@ -29,19 +29,23 @@ const EXPERIENCE: ExperienceItem[] = [
     companyFull: "OM Payments / Grupo Cumulus",
     bullets: {
       en: [
-        "Owning the end-to-end implementation of a production SPEI transfer platform — mobile app, .NET backend, banking integration, security architecture, certification, and deployment — for a system processing real customer funds.",
-        "Implementing the banking integration across 7 certification blocks and 13 technical specifications, covering 24 integration endpoints required to enable production SPEI transfers.",
-        "Building secure payment processing with .NET 10, Azure SQL, Azure Key Vault, and RSA/AES encryption, including reconciliation and explicit handling of successful, rejected, and unconfirmed transactions.",
-        "Leading modernization across 4 production fintech platforms, standardizing reusable components, design tokens, and responsive layouts across web, desktop, and mobile.",
+        "Designed and built from scratch an ASP.NET Core (.NET 10) SPEI integration through a provider operating as an indirect participant — webhook APIs, a typed provider client, and background workers — and integrated it into the production mobile app for real customer transfers.",
+        "Led the provider's formal certification across 7 blocks, 13 technical specifications, and 24 integration endpoints, validating each case against sandbox evidence and backing the implementation with 137 automated unit and integration tests.",
+        "Built secure payment processing with Azure SQL, Key Vault, Managed Identity, RSA/AES encryption, and SHA256withRSA signatures, including provider-response verification, pre-payment balance checks, transactional outbox retries, and reconciliation of successful, rejected, and unconfirmed transfers.",
+        "Shipped the SPEI experience in .NET MAUI for Android and iOS — recipient onboarding, CLABE/RFC validation, biometric authorization, duplicate-transfer prevention, offline handling, and receipts — and improved production stability with Application Insights, global exception handling, and fixes for critical startup, threading, timeout, and session issues.",
+        "Led the production web portal upgrade from Angular 19 to 21 and migrated 20+ components from PrimeNG to Kendo UI, adding centralized permissions, route guards, and server-side token invalidation through incremental releases with zero downtime.",
+        "Modernized surrounding legacy systems: extended WPF/WCF back-office workflows, introduced Git and a standard GitHub workflow across 5 production systems and the new SPEI service, documented the production database, and surfaced security and PCI findings that informed a backend remediation plan.",
       ],
       es: [
-        "Soy responsable de la implementación integral de una plataforma de transferencias SPEI en producción — app móvil, backend en .NET, integración bancaria, arquitectura de seguridad, certificación y despliegue — para un sistema que procesa fondos reales de clientes.",
-        "Implemento la integración bancaria a través de 7 bloques de certificación y 13 especificaciones técnicas, cubriendo 24 endpoints de integración requeridos para habilitar las transferencias SPEI en producción.",
-        "Desarrollo el procesamiento seguro de pagos con .NET 10, Azure SQL, Azure Key Vault y cifrado RSA/AES, incluyendo conciliación y manejo explícito de transacciones exitosas, rechazadas y no confirmadas.",
-        "Lidero la modernización de 4 plataformas fintech en producción, estandarizando componentes reutilizables, design tokens y layouts responsivos en web, desktop y mobile.",
+        "Diseñé y construí desde cero en ASP.NET Core (.NET 10) la integración con SPEI a través de un proveedor que opera como participante indirecto — APIs de webhook, un cliente tipado para el proveedor y procesos en segundo plano — y la conecté a la app móvil en producción, donde hoy procesa transferencias reales de clientes.",
+        "Lideré la certificación formal ante el proveedor: 7 bloques, 13 especificaciones técnicas y 24 endpoints de integración, validando cada caso con evidencia real de sandbox y respaldando el desarrollo con 137 pruebas automatizadas unitarias y de integración.",
+        "Implementé el procesamiento seguro de pagos con Azure SQL, Key Vault, Managed Identity, cifrado RSA/AES y firmas SHA256withRSA, incluyendo verificación de las respuestas del proveedor, consulta de saldo antes de pagar, reintentos mediante un outbox transaccional y conciliación de transferencias exitosas, rechazadas y sin confirmar.",
+        "Desarrollo el flujo de transferencias SPEI en .NET MAUI para Android e iOS — alta de beneficiarios, validación de CLABE y RFC, autorización biométrica, prevención de duplicados, manejo sin conexión y comprobantes — y estabilicé la app en producción con Application Insights, manejo global de excepciones y correcciones a fallas críticas de arranque, hilos, timeouts y sesión.",
+        "Lideré la actualización del portal web de Angular 19 a 21 y la migración de más de 20 componentes de PrimeNG a Kendo UI, con permisos centralizados, route guards e invalidación del token en el servidor, todo con entregas graduales y sin interrumpir la operación.",
+        "Modernizo los sistemas legacy de la empresa: amplié el back office en WPF/WCF, introduje Git y un flujo estándar en GitHub en 5 sistemas en producción y en el nuevo servicio SPEI, documenté la base de datos productiva y detecté hallazgos de seguridad y PCI que dieron origen a un plan de corrección del backend.",
       ],
     },
-    stack: [".NET 10", "ASP.NET Core", ".NET MAUI", "C#", "Angular 19", "TypeScript", "Azure SQL", "Azure Key Vault", "SCSS", "PrimeNG"],
+    stack: [".NET 10", "ASP.NET Core", "C#", ".NET MAUI", "Angular 21", "TypeScript", "WPF/WCF", "Azure SQL", "Kendo UI", "Azure Key Vault", "Application Insights", "xUnit"],
   },
   {
     year:        { en: "Oct 2025 — Apr 2026", es: "Oct 2025 — Abr 2026" },
@@ -51,17 +55,17 @@ const EXPERIENCE: ExperienceItem[] = [
     companyUrl:  "https://ifd.com.mx/es/",
     bullets: {
       en: [
-        "Solely owned a client engagement end-to-end — requirements, architecture, development, and delivery — translating technical decisions into business language for direct client communication.",
-        "Delivered on schedule across 5 simultaneous client accounts while adapting to evolving requirements.",
-        "Participated in client-facing kickoff meetings, weekly sprint reviews, and feature scoping sessions.",
+        "Selected to independently own a client project replacing an error-prone, Excel-based fuel inventory process with a role-based web application, leading it from discovery and requirements through technical design, React/Laravel development, and client delivery.",
+        "Led weekly client reviews, translating technical complexity into clear diagrams, tables, and business language so stakeholders could validate requirements, resolve open questions, and make informed decisions.",
+        "Delivered across 5 simultaneous client accounts under Scrum, with testing, pull requests, iterative delivery, and regular client feedback cycles.",
       ],
       es: [
-        "Gestioné de forma autónoma un proyecto completo de principio a fin — requerimientos, arquitectura, desarrollo y entrega — traduciendo decisiones técnicas a lenguaje de negocio con el cliente.",
-        "Entregué en tiempo y forma en 5 cuentas de cliente simultáneas, adaptándome a requerimientos cambiantes.",
-        "Participé en juntas de arranque, revisiones semanales de sprint y sesiones de definición de funcionalidades.",
+        "Me asignaron como único responsable de un proyecto para reemplazar el control de inventario de combustible, que se llevaba en Excel y generaba errores, por una aplicación web con roles; lo llevé desde el levantamiento de requerimientos y el diseño técnico hasta el desarrollo en React y Laravel y la entrega al cliente.",
+        "Dirigí revisiones semanales con el cliente y expliqué los temas técnicos con diagramas, tablas y lenguaje de negocio, lo que le permitió validar requerimientos, resolver dudas y tomar decisiones durante todo el desarrollo.",
+        "Trabajé en 5 cuentas de clientes de forma simultánea bajo Scrum, con pruebas, pull requests, entregas iterativas y retroalimentación constante del cliente.",
       ],
     },
-    stack: ["React", "TailwindCSS", "Laravel", "REST APIs", "GraphQL", "Docker", "AWS"],
+    stack: ["React", "Laravel", "TailwindCSS", "REST APIs", "GraphQL", "Docker", "AWS"],
   },
   {
     year:        { en: "Apr 2024 — Oct 2025", es: "Abr 2024 — Oct 2025" },
@@ -71,17 +75,21 @@ const EXPERIENCE: ExperienceItem[] = [
     companyUrl:  "https://cantilever.com.mx/",
     bullets: {
       en: [
-        "Introduced unit testing (Jest) on a Vue 2 legacy codebase past LTS, safeguarding data integrity for utility meter readings and billing calculations across CFE government systems.",
-        "Delivered frontend modules under strict public procurement deadlines for Mexico's national electric utility (CFE).",
+        "Built a native Android app in Kotlin for the field installation of IoT devices on CFE utility poles, using QR scanning for device identification, Bluetooth Low Energy (BLE) for configuration, and Telegram bots to coordinate and register installations.",
+        "Designed and built a Java/Spring Boot microservice with Apache Kafka that processes IoT network data in biweekly cycles to calculate CFE electrical network usage costs, with an event-driven design aimed at the previous workflow's scalability limits.",
+        "Introduced unit testing with Jest into a legacy Vue 2 codebase past LTS, adding automated coverage for utility billing and meter-reading workflows.",
+        "Built a Flutter mobile version of an existing web platform, adapting its core workflows for mobile use.",
         { text: "Co-author of ICE Management 2.0, officially registered with INDAUTOR — ", linkText: "Reg. No. 03-2025-112411030100-01", href: "/indautor-ice-management.pdf" },
       ],
       es: [
-        "Introduje pruebas unitarias (Jest) en un codebase Vue 2 fuera de soporte LTS, garantizando la integridad de datos de medidores eléctricos y cálculos de facturación en sistemas de CFE.",
-        "Entregué módulos frontend bajo estrictos plazos de licitación pública para la Comisión Federal de Electricidad (CFE).",
+        "Desarrollé una app nativa para Android en Kotlin para la instalación en campo de dispositivos IoT en postes de la CFE, con escaneo QR para identificar cada dispositivo, Bluetooth Low Energy (BLE) para configurarlo y bots de Telegram para coordinar y registrar las instalaciones.",
+        "Diseñé y construí un microservicio en Java con Spring Boot y Apache Kafka que procesa los datos de la red de dispositivos IoT en cortes quincenales para calcular el costo de uso de la red eléctrica de la CFE, con un diseño orientado a eventos para resolver los problemas de escalabilidad del proceso anterior.",
+        "Incorporé pruebas unitarias con Jest a un proyecto legacy en Vue 2 sin soporte LTS, agregando cobertura automatizada a los flujos de facturación y lectura de medidores.",
+        "Desarrollé en Flutter la versión móvil de una plataforma web existente, adaptando sus flujos principales al celular.",
         { text: "Coautor de ICE Management 2.0, registrado ante el INDAUTOR — ", linkText: "Reg. No. 03-2025-112411030100-01", href: "/indautor-ice-management.pdf" },
       ],
     },
-    stack: ["Vue.js", "Nuxt", "Vuex", "GraphQL", "Docker", "AWS", "Jest", "SSH"],
+    stack: ["Kotlin", "BLE", "Java", "Spring Boot", "Apache Kafka", "Flutter", "Vue.js", "Nuxt.js", "Vuex", "GraphQL", "Docker", "Jest"],
     pdf: {
       url:   "/indautor-ice-management.pdf",
       label: { en: "View INDAUTOR certificate", es: "Ver certificado INDAUTOR" },
@@ -95,34 +103,36 @@ const EXPERIENCE: ExperienceItem[] = [
     companyUrl:  "https://grupoteleurban.com/",
     bullets: {
       en: [
-        "Developed and maintained internal business applications supporting operational workflows across multiple departments.",
-        "Collaborated with senior engineers on feature implementation, debugging, and system maintenance.",
+        "Developed and maintained internal business applications with Next.js and React, supporting operational workflows across multiple departments.",
+        "Delivered new features, bug fixes, and system enhancements in collaboration with senior engineers.",
+        "Contributed across frontend and backend codebases in React, Python, Java, C#, and PHP, maintaining applications across different technology stacks.",
       ],
       es: [
-        "Desarrollé y mantuve aplicaciones internas de negocio que soportan flujos operativos en múltiples departamentos.",
-        "Colaboré con ingenieros senior en implementación de funcionalidades, depuración y mantenimiento de sistemas.",
+        "Desarrollé y di mantenimiento a aplicaciones internas en Next.js y React que daban soporte a la operación de varias áreas.",
+        "Implementé nuevas funcionalidades, correcciones y mejoras junto con ingenieros senior.",
+        "Trabajé en código frontend y backend con React, Python, Java, C# y PHP, dando mantenimiento a aplicaciones con distintos stacks.",
       ],
     },
-    stack: ["Python", "C#", "Java", "PHP"],
+    stack: ["Next.js", "React", "Python", "Java", "C#", "PHP"],
   },
   {
     year:        { en: "2018 — 2024", es: "2018 — 2024" },
-    role:        { en: "B.S. Computer Systems Engineering", es: "Ing. en Sistemas Computacionales" },
+    role:        { en: "B.Sc. in Computer Systems Engineering", es: "Ingeniería en Sistemas Computacionales" },
     company:     "ESCOM IPN",
-    companyFull: "ESCOM IPN",
+    companyFull: "Escuela Superior de Cómputo (ESCOM), Instituto Politécnico Nacional (IPN)",
     bullets: {
       en: [
-        "Thesis: computer-vision system for identifying and reuniting lost dogs with their families",
-        "Presented at HCI International 2025 (Gothenburg, Sweden)",
-        "Published in the International Journal of Human-Computer Interaction",
+        "Co-author of the peer-reviewed conference paper \"Application for Locating Dogs in México City Through Pattern Recognition.\"",
+        "Presented at HCI International 2025.",
+        { text: "Published by Springer in CCIS — ", linkText: "DOI 10.1007/978-3-032-12767-9_33", href: "https://doi.org/10.1007/978-3-032-12767-9_33" },
       ],
       es: [
-        "Tesis: sistema de visión por computadora para identificar y reunir perros perdidos con sus familias",
-        "Presentado en HCI International 2025 (Gotemburgo, Suecia)",
-        "Publicado en el International Journal of Human-Computer Interaction",
+        "Coautor del artículo arbitrado \"Application for Locating Dogs in México City Through Pattern Recognition\".",
+        "Presentado en HCI International 2025.",
+        { text: "Publicado por Springer en la serie CCIS — ", linkText: "DOI 10.1007/978-3-032-12767-9_33", href: "https://doi.org/10.1007/978-3-032-12767-9_33" },
       ],
     },
-    stack: ["Python", "OpenCV", "ML"],
+    stack: [],
   },
 ]
 
@@ -133,11 +143,11 @@ export function Experience() {
   const copy = {
     en: {
       title: "Experience",
-      subtitle: "Four years shipping production software — from junior developer to full-stack engineer.",
+      subtitle: "4+ years shipping production software — from junior developer to full-stack engineer.",
     },
     es: {
       title: "Experiencia",
-      subtitle: "Cuatro años construyendo software en producción — de desarrollador junior a ingeniero full-stack.",
+      subtitle: "Más de cuatro años construyendo software en producción — de desarrollador junior a ingeniero full-stack.",
     },
   }[language]
 

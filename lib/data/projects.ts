@@ -64,6 +64,12 @@ const projectsByLanguage: Record<Language, ProjectEntry[]> = {
           alt: "Tempo space detail screen with photos and time slots",
           caption: "Space detail: photo carousel, party size, day picker and live remaining capacity per slot",
         },
+        {
+          src: "/tempo/bookings-dark.jpg",
+          srcLight: "/tempo/bookings-light.jpg",
+          alt: "Tempo Bookings screen on desktop with the QR pass in the detail pane",
+          caption: "Bookings on desktop: upcoming reservations with the QR check-in pass in the master–detail pane",
+        },
       ],
       challenges:
         "The hardest bugs came from the gaps between platforms, not from any single one. On web, React Native's Modal renders through a DOM portal, so theme colors defined as CSS variables never reached anything inside a sheet: buttons and highlights silently rendered with no color at all. The gesture system also never delivered mouse-drag events, so custom sliders didn't move. I fixed the first at the root by resolving colors in JavaScript and applying them as inline styles, and the second by layering an invisible native range input over the themed slider.\n\nThe undo-cancel flow had its own race: after the delete succeeded, the stale cache briefly showed the cancelled booking again before the refetch landed. I fixed it by patching the cache in the same tick as the success. None of these bugs showed up in a screenshot — each needed an end-to-end run that waited the real five seconds, or reading the computed styles directly.",
@@ -138,17 +144,17 @@ const projectsByLanguage: Record<Language, ProjectEntry[]> = {
       title: "Salva Lomitos",
       subtitle: "Mobile biometric system for identifying lost dogs via nose-print matching",
       description:
-        "A mobile system for identifying lost dogs through biometric nose-print matching, built as the applied product behind my HCI International 2025 paper.",
+        "A mobile system for identifying lost dogs through biometric nose-print matching, built as the applied product behind a peer-reviewed paper I co-authored for HCI International 2025.",
       tags: ["Computer Vision", "React Native", "Python", "OpenCV"],
       featured: false,
       private: false,
-      role: "Solo Researcher & Engineer",
+      role: "Co-author & Engineer",
       timeline: "8 months",
-      teamSize: "Solo",
+      teamSize: "Research team",
       context:
         "In Mexico City, thousands of dogs are reported lost every month. Existing reunification systems rely entirely on visual similarity described by owners — an approach prone to error, fraud, and slow matching. There was no reliable biometric identifier being applied in practice.\n\nThis project built and validated a nose-print recognition system. A dog's nose print is unique, analogous to a human fingerprint, and unlike facial recognition, it remains stable across age, weight changes, and lighting conditions. The research question: could a mobile-first system using nose-print matching improve identification accuracy for lost dogs in real urban conditions?",
       myRole:
-        "I was the sole researcher and engineer. I defined the research question, designed the study protocol, collected the dataset in the field, built the computer vision pipeline in Python, developed the mobile prototype in React Native, and authored the paper accepted at HCI International 2025.\n\nThis was intentionally a solo project to test whether a single researcher-engineer could take an idea from literature review to peer-reviewed publication and functional prototype.",
+        "I was a co-author of the peer-reviewed paper presented at HCI International 2025 and published by Springer (CCIS). My work spanned both the research and the engineering: shaping the study protocol, collecting the dataset in the field, building the computer vision pipeline in Python, and developing the mobile prototype in React Native.\n\nThe project took an idea from literature review to a peer-reviewed publication and a working prototype.",
       keyDecisions: [
         {
           title: "Nose-print biometrics over facial recognition",
@@ -239,6 +245,12 @@ const projectsByLanguage: Record<Language, ProjectEntry[]> = {
           alt: "Pantalla de detalle de un espacio en Tempo con fotos y horarios",
           caption: "Detalle del espacio: carrusel de fotos, número de personas, selector de día y cupo restante en vivo por horario",
         },
+        {
+          src: "/tempo/bookings-dark.jpg",
+          srcLight: "/tempo/bookings-light.jpg",
+          alt: "Pantalla de Reservas de Tempo en escritorio con el pase QR en el panel de detalle",
+          caption: "Reservas en escritorio: próximas reservas con el pase QR de entrada en el panel maestro-detalle",
+        },
       ],
       challenges:
         "Los bugs más difíciles salieron de las diferencias entre plataformas, no de una sola. En web, el Modal de React Native se renderiza a través de un portal del DOM, así que los colores del tema definidos como variables CSS nunca llegaban a lo que había dentro de una hoja: botones y resaltados se pintaban sin color, sin ningún error. Además, el sistema de gestos nunca entregaba el arrastre del mouse, así que los sliders no se movían. El primero lo resolví de raíz, resolviendo los colores en JavaScript y aplicándolos como estilos en línea; el segundo, poniendo un input de rango nativo invisible encima del slider con el tema de la app.\n\nEl flujo de cancelar con deshacer tenía su propia condición de carrera: después de que el borrado tenía éxito, el caché viejo mostraba por un momento la reserva cancelada antes de que llegara la recarga. Lo resolví actualizando el caché en el mismo tick del éxito. Ninguno de estos bugs aparecía en una captura: cada uno necesitó una prueba end-to-end que esperara los cinco segundos reales, o leer directamente los estilos calculados.",
@@ -313,17 +325,17 @@ const projectsByLanguage: Record<Language, ProjectEntry[]> = {
       title: "Salva Lomitos",
       subtitle: "Sistema móvil biométrico para identificar perros perdidos mediante huella nasal",
       description:
-        "Un sistema móvil para identificar perros perdidos mediante biometría de huella nasal, construido como el producto aplicado detrás de mi paper de HCI International 2025.",
+        "Un sistema móvil para identificar perros perdidos mediante biometría de huella nasal, construido como el producto aplicado detrás de un artículo arbitrado del que fui coautor para HCI International 2025.",
       tags: ["Computer Vision", "React Native", "Python", "OpenCV"],
       featured: false,
       private: false,
-      role: "Investigador y Engineer Solo",
+      role: "Coautor e Ingeniero",
       timeline: "8 meses",
-      teamSize: "Solo",
+      teamSize: "Equipo de investigación",
       context:
         "En Ciudad de México, miles de perros son reportados como perdidos cada mes. Los sistemas existentes de reencuentro dependen enteramente de la similitud visual descrita por los dueños — un enfoque propenso a errores, fraude y matching lento. No había ningún identificador biométrico siendo aplicado en la práctica.\n\nEste proyecto construyó y validó un sistema de reconocimiento de huella nasal. La huella nasal de un perro es única, análoga a la huella dactilar humana, y a diferencia del reconocimiento facial, permanece estable a través del tiempo, cambios de peso y condiciones de iluminación.",
       myRole:
-        "Fui el único investigador e ingeniero. Definí la pregunta de investigación, diseñé el protocolo del estudio, recolecté el dataset en campo, construí el pipeline de visión por computadora en Python, desarrollé el prototipo móvil en React Native y escribí el paper aceptado en HCI International 2025.\n\nEste fue intencionalmente un proyecto individual para probar si un researcher-engineer solo podía llevar una idea desde la revisión de literatura hasta una publicación arbitrada y un prototipo funcional.",
+        "Fui coautor del artículo arbitrado presentado en HCI International 2025 y publicado por Springer (CCIS). Mi trabajo abarcó tanto la investigación como la ingeniería: el diseño del protocolo del estudio, la recolección del dataset en campo, el pipeline de visión por computadora en Python y el prototipo móvil en React Native.\n\nEl proyecto llevó una idea desde la revisión de literatura hasta una publicación arbitrada y un prototipo funcional.",
       keyDecisions: [
         {
           title: "Biometría de huella nasal sobre reconocimiento facial",

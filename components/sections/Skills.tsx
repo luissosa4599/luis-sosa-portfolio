@@ -5,9 +5,11 @@ import type { SimpleIcon } from "simple-icons"
 import {
   siVuedotjs, siNuxt, siReact, siAngular, siNextdotjs,
   siTypescript, siJavascript, siHtml5, siCss, siTailwindcss, siSass,
-  siNodedotjs, siPhp, siLaravel, siPython, siOpenjdk, siDotnet,
-  siDocker, siMysql, siSqlite, siLinux,
-  siGit, siGithub, siPostman, siGraphql, siJest,
+  siNodedotjs, siLaravel, siPython, siOpenjdk, siDotnet, siSpringboot,
+  siDocker, siMysql, siPostgresql, siLinux, siApachekafka,
+  siGit, siGithubactions, siGraphql, siJest, siJsonwebtokens,
+  siReactquery, siExpo, siFlutter, siKotlin, siIos, siAndroid,
+  siGooglecloud, siVercel,
 } from "simple-icons"
 import { motion, useInView, type Variants } from "framer-motion"
 import { cn } from "@/lib/utils"
@@ -73,7 +75,7 @@ function SkillIcon({ icon }: { icon: SimpleIcon }) {
 }
 
 // ── Skill data ───────────────────────────────────────────────────────────────
-type SkillItem = { label: string; icon?: SimpleIcon }
+type SkillItem = { label: string; es?: string; icon?: SimpleIcon }
 type SkillGroup = {
   category: { en: string; es: string }
   items: SkillItem[]
@@ -83,59 +85,108 @@ const SKILL_GROUPS: SkillGroup[] = [
   {
     category: { en: "Frontend", es: "Frontend" },
     items: [
-      { label: "Vue.js",       icon: siVuedotjs    },
-      { label: "Nuxt",         icon: siNuxt        },
-      { label: "React",        icon: siReact       },
-      { label: "Angular",      icon: siAngular     },
-      { label: "Next.js",      icon: siNextdotjs   },
-      { label: "TypeScript",   icon: siTypescript  },
-      { label: "JavaScript",   icon: siJavascript  },
-      { label: "HTML5",        icon: siHtml5       },
-      { label: "CSS",          icon: siCss         },
-      { label: "SCSS",         icon: siSass        },
-      { label: "Tailwind CSS", icon: siTailwindcss },
+      { label: "Angular",          icon: siAngular     },
+      { label: "React",            icon: siReact       },
+      { label: "Next.js",          icon: siNextdotjs   },
+      { label: "Vue.js",           icon: siVuedotjs    },
+      { label: "Nuxt.js",          icon: siNuxt        },
+      { label: "TypeScript",       icon: siTypescript  },
+      { label: "JavaScript (ES6+)", icon: siJavascript },
+      { label: "HTML5",            icon: siHtml5       },
+      { label: "CSS3",             icon: siCss         },
+      { label: "SCSS",             icon: siSass        },
+      { label: "TailwindCSS",      icon: siTailwindcss },
+      { label: "Kendo UI"                              },
+      { label: "PrimeNG"                               },
+      { label: "TanStack Query",   icon: siReactquery  },
+      { label: "Zustand"                               },
+      { label: "Vuex"                                  },
+      { label: "Pinia"                                 },
     ],
   },
   {
-    category: { en: "State Management", es: "Estado" },
+    category: { en: "Backend & APIs", es: "Backend y APIs" },
     items: [
-      { label: "Vuex" },
-      { label: "Pinia" },
+      { label: "ASP.NET Core",   icon: siDotnet     },
+      { label: ".NET",           icon: siDotnet     },
+      { label: "EF Core"                            },
+      { label: "C#"                                 },
+      { label: "Java",           icon: siOpenjdk    },
+      { label: "Spring Boot",    icon: siSpringboot },
+      { label: "Node.js",        icon: siNodedotjs  },
+      { label: "Laravel (PHP)",  icon: siLaravel    },
+      { label: "Python",         icon: siPython     },
+      { label: "REST APIs"                          },
+      { label: "GraphQL",        icon: siGraphql    },
     ],
   },
   {
-    category: { en: "Backend", es: "Backend" },
+    category: { en: "Mobile & Desktop", es: "Móvil y escritorio" },
     items: [
-      { label: "Node.js",    icon: siNodedotjs },
-      { label: "PHP",        icon: siPhp       },
-      { label: "Laravel",    icon: siLaravel   },
-      { label: "Python",     icon: siPython    },
-      { label: "Java",       icon: siOpenjdk   },
-      { label: ".NET · C#",  icon: siDotnet    },
+      { label: ".NET MAUI",           icon: siDotnet  },
+      { label: "React Native (Expo)", icon: siExpo    },
+      { label: "Flutter",             icon: siFlutter },
+      { label: "Kotlin (Android)",    icon: siKotlin  },
+      { label: "WPF"                                  },
+      { label: "WCF"                                  },
+      { label: "XAML/MVVM"                            },
+      { label: "iOS",                 icon: siIos     },
+      { label: "Android",             icon: siAndroid },
+      { label: "BLE"                                  },
+      { label: "QR/Camera Scanning", es: "Escaneo QR con cámara"                   },
     ],
   },
   {
-    category: { en: "Infrastructure", es: "Infraestructura" },
+    category: { en: "Architecture & Data", es: "Arquitectura y datos" },
     items: [
-      { label: "Docker",     icon: siDocker },
-      { label: "MySQL",      icon: siMysql  },
-      { label: "SQL Server", icon: siSqlite },
-      { label: "Azure"                      },
-      { label: "AWS"                        },
-      { label: "Linux",      icon: siLinux  },
+      { label: "Microservices", es: "Microservicios"                              },
+      { label: "Event-Driven Architecture", es: "Arquitectura orientada a eventos"                  },
+      { label: "Transactional Outbox"                       },
+      { label: "Apache Kafka",  icon: siApachekafka         },
+      { label: "SQL"                                        },
+      { label: "PostgreSQL",    icon: siPostgresql          },
+      { label: "Azure SQL"                                  },
+      { label: "SQL Server"                                 },
+      { label: "MySQL",         icon: siMysql               },
     ],
   },
   {
-    category: { en: "Tools & Practices", es: "Herramientas y prácticas" },
+    category: { en: "Cloud & DevOps", es: "Cloud y DevOps" },
     items: [
-      { label: "Git",           icon: siGit     },
-      { label: "GitHub",        icon: siGithub  },
-      { label: "Postman",       icon: siPostman },
-      { label: "GraphQL",       icon: siGraphql },
-      { label: "Jest",          icon: siJest    },
-      { label: "Agile · Scrum"                  },
-      { label: "REST APIs"                      },
-      { label: "Code Review"                    },
+      { label: "Microsoft Azure"                       },
+      { label: "AWS"                                   },
+      { label: "Google Cloud",   icon: siGooglecloud   },
+      { label: "Docker",         icon: siDocker        },
+      { label: "Git",            icon: siGit           },
+      { label: "GitHub Actions", icon: siGithubactions },
+      { label: "CI/CD"                                 },
+      { label: "Linux",          icon: siLinux         },
+      { label: "Vercel",         icon: siVercel        },
+    ],
+  },
+  {
+    category: { en: "Security & Testing", es: "Seguridad y pruebas" },
+    items: [
+      { label: "JWT",              icon: siJsonwebtokens },
+      { label: "OAuth2/OIDC"                             },
+      { label: "RSA/AES Encryption", es: "Cifrado RSA/AES"                      },
+      { label: "SHA256withRSA Signatures", es: "Firmas SHA256withRSA"                },
+      { label: "Azure Key Vault"                         },
+      { label: "Managed Identity"                        },
+      { label: "xUnit"                                   },
+      { label: "Testcontainers"                          },
+      { label: "Playwright"                              },
+      { label: "Jest",             icon: siJest          },
+    ],
+  },
+  {
+    category: { en: "Practices", es: "Prácticas" },
+    items: [
+      { label: "Scrum"              },
+      { label: "Agile"              },
+      { label: "Pull Requests"      },
+      { label: "Code Review"        },
+      { label: "Continuous Delivery", es: "Entrega continua" },
     ],
   },
 ]
@@ -171,7 +222,7 @@ function SkillGroupItem({
       </motion.span>
 
       <motion.div variants={pillsRowVariant} className="flex flex-wrap gap-2.5">
-        {group.items.map(({ label, icon }) => (
+        {group.items.map(({ label, es, icon }) => (
           <motion.span
             key={label}
             variants={pillVariant}
@@ -179,7 +230,7 @@ function SkillGroupItem({
             style={{ backgroundColor: "var(--badge-bg)" }}
           >
             {icon && <SkillIcon icon={icon} />}
-            {label}
+            {language === "es" && es ? es : label}
           </motion.span>
         ))}
       </motion.div>
