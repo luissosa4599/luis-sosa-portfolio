@@ -74,6 +74,11 @@ En Framer Motion v12 + SSR, cuando `initial="hidden"` y `animate="hidden"` coinc
 ### Language toggle
 `LanguageTransition` usa `key={language}` dentro de `AnimatePresence mode="wait"`. Cambiar idioma remonta todo el tree. Como `hasBeenReady = true` después del primer ciclo, el nuevo `PageReadyProvider` arranca con `ready = true` y las animaciones se ejecutan en el siguiente frame.
 
+La transición anima **solo `opacity`**. Un `transform` (p. ej. `y`) en ese `motion.div` lo convierte en containing block de todos los descendientes `position: fixed` (header, `DustField`, dot-grid, `SectionProgress`, `BackToTop`) y los hace saltar durante la transición.
+
+### DustField
+Partículas de fondo (`components/primitives/DustField.tsx`) creadas imperativamente en `useEffect`. Con `prefers-reduced-motion` se renderizan estáticas (sin `animation`), no se ocultan.
+
 ### Hero
 `Hero.tsx` no usa `usePageReady`. Usa `useMounted` (2 rAFs, ~32ms) para garantizar que el browser haya pintado un frame antes de arrancar sus animaciones.
 

@@ -10,7 +10,6 @@ export function DustField() {
   const reduced = useReducedMotion()
 
   useEffect(() => {
-    if (reduced) return
     const container = ref.current
     if (!container) return
 
@@ -34,7 +33,7 @@ export function DustField() {
         background: var(--dust-color);
         opacity: ${op};
         pointer-events: none;
-        animation: ${anim} ${dur}s ease-in-out ${delay}s infinite;
+        ${reduced ? "" : `animation: ${anim} ${dur}s ease-in-out ${delay}s infinite;`}
       `
       container.appendChild(el)
       created.push(el)
