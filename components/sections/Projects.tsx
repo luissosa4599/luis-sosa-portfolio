@@ -6,6 +6,7 @@ import { Container } from "@/components/layout/Container"
 import { SectionLabel } from "@/components/primitives/SectionLabel"
 import { FadeIn } from "@/components/primitives/FadeIn"
 import { ScrollReveal } from "@/components/primitives/ScrollReveal"
+import { ThemedImage } from "@/components/primitives/ThemedImage"
 import { getProjects } from "@/lib/data/projects"
 import { useLanguage } from "@/lib/i18n"
 import { cardReveal } from "@/lib/motion"
@@ -13,45 +14,31 @@ import type { ProjectEntry } from "@/lib/types"
 
 // ─── Visuals ──────────────────────────────────────────────────────────────────
 
+const CARD_IMAGE_SIZES = "(min-width: 768px) 420px, 100vw"
+
 function DashboardVisual() {
   return (
-    <>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src="/dashboard-dark.png"
-        alt=""
-        aria-hidden
-        className="theme-dark-only h-full w-full object-cover object-left-top"
-      />
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src="/dashboard-light.png"
-        alt=""
-        aria-hidden
-        className="theme-light-only h-full w-full object-cover object-left-top"
-      />
-    </>
+    <ThemedImage
+      src="/dashboard-dark.png"
+      srcLight="/dashboard-light.png"
+      alt=""
+      sizes={CARD_IMAGE_SIZES}
+      fill
+      className="object-cover object-left-top"
+    />
   )
 }
 
 function TempoVisual() {
   return (
-    <>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src="/tempo/explore-map-dark.jpg"
-        alt=""
-        aria-hidden
-        className="theme-dark-only h-full w-full object-cover object-left-top"
-      />
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src="/tempo/explore-map-light.jpg"
-        alt=""
-        aria-hidden
-        className="theme-light-only h-full w-full object-cover object-left-top"
-      />
-    </>
+    <ThemedImage
+      src="/tempo/explore-map-dark.jpg"
+      srcLight="/tempo/explore-map-light.jpg"
+      alt=""
+      sizes={CARD_IMAGE_SIZES}
+      fill
+      className="object-cover object-left-top"
+    />
   )
 }
 
@@ -200,7 +187,7 @@ function ProjectCard({ project }: { project: ProjectEntry }) {
               href={project.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="relative z-10 inline-flex items-center gap-1.5 text-xs text-muted-2 hover:text-accent transition-colors duration-150"
+              className="relative z-10 inline-flex items-center gap-1.5 py-1 -my-1 text-xs text-muted-2 hover:text-accent transition-colors duration-150"
             >
               <ExternalLink size={12} />
               {language === "es" ? "Abrir proyecto" : "Open project"}

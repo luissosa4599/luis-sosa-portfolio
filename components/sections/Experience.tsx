@@ -271,7 +271,7 @@ export function Experience() {
                         href={item.pdf.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="mt-3 inline-flex items-center gap-1.5 text-xs text-muted-2 hover:text-accent transition-colors duration-150"
+                        className="mt-2 -mb-1 inline-flex items-center gap-1.5 py-1 text-xs text-muted-2 hover:text-accent transition-colors duration-150"
                       >
                         <ExternalLink size={12} />
                         {item.pdf.label[language]}

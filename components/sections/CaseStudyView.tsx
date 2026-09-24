@@ -5,6 +5,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react"
 import { motion } from "framer-motion"
 import { Container } from "@/components/layout/Container"
 import { FadeIn } from "@/components/primitives/FadeIn"
+import { ThemedImage } from "@/components/primitives/ThemedImage"
 import { getProjects } from "@/lib/data/projects"
 import { useLanguage } from "@/lib/i18n"
 import type { CaseStudyDecision, CaseStudyScreenshot } from "@/lib/types"
@@ -29,6 +30,9 @@ function CsHeading({ children }: { children: React.ReactNode }) {
     </div>
   )
 }
+
+// Screenshots live in max-w-6xl / max-w-2xl containers
+const SCREENSHOT_SIZES = "(min-width: 1200px) 1100px, 100vw"
 
 // ─── Sub-sections ─────────────────────────────────────────────────────────────
 
@@ -56,17 +60,7 @@ function Screenshots({ screenshots }: { screenshots: CaseStudyScreenshot[] }) {
       {screenshots.map((s, i) => (
         <figure key={i}>
           <div className="rounded-xl overflow-hidden border border-border">
-            {s.srcLight ? (
-              <>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={s.src} alt={s.alt} className="theme-dark-only w-full h-auto" />
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={s.srcLight} alt={s.alt} className="theme-light-only w-full h-auto" />
-              </>
-            ) : (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={s.src} alt={s.alt} className="w-full h-auto" />
-            )}
+            <ThemedImage src={s.src} srcLight={s.srcLight} alt={s.alt} sizes={SCREENSHOT_SIZES} />
           </div>
           {s.caption && (
             <figcaption className="mt-2 text-xs text-muted-2 text-center">
@@ -137,7 +131,7 @@ export function CaseStudyView({ slug }: { slug: string }) {
   }
 
   return (
-    <div className="relative z-10">
+    <main id="main" tabIndex={-1} className="relative z-10 outline-none">
       {/* Dot-grid background */}
       <div
         aria-hidden
@@ -219,29 +213,12 @@ export function CaseStudyView({ slug }: { slug: string }) {
           {project.screenshots && project.screenshots.length > 0 && (
             <FadeIn delay={0.1} className="mt-10">
               <div className="rounded-2xl overflow-hidden border border-border">
-                {project.screenshots[0].srcLight ? (
-                  <>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={project.screenshots[0].src}
-                      alt={project.screenshots[0].alt}
-                      className="theme-dark-only w-full h-auto"
-                    />
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={project.screenshots[0].srcLight}
-                      alt={project.screenshots[0].alt}
-                      className="theme-light-only w-full h-auto"
-                    />
-                  </>
-                ) : (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={project.screenshots[0].src}
-                    alt={project.screenshots[0].alt}
-                    className="w-full h-auto"
-                  />
-                )}
+                <ThemedImage
+                  src={project.screenshots[0].src}
+                  srcLight={project.screenshots[0].srcLight}
+                  alt={project.screenshots[0].alt}
+                  sizes={SCREENSHOT_SIZES}
+                />
               </div>
               {project.screenshots[0].caption && (
                 <p className="mt-2 text-xs text-muted-2 text-center">
@@ -371,6 +348,6 @@ export function CaseStudyView({ slug }: { slug: string }) {
         </Container>
 
       </div>
-    </div>
+    </main>
   )
 }

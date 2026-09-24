@@ -35,7 +35,7 @@ export function SiteFooter() {
                 href={link.href}
                 target={link.external ? "_blank" : undefined}
                 rel={link.external ? "noopener noreferrer" : undefined}
-                className="text-sm text-muted hover:text-foreground transition-colors duration-200"
+                className="py-1 -my-1 text-sm text-muted hover:text-foreground transition-colors duration-200"
               >
                 {link.label}
               </a>

@@ -26,7 +26,7 @@ export default function Home() {
       <DustField />
       <SiteHeader />
       <SectionProgress />
-      <main className="relative z-10">
+      <main id="main" tabIndex={-1} className="relative z-10 outline-none">
         <Hero />
         <About />
         <Projects />

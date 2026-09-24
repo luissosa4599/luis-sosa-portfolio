@@ -74,7 +74,7 @@ export function Testimonials() {
                     href={t.pdf}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 text-xs text-muted-2 hover:text-accent transition-colors duration-150"
+                    className="inline-flex items-center gap-1.5 py-1 -my-1 text-xs text-muted-2 hover:text-accent transition-colors duration-150"
                   >
                     <ExternalLink size={12} />
                     {language === "es" ? "Ver carta completa" : "View full letter"}

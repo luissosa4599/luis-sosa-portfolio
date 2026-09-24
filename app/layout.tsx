@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google"
 import { ThemeProvider } from "next-themes"
 import { LanguageTransition } from "@/components/layout/LanguageTransition"
 import { SmoothScroll } from "@/components/layout/SmoothScroll"
+import { SkipLink } from "@/components/layout/SkipLink"
 import { LanguageProvider } from "@/lib/i18n"
 import "./globals.css"
 
@@ -37,6 +38,7 @@ export const metadata: Metadata = {
       "Full-stack engineer with 4+ years building production software in fintech, payments, SaaS, and enterprise.",
     creator: "@luissosa4599",
   },
+  alternates: { canonical: "/" },
   robots: { index: true, follow: true },
 }
 
@@ -58,6 +60,7 @@ export default function RootLayout({
           enableSystem={true}
         >
           <LanguageProvider>
+            <SkipLink />
             <LanguageTransition>
               <SmoothScroll>{children}</SmoothScroll>
             </LanguageTransition>

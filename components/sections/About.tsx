@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import { FadeIn } from "@/components/primitives/FadeIn"
 import { Container } from "@/components/layout/Container"
 import { useLanguage } from "@/lib/i18n"
@@ -37,10 +38,11 @@ export function About() {
           <div className="flex flex-col sm:flex-row items-start gap-6">
 
             {/* Photo */}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <Image
               src="/photo.png"
               alt="Luis Sosa"
+              width={64}
+              height={64}
               className="w-16 h-16 rounded-full shrink-0 object-cover border border-border"
             />
 

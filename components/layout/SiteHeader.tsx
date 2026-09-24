@@ -13,7 +13,7 @@ import { LanguageToggle } from "@/components/primitives/LanguageToggle"
 // ── Nav config ───────────────────────────────────────────────────────────────
 const NAV_LABELS = {
   en: ["Home", "About", "Work", "Skills", "Experience", "Research", "Contact"],
-  es: ["Inicio", "Sobre mí", "Proyectos", "Skills", "Experiencia", "Research", "Contacto"],
+  es: ["Inicio", "Sobre mí", "Proyectos", "Skills", "Experiencia", "Investigación", "Contacto"],
 } as const
 
 const NAV_LINKS = [
@@ -103,7 +103,7 @@ export function SiteHeader() {
             <BracketLogo onClick={() => setOpen(false)} />
 
             {/* Desktop nav — centered via flex-1 */}
-            <nav className="hidden md:flex flex-1 items-center justify-center gap-0.5">
+            <nav className="hidden lg:flex flex-1 items-center justify-center gap-0.5">
               {NAV_LINKS.map((link, i) => {
                 const isActive = activeSection === link.section
                 return (
@@ -143,7 +143,7 @@ export function SiteHeader() {
                 aria-label={open ? "Close menu" : "Open menu"}
                 aria-expanded={open}
                 onClick={() => setOpen((v) => !v)}
-                className="md:hidden flex items-center justify-center w-8 h-8 rounded-lg text-muted hover:text-foreground hover:bg-surface transition-colors"
+                className="lg:hidden flex items-center justify-center w-8 h-8 rounded-lg text-muted hover:text-foreground hover:bg-surface transition-colors"
               >
                 {open ? <X size={16} /> : <Menu size={16} />}
               </button>
@@ -160,7 +160,7 @@ export function SiteHeader() {
                 animate={{ height: "auto", opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
                 transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-                className="overflow-hidden md:hidden border-t border-border"
+                className="overflow-hidden lg:hidden border-t border-border"
               >
                 <nav className="flex flex-col px-4 py-3 gap-0.5">
                   {NAV_LINKS.map((link, i) => {
@@ -212,7 +212,7 @@ export function SiteHeader() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-40 md:hidden bg-background/40 backdrop-blur-[2px]"
+            className="fixed inset-0 z-40 lg:hidden bg-background/40 backdrop-blur-[2px]"
             onClick={() => setOpen(false)}
           />
         )}
