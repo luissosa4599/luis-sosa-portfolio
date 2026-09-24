@@ -44,9 +44,8 @@ export function Hero() {
     }, 2600)
     return () => clearInterval(id)
   }, [language, reduced])
-
-  // Reset index on language change
-  useEffect(() => { setTitleIndex(0) }, [language])
+  // No manual reset on language change: LanguageTransition remounts the tree
+  // (key={language}), so titleIndex starts at 0 again.
 
   const copy = {
     en: {
@@ -182,10 +181,7 @@ export function Hero() {
             </a>
             <a
               href="#contact"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-md border border-border text-sm font-medium text-muted hover:text-foreground transition-colors duration-200"
-              style={{ background: "var(--btn-bg)" }}
-              onMouseEnter={e => (e.currentTarget.style.background = "var(--btn-bg-hover)")}
-              onMouseLeave={e => (e.currentTarget.style.background = "var(--btn-bg)")}
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-md border border-border bg-[var(--btn-bg)] hover:bg-[var(--btn-bg-hover)] text-sm font-medium text-muted hover:text-foreground transition-colors duration-200"
             >
               <Mail size={14} />
               {copy.contact}
@@ -194,10 +190,7 @@ export function Hero() {
               href={language === "en" ? "/CV_Luis_Sosa.pdf" : "/CV_Luis_Alberto.pdf"}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-md border border-border text-sm font-medium text-muted hover:text-foreground transition-colors duration-200"
-              style={{ background: "var(--btn-bg)" }}
-              onMouseEnter={e => (e.currentTarget.style.background = "var(--btn-bg-hover)")}
-              onMouseLeave={e => (e.currentTarget.style.background = "var(--btn-bg)")}
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-md border border-border bg-[var(--btn-bg)] hover:bg-[var(--btn-bg-hover)] text-sm font-medium text-muted hover:text-foreground transition-colors duration-200"
             >
               <Download size={14} />
               {copy.resume}

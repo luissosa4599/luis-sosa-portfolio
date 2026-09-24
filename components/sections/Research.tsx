@@ -31,14 +31,14 @@ function DogSilhouette({ className }: { className?: string }) {
 
 // ─── Detection circle ──────────────────────────────────────────────────────────
 
-function DetectionCircle({ reduced }: { reduced: boolean }) {
+function DetectionCircle() {
   return (
     <div className="relative w-72 h-72 md:w-96 md:h-96">
       {/* Expanding pulse rings */}
       {[0, 1, 2].map((i) => (
         <motion.div
           key={i}
-          className="absolute inset-0 rounded-full border border-accent/25"
+          className="absolute inset-0 rounded-full border border-accent/25 motion-reduce:hidden"
           animate={{ scale: [1, 1.35, 1.7], opacity: [0.35, 0.12, 0] }}
           transition={{ duration: 2.8, repeat: Infinity, delay: i * 0.9, ease: "easeOut" }}
         />
@@ -71,23 +71,21 @@ function DetectionCircle({ reduced }: { reduced: boolean }) {
 
       {/* Spinning arc — mid ring, counter-clockwise */}
       <div
-        className="absolute inset-4 rounded-full pointer-events-none z-10"
+        className="absolute inset-4 rounded-full pointer-events-none z-10 animate-[spin-ccw_6s_linear_infinite] motion-reduce:animate-none"
         style={{
           border: "2px solid transparent",
           borderBottomColor: "hsl(213 90% 53% / 0.85)",
           borderLeftColor: "hsl(213 90% 53% / 0.30)",
-          animation: "spin-ccw 6s linear infinite",
         }}
       />
 
       {/* Spinning arc — innermost, clockwise */}
       <div
-        className="absolute inset-8 rounded-full pointer-events-none z-10"
+        className="absolute inset-8 rounded-full pointer-events-none z-10 animate-[spin-cw_9s_linear_infinite] motion-reduce:animate-none"
         style={{
           border: "1.5px solid transparent",
           borderTopColor: "hsl(213 90% 53% / 0.70)",
           borderRightColor: "hsl(213 90% 53% / 0.25)",
-          animation: "spin-cw 9s linear infinite",
         }}
       />
     </div>
@@ -146,7 +144,7 @@ function CiteButton({ entry }: { entry: ResearchEntry }) {
   return (
     <button
       onClick={handleCopy}
-      className="inline-flex items-center gap-1.5 text-sm text-muted hover:text-foreground transition-colors duration-200"
+      className="inline-flex items-center gap-1.5 py-1 -my-1 text-sm text-muted hover:text-foreground transition-colors duration-200"
     >
       {copied ? <Check size={13} className="text-accent" /> : <Copy size={13} />}
       {copied ? "Copied!" : "Cite (BibTeX)"}
@@ -158,7 +156,7 @@ function CiteButton({ entry }: { entry: ResearchEntry }) {
 // Uses direct animate object values (not variant name strings) so Framer Motion
 // does NOT propagate them to descendants — this prevents killing the arcs' own
 // rotate animations, which would happen with string-based variant propagation.
-function DetectionCircleReveal({ reduced }: { reduced: boolean }) {
+function DetectionCircleReveal() {
   const ref = useRef<HTMLDivElement>(null)
   const ready = usePageReady()
   const inView = useInView(ref, { once: true, margin: "0px" })
@@ -170,7 +168,7 @@ function DetectionCircleReveal({ reduced }: { reduced: boolean }) {
       animate={inView && ready ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.75 }}
       transition={{ duration: 0.7, ease: "easeOut", delay: 0.25 }}
     >
-      <DetectionCircle reduced={reduced} />
+      <DetectionCircle />
     </motion.div>
   )
 }
@@ -204,7 +202,7 @@ export function Research() {
           >
             {/* Section label */}
             <motion.div variants={seq(0, reduced)}>
-              <SectionLabel>{language === "es" ? "Research" : "Research"}</SectionLabel>
+              <SectionLabel>{language === "es" ? "Investigación" : "Research"}</SectionLabel>
             </motion.div>
 
             {/* Heading */}
@@ -284,7 +282,7 @@ export function Research() {
               <Badge icon={<ScanFace size={22} />} wrapperStyle={{ bottom: "9%", right: "24%" }} />
 
               {/* Detection circle — centered */}
-              <DetectionCircleReveal reduced={reduced} />
+              <DetectionCircleReveal />
             </div>
           </div>
 

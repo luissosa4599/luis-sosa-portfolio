@@ -1,7 +1,6 @@
 import { ImageResponse } from "next/og"
 
-export const runtime = "edge"
-export const alt = "Luis Sosa — Frontend Engineer"
+export const alt = "Luis Sosa — Full-Stack Software Engineer"
 export const size = { width: 1200, height: 630 }
 export const contentType = "image/png"
 
@@ -51,6 +50,8 @@ export default function OGImage() {
         {/* Headline */}
         <div
           style={{
+            display: "flex",
+            flexDirection: "column",
             fontSize: 64,
             fontWeight: 700,
             color: "#F0F6FC",
@@ -59,10 +60,11 @@ export default function OGImage() {
             marginBottom: 32,
           }}
         >
-          Frontend engineer{"\n"}
-          for{" "}
-          <span style={{ color: "#4DA6FF" }}>dashboards</span>
-          {"\n"}& data products
+          <span>Full-stack engineer for</span>
+          <span style={{ display: "flex", gap: 16 }}>
+            <span style={{ color: "#4DA6FF" }}>fintech</span>
+            <span>& payments</span>
+          </span>
         </div>
 
         {/* Tagline */}
@@ -71,10 +73,10 @@ export default function OGImage() {
             fontSize: 22,
             color: "#8B949E",
             lineHeight: 1.5,
-            maxWidth: 600,
+            maxWidth: 640,
           }}
         >
-          Building fast, clear interfaces for remote teams.
+          4+ years building production software — banking integrations, web and mobile apps.
         </div>
 
         {/* Bottom badge */}
@@ -101,7 +103,7 @@ export default function OGImage() {
             }}
           />
           <span style={{ fontSize: 14, color: "#4DA6FF", fontWeight: 500 }}>
-            Open to frontend roles
+            Open to full-time remote
           </span>
         </div>
       </div>

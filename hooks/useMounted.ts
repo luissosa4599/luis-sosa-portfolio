@@ -16,8 +16,8 @@ export function useMounted(): boolean {
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    let id1: number, id2: number
-    id1 = requestAnimationFrame(() => {
+    let id2: number
+    const id1 = requestAnimationFrame(() => {
       id2 = requestAnimationFrame(() => setMounted(true))
     })
     return () => {

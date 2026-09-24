@@ -1,10 +1,12 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useSyncExternalStore } from "react"
 import { useTheme } from "next-themes"
 import { Moon, Sun } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import { cn } from "@/lib/utils"
+
+const subscribeNoop = () => () => {}
 
 interface ThemeToggleProps {
   className?: string
@@ -12,9 +14,8 @@ interface ThemeToggleProps {
 
 export function ThemeToggle({ className }: ThemeToggleProps) {
   const { resolvedTheme, setTheme } = useTheme()
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => setMounted(true), [])
+  // false on the server and during hydration, true afterwards
+  const mounted = useSyncExternalStore(subscribeNoop, () => true, () => false)
 
   const isDark = resolvedTheme === "dark"
 
