@@ -61,62 +61,6 @@ export const fadeIn: Variants = {
   },
 }
 
-// ─── Stagger containers ───────────────────────────────────────────────────────
-
-/**
- * Wrap a list of children with this to stagger their entrance.
- * Children should use `fadeUp` or `fadeLeft` as their variant.
- */
-export const staggerContainer = (
-  staggerChildren = 0.08,
-  delayChildren = 0
-): Variants => ({
-  hidden: {},
-  visible: {
-    transition: { staggerChildren, delayChildren },
-  },
-})
-
-/** Tighter stagger for dense lists (research cards, approach rows) */
-export const staggerContainerFast = staggerContainer(0.06)
-
-/** Looser stagger for featured sections */
-export const staggerContainerSlow = staggerContainer(0.12)
-
-// ─── Text reveal ─────────────────────────────────────────────────────────────
-
-/** Container for word-by-word stagger on hero headline */
-export const wordContainer: Variants = {
-  hidden: {},
-  visible: {
-    transition: { staggerChildren: 0.06, delayChildren: 0.05 },
-  },
-}
-
-/** Individual word animation — spring-based for organic feel */
-export const wordReveal: Variants = {
-  hidden: { opacity: 0, y: 12 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: transition.spring,
-  },
-}
-
-// ─── Hover states ─────────────────────────────────────────────────────────────
-
-/** Subtle lift on interactive cards */
-export const cardHover = {
-  rest: { y: 0, transition: { duration: 0.2, ease: transition.ease } },
-  hover: { y: -2, transition: { duration: 0.2, ease: transition.ease } },
-}
-
-/** Image scale on featured project hover */
-export const imageHover = {
-  rest: { scale: 1, transition: { duration: 0.3, ease: transition.easeOut } },
-  hover: { scale: 1.015, transition: { duration: 0.3, ease: transition.easeOut } },
-}
-
 // ─── Hero-specific ────────────────────────────────────────────────────────────
 
 /** Sequential entrance for hero elements after headline */

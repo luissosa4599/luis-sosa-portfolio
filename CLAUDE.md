@@ -33,19 +33,22 @@ Revisar si hay información nueva sobre arquitectura, patrones o decisiones téc
 ## Estructura de carpetas relevante
 ```
 app/
-  layout.tsx       — Root layout: ThemeProvider > LanguageProvider > LanguageTransition > SmoothScroll
-  page.tsx         — Server Component. Renderiza PageReveal + todas las secciones
+  layout.tsx       — Root layout: ThemeProvider > LanguageProvider > SkipLink + (LanguageTransition > SmoothScroll)
+  page.tsx         — Server Component. Renderiza PageReveal + todas las secciones. <main id="main"> es el destino del SkipLink
+  work/[slug]/page.tsx — Case studies. Slugs y metadata salen de lib/data/projects.ts; dynamicParams=false → slug desconocido = 404
+  robots.ts, sitemap.ts, opengraph-image.tsx — SEO. La OG es estática (sin edge runtime); en ImageResponse todo div con >1 hijo necesita display:flex
   globals.css      — Incluye @keyframes overlay-out para el overlay de entrada
 components/
   layout/
     LanguageTransition.tsx  — AnimatePresence mode="wait", key={language}, remonta el tree al cambiar idioma
-    SmoothScroll.tsx        — Inicializa Lenis en useEffect, solo passthrough en render
+    SmoothScroll.tsx        — Inicializa Lenis en useEffect, solo passthrough en render. Intercepta clicks en links #hash
+    SkipLink.tsx            — "Saltar al contenido"; mueve el foco a #main manualmente porque Lenis intercepta el hash
     SiteHeader.tsx
     SiteFooter.tsx
   primitives/
     FadeIn.tsx       — Animación de entrada con dirección. Usa useAnimation() + controls.start()
     ScrollReveal.tsx — Igual que FadeIn pero acepta cualquier tag HTML
-    StaggerList.tsx  — Contenedor para animar hijos en cascada
+    ThemedImage.tsx  — Par de screenshots dark/light con next/image (lazy: solo se descarga la del tema activo)
     PageReveal.tsx   — Overlay de entrada + PageReadyProvider
   sections/
     Hero.tsx        — Usa useMounted (2 rAFs) en vez de usePageReady
@@ -55,8 +58,8 @@ hooks/
   useReducedMotion.ts — Wrapper de useReducedMotion de Framer Motion
 lib/
   page-ready.tsx   — PageReadyProvider + usePageReady. Controla cuándo arrancan las animaciones
-  motion.ts        — Variantes de Framer Motion: fadeUp, fadeLeft, fadeRight, fadeIn, cardReveal, staggerContainer, etc.
-  i18n.tsx         — LanguageProvider y useLanguage. Inicia en "en" para evitar hydration mismatch; lee localStorage en useEffect
+  motion.ts        — Variantes de Framer Motion: fadeUp, fadeLeft, fadeRight, fadeIn, cardReveal, heroSequence, etc.
+  i18n.tsx         — LanguageProvider y useLanguage. Store sobre localStorage vía useSyncExternalStore (server snapshot "en" → sin hydration mismatch). Sincroniza <html lang>
   language.ts      — Constante LANGUAGE_STORAGE_KEY y tipo Language
 ```
 
@@ -66,7 +69,7 @@ lib/
 1. `PageReadyProvider` monta con `ready = false` y `hasBeenReady = false` (flag de módulo)
 2. `setTimeout(560ms)` dispara → `hasBeenReady = true`, `ready = true`
 3. `PageRevealOverlay` cubre la página con un div fixed (CSS: `overlay-out` 0.5s ease-out 0.05s both) y se elimina del DOM cuando `ready = true`
-4. `FadeIn` / `ScrollReveal` / `StaggerList` usan `useAnimation()` + `useEffect([inView, ready])` → `controls.start("visible")` cuando ambos son true
+4. `FadeIn` / `ScrollReveal` usan `useAnimation()` + `useEffect([inView, ready])` → `controls.start("visible")` cuando ambos son true
 
 ### Por qué `useAnimation()` y no `animate={inView && ready}`
 En Framer Motion v12 + SSR, cuando `initial="hidden"` y `animate="hidden"` coinciden en el primer render (porque `ready=false`), FM puede no armar su sistema de animación. Cuando `ready` cambia a `true`, a veces no detecta el cambio de prop. `controls.start()` es imperativo y siempre dispara la animación.
@@ -79,8 +82,14 @@ La transición anima **solo `opacity`**. Un `transform` (p. ej. `y`) en ese `mot
 ### DustField
 Partículas de fondo (`components/primitives/DustField.tsx`) creadas imperativamente en `useEffect`. Con `prefers-reduced-motion` se renderizan estáticas (sin `animation`), no se ocultan.
 
+### Header
+Nav de escritorio visible desde `lg` (1024px); debajo usa hamburguesa. En `md` los labels en español no caben.
+
 ### Hero
 `Hero.tsx` no usa `usePageReady`. Usa `useMounted` (2 rAFs, ~32ms) para garantizar que el browser haya pintado un frame antes de arrancar sus animaciones.
 
+### Reduced motion en animaciones CSS
+Para animaciones CSS infinitas usar clases `motion-reduce:` de Tailwind (p. ej. `animate-[spin-cw_9s_linear_infinite] motion-reduce:animate-none`) en lugar de gatear con `useReducedMotion`: el server siempre ve `false` y causaría hydration mismatch.
+
 ### Variantes disponibles (`lib/motion.ts`)
-`fadeUp`, `fadeLeft`, `fadeRight`, `fadeIn`, `cardReveal`, `wordReveal`, `wordContainer`, `staggerContainer(stagger, delay)`, `heroSequence(index)`
+`fadeUp`, `fadeLeft`, `fadeRight`, `fadeIn`, `cardReveal`, `heroSequence(index)`
