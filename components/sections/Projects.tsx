@@ -7,9 +7,10 @@ import { SectionLabel } from "@/components/primitives/SectionLabel"
 import { FadeIn } from "@/components/primitives/FadeIn"
 import { ScrollReveal } from "@/components/primitives/ScrollReveal"
 import { ThemedImage } from "@/components/primitives/ThemedImage"
+import { Parallax } from "@/components/primitives/Parallax"
 import { getProjects } from "@/lib/data/projects"
 import { useLanguage } from "@/lib/i18n"
-import { cardReveal } from "@/lib/motion"
+import { alternateReveal, withDelay } from "@/lib/motion"
 import type { ProjectEntry } from "@/lib/types"
 
 // ─── Visuals ──────────────────────────────────────────────────────────────────
@@ -136,7 +137,15 @@ function ProjectCard({ project }: { project: ProjectEntry }) {
     >
       {/* Visual */}
       <div className="relative overflow-hidden" style={{ height: 220 }}>
-        <ProjectVisual slug={project.slug} />
+        {/* Las capturas se desplazan dentro de su marco al hacer scroll (parallax); la tarjeta
+            de investigación es texto y va fija. */}
+        {project.slug === "salva-lomitos" ? (
+          <ProjectVisual slug={project.slug} />
+        ) : (
+          <Parallax photo factor={0.15} className="absolute inset-0">
+            <ProjectVisual slug={project.slug} />
+          </Parallax>
+        )}
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[var(--card-bg)] pointer-events-none" />
         {project.featured && (
           <span className="absolute top-3 right-3 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-background/85 backdrop-blur-sm text-accent-fg border border-accent/30">
@@ -216,8 +225,7 @@ export function Projects() {
           {projects.map((project, i) => (
             <ScrollReveal
               key={project.slug}
-              variants={cardReveal}
-              transition={{ delay: i * 0.1 }}
+              variants={withDelay(alternateReveal(i), (i % 2) * 0.12)}
             >
               <ProjectCard project={project} />
             </ScrollReveal>

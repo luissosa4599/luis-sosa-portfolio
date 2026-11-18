@@ -1,6 +1,7 @@
 import { SiteHeader } from "@/components/layout/SiteHeader"
 import { SiteFooter } from "@/components/layout/SiteFooter"
 import { Hero } from "@/components/sections/Hero"
+import { TechMarquee } from "@/components/sections/TechMarquee"
 import { About } from "@/components/sections/About"
 import { Skills } from "@/components/sections/Skills"
 import { Experience } from "@/components/sections/Experience"
@@ -25,8 +26,9 @@ export default function Home() {
       <DustField />
       <SiteHeader />
       <SectionProgress />
-      <main id="main" tabIndex={-1} className="relative z-10 outline-none">
+      <main id="main" tabIndex={-1} className="relative z-10 outline-none overflow-x-clip">
         <Hero />
+        <TechMarquee />
         <About />
         <Projects />
         <Skills />

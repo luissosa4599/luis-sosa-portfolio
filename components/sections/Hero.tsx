@@ -7,6 +7,7 @@ import { transition } from "@/lib/motion"
 import { useReducedMotion } from "@/hooks/useReducedMotion"
 import { useMounted } from "@/hooks/useMounted"
 import { Container } from "@/components/layout/Container"
+import { Parallax } from "@/components/primitives/Parallax"
 import { useLanguage } from "@/lib/i18n"
 
 // ── Rotating titles ───────────────────────────────────────────────────────────
@@ -81,14 +82,16 @@ export function Hero() {
       id="hero"
       className="relative flex items-center justify-center min-h-svh pt-20 overflow-hidden text-center"
     >
-      {/* Ambient glow — fades in slowly after content */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full animate-[glow-in_2s_ease-out_0.6s_both] motion-reduce:animate-none"
-        style={{
-          background: "radial-gradient(circle, hsl(213 100% 70% / 0.06) 0%, transparent 65%)",
-        }}
-      />
+      {/* Ambient glow — fades in slowly after content, y se queda atrás al hacer scroll */}
+      <Parallax factor={0.3} className="pointer-events-none absolute inset-0">
+        <div
+          aria-hidden
+          className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full animate-[glow-in_2s_ease-out_0.6s_both] motion-reduce:animate-none"
+          style={{
+            background: "radial-gradient(circle, hsl(213 100% 70% / 0.06) 0%, transparent 65%)",
+          }}
+        />
+      </Parallax>
 
       <Container size="md" className="w-full py-24">
         <div className="flex flex-col items-center gap-6">

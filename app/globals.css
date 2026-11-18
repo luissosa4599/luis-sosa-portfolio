@@ -1,4 +1,6 @@
 @import "tailwindcss";
+/* CSS mínimo que pide Lenis (scroll suavizado, ver components/layout/SmoothScroll.tsx) */
+@import "lenis/dist/lenis.css";
 
 /* Tailwind v4: use .dark class (from next-themes) instead of prefers-color-scheme */
 @custom-variant dark (&:where(.dark, .dark *));
@@ -162,6 +164,37 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .enter-rise, .enter-down { animation: none; }
+}
+
+/* ─── Cinta de tecnologías (TechMarquee) ──────────────────────────────────────
+   Dos grupos idénticos; el track se desplaza hasta −50 % y vuelve a empezar sin corte.
+   Los bordes se desvanecen con una máscara. Pausa con hover; quieta con reduced motion. */
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.marquee {
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+
+.marquee-track {
+  animation: marquee 70s linear infinite;
+}
+
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track { animation: none; }
+}
+
+/* Al usar un link interno, SmoothScroll le pasa el foco a la sección (tabindex="-1") para
+   teclado y lectores de pantalla; la sección no es interactiva, así que sin contorno. */
+section[tabindex="-1"]:focus {
+  outline: none;
 }
 
 /* ─── Dust particle animations — 4 variants for natural variation ────────── */

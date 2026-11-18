@@ -4,7 +4,7 @@ import { FadeIn } from "@/components/primitives/FadeIn"
 import { ScrollReveal } from "@/components/primitives/ScrollReveal"
 import { Container } from "@/components/layout/Container"
 import { useLanguage } from "@/lib/i18n"
-import { cardReveal } from "@/lib/motion"
+import { fadeLeft } from "@/lib/motion"
 import { ExternalLink } from "lucide-react"
 
 // ── Experience data ───────────────────────────────────────────────────────────
@@ -174,11 +174,7 @@ export function Experience() {
 
           <div className="flex flex-col gap-10">
             {EXPERIENCE.map((item, i) => (
-              <ScrollReveal
-                key={item.company}
-                variants={cardReveal}
-                transition={{ delay: i * 0.09 }}
-              >
+              <ScrollReveal key={item.company} variants={fadeLeft}>
                 <div className="flex gap-6">
                   {/* Dot */}
                   <div className="relative z-10 shrink-0 mt-1.5">

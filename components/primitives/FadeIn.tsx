@@ -1,25 +1,18 @@
 "use client"
 
 import { motion, type Variants } from "framer-motion"
-import { fadeUp, fadeLeft, fadeRight, fadeIn } from "@/lib/motion"
+import { fadeUp, fadeLeft, fadeRight, fadeIn, zoomIn, withDelay } from "@/lib/motion"
 import { useScrollReveal, instantHidden } from "@/hooks/useScrollReveal"
 import { cn } from "@/lib/utils"
 
-type Direction = "up" | "left" | "right" | "none"
+type Direction = "up" | "left" | "right" | "zoom" | "none"
 
 const variantMap: Record<Direction, Variants> = {
   up: fadeUp,
   left: fadeLeft,
   right: fadeRight,
+  zoom: zoomIn,
   none: fadeIn,
-}
-
-function withDelay(variants: Variants, delay: number): Variants {
-  const visible = variants.visible as { transition?: object }
-  return {
-    ...variants,
-    visible: { ...visible, transition: { ...(visible.transition ?? {}), delay } },
-  }
 }
 
 interface FadeInProps {

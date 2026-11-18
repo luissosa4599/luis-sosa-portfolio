@@ -10,46 +10,65 @@ export const transition = {
 }
 
 // ─── Reveal variants ─────────────────────────────────────────────────────────
+// Recorridos amplios y curva suave de salida (mismos valores que la landing de Grupo
+// Cumulus): el transform dura 1.2 s y la opacidad 0.9 s, para que el bloque "llegue"
+// en vez de solo aparecer. Los laterales (±160 px) necesitan overflow-x: clip en <body>
+// (globals.css) para no crear scroll horizontal en celular.
 
-/** Standard scroll-reveal: fade + lift. Matches hero style, faster duration. */
+/** Curva de los revelados: arranca rápido y frena largo. */
+export const revealEase = [0.16, 0.85, 0.2, 1] as const
+
+const revealTransition: Transition = {
+  duration: 1.2,
+  ease: revealEase,
+  opacity: { duration: 0.9, ease: "easeOut" },
+}
+
+/** Standard scroll-reveal: sube con un leve zoom. Títulos y bloques de texto. */
 export const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 32 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.45, ease: transition.easeOut },
-  },
+  hidden: { opacity: 0, y: 80, scale: 0.96 },
+  visible: { opacity: 1, y: 0, scale: 1, transition: revealTransition },
 }
 
-/** Card reveal — adds a subtle scale for a more tactile entrance */
-export const cardReveal: Variants = {
-  hidden: { opacity: 0, y: 28, scale: 0.97 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: { duration: 0.45, ease: transition.easeOut },
-  },
-}
-
-/** Reveal from left — used for text columns */
+/** Entra desde la izquierda. */
 export const fadeLeft: Variants = {
-  hidden: { opacity: 0, x: -28 },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: { duration: 0.45, ease: transition.easeOut },
-  },
+  hidden: { opacity: 0, x: -160, scale: 0.95 },
+  visible: { opacity: 1, x: 0, scale: 1, transition: revealTransition },
 }
 
-/** Reveal from right — used for image columns */
+/** Entra desde la derecha. */
 export const fadeRight: Variants = {
-  hidden: { opacity: 0, x: 28 },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: { duration: 0.45, ease: transition.easeOut },
-  },
+  hidden: { opacity: 0, x: 160, scale: 0.95 },
+  visible: { opacity: 1, x: 0, scale: 1, transition: revealTransition },
+}
+
+/** Sube creciendo desde más chico. */
+export const zoomIn: Variants = {
+  hidden: { opacity: 0, y: 60, scale: 0.8 },
+  visible: { opacity: 1, y: 0, scale: 1, transition: revealTransition },
+}
+
+/** Card reveal — sube con zoom (tarjetas sueltas). */
+export const cardReveal: Variants = zoomIn
+
+/**
+ * Alterna la entrada de los elementos de una cuadrícula de 2 columnas: la columna
+ * izquierda entra desde la izquierda y la derecha desde la derecha.
+ */
+export const alternateReveal = (index: number): Variants =>
+  index % 2 === 0 ? fadeLeft : fadeRight
+
+/**
+ * Agrega un retraso a una variante. Hace falta porque el `transition` de la variante
+ * tiene prioridad sobre la prop `transition` del componente (que no se mezclan): pasar
+ * `transition={{ delay }}` al componente no retrasaba nada.
+ */
+export function withDelay(variants: Variants, delay: number): Variants {
+  const visible = variants.visible as { transition?: Transition }
+  return {
+    ...variants,
+    visible: { ...visible, transition: { ...(visible.transition ?? {}), delay } },
+  }
 }
 
 /** Fade only — no transform. Use for overlays or subtle UI elements */

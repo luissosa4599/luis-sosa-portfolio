@@ -3,15 +3,24 @@
 import { useEffect } from "react"
 import Lenis from "lenis"
 
-const HEADER_OFFSET = -80
-
+/**
+ * Scroll suavizado de la rueda del mouse (Lenis 1.3.27).
+ * - `lerp: 0.1`: suave sin sentirse pesado (antes 0.08). No cambia la velocidad.
+ * - Celular y trackpad conservan su scroll nativo (`syncTouch` apagado por defecto).
+ * - "Reducir movimiento": Lenis apaga el suavizado solo (`respectReducedMotion`, por defecto
+ *   desde 1.3.26) y los saltos a anclas son instantáneos; se detecta en vivo.
+ * - Links internos (`#seccion` y `/#seccion`): se deslizan y le pasan el foco a la sección
+ *   (`tabindex="-1"`), igual que un ancla nativa, para que teclado y lectores de pantalla
+ *   sigan desde ahí. Sin esto, el foco se quedaba en el link del menú.
+ * - El espacio para el header fijo lo da `scroll-mt-20` de cada sección: Lenis 1.3.27 respeta
+ *   `scroll-margin-top` (antes hacía falta `offset: -80`; con las dos, quedaba a 160 px).
+ */
 export function SmoothScroll({ children }: { children: React.ReactNode }) {
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
-
-    const lenis = new Lenis({ lerp: 0.08 })
+    const lenis = new Lenis({ autoRaf: true, lerp: 0.1 })
 
     function onAnchorClick(e: MouseEvent) {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return
       const anchor = (e.target as HTMLElement).closest<HTMLAnchorElement>("a[href]")
       if (!anchor) return
       const href = anchor.getAttribute("href") ?? ""
@@ -24,24 +33,18 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
           : null
 
       if (!hash || hash === "#") return
-      const target = document.querySelector(hash)
+      const target = document.querySelector<HTMLElement>(hash)
       if (!target) return
       e.preventDefault()
-      lenis.scrollTo(target as HTMLElement, { offset: HEADER_OFFSET })
+      lenis.scrollTo(target)
+      if (!target.hasAttribute("tabindex")) target.setAttribute("tabindex", "-1")
+      target.focus({ preventScroll: true })
     }
 
     document.addEventListener("click", onAnchorClick)
 
-    let rafId: number
-    function animate(time: number) {
-      lenis.raf(time)
-      rafId = requestAnimationFrame(animate)
-    }
-    rafId = requestAnimationFrame(animate)
-
     return () => {
       document.removeEventListener("click", onAnchorClick)
-      cancelAnimationFrame(rafId)
       lenis.destroy()
     }
   }, [])

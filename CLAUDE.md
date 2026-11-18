@@ -27,7 +27,7 @@ Revisar si hay información nueva sobre arquitectura, patrones o decisiones téc
 - **Lenguaje:** TypeScript
 - **Estilos:** Tailwind CSS + shadcn/ui
 - **Animaciones:** Framer Motion v12
-- **Scroll suave:** Lenis (`lerp: 0.08`, sin wrapper personalizado — usa el scroll nativo de window)
+- **Scroll suave:** Lenis 1.3.27 (`lerp: 0.1`, `autoRaf`, sin wrapper personalizado — usa el scroll nativo de window)
 - **i18n:** Sistema propio (EN/ES), sin librería externa
 
 ## Estructura de carpetas relevante
@@ -41,7 +41,7 @@ app/
 components/
   layout/
     LanguageTransition.tsx  — AnimatePresence mode="wait", key={language}, remonta el tree al cambiar idioma
-    SmoothScroll.tsx        — Inicializa Lenis en useEffect, solo passthrough en render. Intercepta clicks en links #hash
+    SmoothScroll.tsx        — Inicializa Lenis en useEffect, solo passthrough en render. Intercepta clicks en links #hash: los desliza y pasa el foco a la sección
     SkipLink.tsx            — "Saltar al contenido"; mueve el foco a #main manualmente porque Lenis intercepta el hash
     SiteHeader.tsx
     SiteFooter.tsx
@@ -49,15 +49,18 @@ components/
     FadeIn.tsx       — Entrada al hacer scroll con dirección. Usa useScrollReveal (llega visible en el HTML)
     ScrollReveal.tsx — Igual que FadeIn pero acepta cualquier tag HTML y variantes propias
     ThemedImage.tsx  — Par de screenshots dark/light con next/image (lazy: solo se descarga la del tema activo)
+    Parallax.tsx     — Desplaza su contenido con el scroll (capturas de proyectos, brillo del hero). Usa lib/scroll-frame.ts
   sections/
     Hero.tsx        — Entrada con CSS (.enter-rise); solo el título rotativo usa Framer
+    TechMarquee.tsx — Cinta de tecnologías entre el hero y About. Server component, animación CSS (.marquee-track)
     About.tsx, Skills.tsx, Experience.tsx, Projects.tsx, Research.tsx, Approach.tsx, Contact.tsx
 hooks/
   useMounted.ts       — Retorna true después de 2 requestAnimationFrame (garantiza hidratación)
   useScrollReveal.ts  — Revelado al hacer scroll sin ocultar nada en el HTML del servidor (+ instantHidden)
   useReducedMotion.ts — Wrapper de useReducedMotion de Framer Motion
 lib/
-  motion.ts        — Variantes de Framer Motion: fadeUp, fadeLeft, fadeRight, fadeIn, cardReveal, heroSequence, etc.
+  motion.ts        — Variantes de Framer Motion: fadeUp, fadeLeft, fadeRight, zoomIn, cardReveal, fadeIn, heroSequence; alternateReveal(i) y withDelay()
+  scroll-frame.ts  — Un solo listener de scroll/resize con rAF para todo el parallax
   i18n.tsx         — LanguageProvider y useLanguage. Store sobre localStorage vía useSyncExternalStore (server snapshot "en" → sin hydration mismatch). Sincroniza <html lang>
   language.ts      — Constante LANGUAGE_STORAGE_KEY y tipo Language
   site.ts          — SITE_URL, base de metadata, robots y sitemap. Hoy es la URL de Vercel (ver docs/dominio-propio.md)
@@ -106,4 +109,15 @@ Entrada con CSS (ver "Regla base"). `useMounted` solo se usa para no aplicar red
 Para animaciones CSS infinitas usar clases `motion-reduce:` de Tailwind (p. ej. `animate-[spin-cw_9s_linear_infinite] motion-reduce:animate-none`) en lugar de gatear con `useReducedMotion`: el server siempre ve `false` y causaría hydration mismatch.
 
 ### Variantes disponibles (`lib/motion.ts`)
-`fadeUp`, `fadeLeft`, `fadeRight`, `fadeIn`, `cardReveal`, `heroSequence(index)`
+`fadeUp`, `fadeLeft`, `fadeRight`, `zoomIn`, `cardReveal` (= zoomIn), `fadeIn`, `heroSequence(index)`, `alternateReveal(index)` (columna izquierda desde la izquierda, derecha desde la derecha).
+
+Recorridos y curva iguales a la landing de Grupo Cumulus: subir 80 px, laterales ±160 px, zoom desde 0.8; transform 1.2 s con `revealEase` y opacidad 0.9 s.
+
+- **`withDelay(variants, s)`** para escalonar: el `transition` de la variante tiene prioridad sobre la prop `transition` del componente y no se mezclan, así que `transition={{ delay }}` en el componente no retrasa nada.
+- Los laterales necesitan `overflow-x-clip` en `<main>` (ya está). En `<body>` no sirve: el navegador lo pasa a la ventana y no recorta igual (medido: 127 px de desborde en celular).
+
+### Parallax
+`<Parallax factor photo>`: mide el padre (no a sí mismo) y se limita a ±160 px, o al 7 % del alto del marco si es `photo`, que además va con `scale(1.15)` para que no se vean bordes. Con reduced motion no se registra.
+
+### Scroll suavizado y anclas
+Lenis 1.3.27 respeta `scroll-margin-top`: el espacio para el header fijo lo da `scroll-mt-20` en cada sección (`SectionWrapper` ya lo pone). No volver a pasar `offset: -80` (se suman y la sección queda a 160 px).
