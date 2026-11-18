@@ -133,6 +133,17 @@ Estilo general en ambos temas, a partir del Liquid Glass de Apple (iOS 26) y su 
   - `lib/palette-config.ts`: datos y script de arranque, sin React (lo importa el layout de servidor).
   - `lib/palette.ts`: tienda sobre localStorage con `useSyncExternalStore` (como `i18n.tsx`). Claves: `portfolio-palette` y `portfolio-glass`.
 - **Sin destello del azul:** `PALETTE_BOOT_SCRIPT` va en el `<head>` (`layout.tsx`) y aplica `data-palette` y `--glass-opacity` antes del primer pintado (verificado: antes de `DOMContentLoaded`). El servidor siempre pinta azul.
+- **Apariencia al azar y candado (2026-11-18):**
+  - Con el candado abierto, cada recarga sortea paleta (las 6) y cristal (0.35–0.90 en pasos de 0.05). Lo hace `PALETTE_BOOT_SCRIPT` antes del primer pintado y lo guarda, para que el panel muestre lo que salió.
+  - Claro/oscuro no se sortea: sigue al sistema o a lo elegido.
+  - **Candado** (`portfolio-appearance-lock`, "1"/"0"): cerrado, se aplica lo guardado. Elegir color, cristal o tema a mano lo cierra solo (`setPalette`, `setGlass` y `chooseMode` llaman a `setLocked(true)`).
+  - **🎲 Sortear** (`shuffleAppearance`): cambia al momento a otra paleta y otro cristal sin tocar el candado.
+  - **Visitantes de antes del candado:** si hay paleta o cristal guardados y no hay candado, cuenta como elección suya y se cierra.
+  - **Verificado:**
+    - El arranque aplica lo mismo que queda guardado.
+    - Con candado, las recargas se mantienen.
+    - Sin errores de hidratación.
+    - Contraste en 0 fallas también con el cristal al máximo (0.9).
 - Next no deja importar un módulo con `useSyncExternalStore` desde un componente de servidor, aunque sea para una constante. Por eso el archivo está separado en dos.
 - **Auditoría (2026-11-18):** 0 fallas WCAG AA en las 6 paletas × 2 temas con el cristal por defecto, y también con el cristal en su punto más transparente (0.35).
   - El turquesa necesitó oscurecer su acento (`--accent-l`, `--accent-l-light`) y su texto de acento en claro (`--accent-fg-l-light`).

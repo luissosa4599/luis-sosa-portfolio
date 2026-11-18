@@ -3,16 +3,20 @@
 import { useEffect, useId, useRef, useState, useSyncExternalStore, type KeyboardEvent } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import { useTheme } from "next-themes"
-import { Check, Monitor, Moon, Sun } from "lucide-react"
+import { Check, Dices, Lock, LockOpen, Monitor, Moon, Sun } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useLanguage } from "@/lib/i18n"
 import {
   PALETTES,
   GLASS_MIN,
   GLASS_MAX,
+  GLASS_STEP,
   setGlass,
+  setLocked,
   setPalette,
+  shuffleAppearance,
   useGlass,
+  useLocked,
   usePalette,
   type PaletteId,
 } from "@/lib/palette"
@@ -22,10 +26,18 @@ const COPY = {
   en: {
     button: "Appearance", theme: "Theme", color: "Color", glass: "Glass", clear: "Clear", tinted: "Tinted",
     modes: { light: "Light", dark: "Dark", system: "System" },
+    shuffle: "Shuffle", keep: "Keep",
+    keepLabel: "Keep this look on reload",
+    hintLocked: "This look stays when you reload.",
+    hintRandom: "New color and glass on every reload.",
   },
   es: {
     button: "Apariencia", theme: "Tema", color: "Color", glass: "Cristal", clear: "Transparente", tinted: "Tintado",
     modes: { light: "Claro", dark: "Oscuro", system: "Sistema" },
+    shuffle: "Sortear", keep: "Mantener",
+    keepLabel: "Mantener esta apariencia al recargar",
+    hintLocked: "Esta apariencia se mantiene al recargar.",
+    hintRandom: "Color y cristal nuevos en cada recarga.",
   },
 }
 
@@ -59,6 +71,7 @@ export function PalettePicker({ className }: { className?: string }) {
   const t = COPY[language]
   const palette = usePalette()
   const glass = useGlass()
+  const locked = useLocked()
   const { theme, setTheme } = useTheme()
   const reduced = useReducedMotion()
   // false en servidor e hidratación: evita que la muestra o el tema difieran del HTML del servidor
@@ -105,10 +118,13 @@ export function PalettePicker({ className }: { className?: string }) {
     document.documentElement.classList.add("theme-transitioning")
     setTheme(next)
     setTimeout(() => document.documentElement.classList.remove("theme-transitioning"), 600)
+    // Elegir el tema a mano también es una preferencia: se cierra el candado
+    setLocked(true)
   }
 
+  // Siempre, aunque sea la paleta actual: elegirla a mano cierra el candado
   function choosePalette(id: PaletteId) {
-    if (id !== palette) setPalette(id)
+    setPalette(id)
   }
 
   const label = mounted && mode
@@ -227,7 +243,7 @@ export function PalettePicker({ className }: { className?: string }) {
                 type="range"
                 min={GLASS_MIN}
                 max={GLASS_MAX}
-                step={0.05}
+                step={GLASS_STEP}
                 value={glass}
                 onChange={(e) => setGlass(Number(e.target.value))}
                 aria-valuetext={`${Math.round(((glass - GLASS_MIN) / (GLASS_MAX - GLASS_MIN)) * 100)}% ${t.tinted.toLowerCase()}`}
@@ -238,6 +254,39 @@ export function PalettePicker({ className }: { className?: string }) {
                 <span>{t.tinted}</span>
               </span>
             </label>
+
+            {/* ── Azar y candado ─────────────────────────────────────────── */}
+            {/* Sin candado, cada recarga sortea color y cristal (PALETTE_BOOT_SCRIPT). Elegir
+                algo a mano lo cierra solo; el dado sortea al momento sin tocarlo. */}
+            <div className="mt-4 flex items-center justify-between gap-2 border-t border-border pt-3">
+              <button
+                type="button"
+                onClick={shuffleAppearance}
+                className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium text-muted hover:text-foreground hover:bg-foreground/[0.07] transition-colors"
+              >
+                <Dices size={14} aria-hidden />
+                {t.shuffle}
+              </button>
+              <button
+                type="button"
+                aria-pressed={locked}
+                aria-label={t.keepLabel}
+                title={t.keepLabel}
+                onClick={() => setLocked(!locked)}
+                className={cn(
+                  "inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-colors",
+                  locked
+                    ? "bg-accent text-on-accent shadow-[inset_0_1px_0_oklch(1_0_0/0.25)]"
+                    : "text-muted hover:text-foreground hover:bg-foreground/[0.07]"
+                )}
+              >
+                {locked ? <Lock size={14} aria-hidden /> : <LockOpen size={14} aria-hidden />}
+                {t.keep}
+              </button>
+            </div>
+            <p aria-live="polite" className="mt-2 text-[12px] text-muted-2">
+              {locked ? t.hintLocked : t.hintRandom}
+            </p>
           </motion.div>
         )}
       </AnimatePresence>
