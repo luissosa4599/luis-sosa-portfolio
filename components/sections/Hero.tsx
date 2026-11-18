@@ -80,7 +80,7 @@ export function Hero() {
   return (
     <section
       id="hero"
-      className="relative flex items-center justify-center min-h-svh pt-20 overflow-clip text-center"
+      className="sticky top-0 flex items-center justify-center min-h-svh pt-20 overflow-clip text-center"
     >
       {/* Manchas de luz del color de la paleta (como el hero de Cumulus). Entran despacio y
           se mueven con el scroll en sentidos opuestos (parallax). */}
@@ -101,6 +101,10 @@ export function Hero() {
 
       <Container size="md" className="w-full py-24">
         <div className="flex flex-col items-center gap-6">
+
+          {/* Telón: dos capas que salen a distinto ritmo al hacer scroll (globals.css, "Telón
+              del hero"). El nombre se acerca y se desenfoca; el texto sube más rápido. */}
+          <div className="hero-layer-title flex flex-col items-center gap-6">
 
           {/* Greeting */}
           <span className="enter-rise text-base text-muted font-mono" style={enter(0.25, 20)}>
@@ -130,6 +134,10 @@ export function Hero() {
               </motion.span>
             </AnimatePresence>
           </div>
+
+          </div>
+
+          <div className="hero-layer-body flex flex-col items-center gap-6">
 
           {/* Subtitle */}
           {/* Es el texto más grande del hero (el LCP): arranca en opacidad 0.2, ver globals.css */}
@@ -168,6 +176,8 @@ export function Hero() {
               <Download size={14} />
               {copy.resume}
             </a>
+          </div>
+
           </div>
 
         </div>

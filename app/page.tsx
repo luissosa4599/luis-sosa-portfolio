@@ -27,9 +27,15 @@ export default function Home() {
       <SiteHeader />
       <SectionProgress />
       <main id="main" tabIndex={-1} className="relative z-10 outline-none overflow-x-clip">
-        <Hero />
-        <TechMarquee />
-        <About />
+        {/* Telón: el hero se queda fijo (sticky) mientras la cinta y About, opacos y encima,
+            suben sobre él. El envoltorio marca hasta dónde dura. */}
+        <div className="relative">
+          <Hero />
+          <div className="relative z-10">
+            <TechMarquee />
+            <About />
+          </div>
+        </div>
         <Projects />
         <Skills />
         <Experience />

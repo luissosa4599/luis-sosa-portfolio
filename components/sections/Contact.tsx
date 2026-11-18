@@ -56,7 +56,7 @@ export function Contact() {
   return (
     // Bloque de tinta en ambos temas (surface-ink), con manchas de luz del color: el cierre
     // fuerte de la página, como el "Pide tu terminal" de la landing de Grupo Cumulus.
-    <SectionWrapper id="contact" containerSize="md" className="surface-ink relative overflow-clip">
+    <SectionWrapper id="contact" containerSize="md" className="contact-open surface-ink relative overflow-clip">
       <div
         aria-hidden
         className="pointer-events-none absolute -top-32 -right-24 w-[30rem] h-[30rem] rounded-full"

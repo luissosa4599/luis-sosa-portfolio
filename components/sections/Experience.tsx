@@ -165,10 +165,13 @@ export function Experience() {
 
         {/* Timeline */}
         <div className="relative">
-          {/* Vertical line */}
+          {/* Línea del tiempo: un riel tenue y encima el trazo, que se dibuja con el scroll
+              (su punta va al 60 % de la pantalla) y prende cada punto al pasar (globals.css,
+              "Línea de Experiencia"). Sin soporte o con reducir movimiento, completa. */}
+          <div aria-hidden className="absolute left-[6px] top-2 bottom-2 w-[2px] bg-accent/15" />
           <div
             aria-hidden
-            className="absolute left-[6px] top-2 bottom-2 w-[2px] bg-gradient-to-b from-success via-accent to-accent/10"
+            className="timeline-fill absolute left-[6px] top-2 bottom-2 w-[2px] bg-gradient-to-b from-success via-accent to-accent"
           />
 
           <div className="flex flex-col gap-10">
@@ -184,7 +187,7 @@ export function Experience() {
                     )}
                     <span
                       className={`relative block w-3.5 h-3.5 rounded-full border-2 ${
-                        i === 0 ? "bg-success border-success" : "bg-background border-accent"
+                        i === 0 ? "bg-success border-success" : "timeline-dot bg-background border-accent"
                       }`}
                     />
                   </div>

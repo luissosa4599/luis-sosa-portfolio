@@ -310,8 +310,82 @@ body {
   }
 }
 
+/* ─── Escenas especiales ───────────────────────────────────────────────────────
+   - Telón del hero: el hero es sticky (page.tsx) y sus dos capas salen con el scroll de la
+     página (scroll(root)) separándose: el nombre sube, crece hacia ti y se desenfoca; el texto
+     se hunde hacia la cinta que sube y se desvanece antes. Si el texto subiera, cruzaría el
+     título rotativo (dos textos encimados). En reposo (scroll 0) no aplican nada: no tocan el LCP.
+   - Línea de Experiencia: el trazo crece (scale Y) con su punta al 60 % de la pantalla:
+     empieza cuando su borde superior llega ahí (cover 40svh) y termina cuando llega el
+     inferior (cover 100% − 60svh). Cada punto se prende cuando la punta lo alcanza
+     (su borde superior al 60 %: cover 40svh).
+   - Apertura de Contacto: el bloque de tinta entra como tarjeta redondeada y se abre a todo
+     lo ancho mientras sube. */
+
+@keyframes hero-title-out {
+  to { opacity: 0; scale: 1.14; translate: 0 -10svh; filter: blur(6px); }
+}
+
+@keyframes hero-body-out {
+  to { opacity: 0; translate: 0 10svh; }
+}
+
+@keyframes line-draw {
+  from { scale: 1 0; }
+}
+
+@keyframes dot-light {
+  to {
+    background-color: var(--color-accent);
+    box-shadow: 0 0 0 4px color-mix(in oklch, var(--color-accent) 22%, transparent), 0 0 14px var(--color-accent);
+    scale: 1.2;
+  }
+}
+
+@keyframes contact-open {
+  from { clip-path: inset(7% 6% 0 6% round 3rem); }
+  to   { clip-path: inset(0 0 0 0 round 0); }
+}
+
+.timeline-fill { transform-origin: top; }
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-layer-title {
+      animation: hero-title-out linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 65svh;
+    }
+
+    .hero-layer-body {
+      animation: hero-body-out cubic-bezier(0.4, 0, 0.6, 1) both;
+      animation-timeline: scroll(root);
+      animation-range: 0 35svh;
+    }
+
+    .timeline-fill {
+      animation: line-draw linear both;
+      animation-timeline: view();
+      animation-range: cover 40svh cover calc(100% - 60svh);
+    }
+
+    .timeline-dot {
+      animation: dot-light ease-out both;
+      animation-timeline: view();
+      animation-range: cover 37svh cover 43svh;
+    }
+
+    .contact-open {
+      animation: contact-open cubic-bezier(0.2, 0.7, 0.25, 1) both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 75svh;
+    }
+  }
+}
+
 @media print {
-  .scene-in, .scene-out, .parallax { animation: none !important; }
+  .scene-in, .scene-out, .parallax,
+  .hero-layer-title, .hero-layer-body, .timeline-fill, .timeline-dot, .contact-open { animation: none !important; }
 }
 
 /* Barra de progreso de lectura (SectionProgress): crece con el scroll de la página.

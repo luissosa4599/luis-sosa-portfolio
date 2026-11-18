@@ -164,6 +164,17 @@ Scroll-driven animations (`animation-timeline: view()`): la animación avanza y 
 - **Cascada con `stagger`** (`--i`): en una línea de tiempo de scroll no hay `delay`, así que cada paso retrasa el rango `--scene-step` (3 svh). Las pastillas de Skills usan un paso de 1.2 svh.
 - **`overflow-clip`, nunca `overflow-hidden`, en un ancestro de algo animado:** `hidden` crea un contenedor de scroll y `view()` se mediría contra él (quieto). Ya están en clip Hero, Work (sección, tarjeta y marco de la captura), Research, Approach y Contact.
 - **El cristal sigue funcionando:** comparado con y sin las animaciones, desenfoca igual (las animaciones no vuelven a su ancestro un "backdrop root").
+### Escenas especiales (CSS, en globals.css)
+- **Telón del hero:**
+  - En `app/page.tsx`, el hero es `sticky top-0` dentro de un envoltorio que termina después de About. La cinta y About van en un `relative z-10` encima y son opacos (`bg-band-deep`, `bg-band`).
+  - Sus dos capas salen con `scroll(root)` separándose:
+    - `.hero-layer-title` sube, crece a 1.14 y se desenfoca en 65 svh.
+    - `.hero-layer-body` se hunde 10 svh y se desvanece en 35 svh.
+  - Si el texto subiera, cruzaría el título rotativo.
+  - En scroll 0 no aplican nada, así que el LCP no cambia: medido con A/B intercalado, el ruido del equipo es mayor que cualquier diferencia.
+- **Línea de Experiencia:** `.timeline-fill` crece con `scale: 1 0 → 1` y su punta queda siempre al 60 % de la pantalla (rango `cover 40svh` → `cover calc(100% - 60svh)`). Cada `.timeline-dot` se prende (relleno, halo y escala 1.2) cuando la punta lo alcanza. Debajo queda un riel tenue (`bg-accent/15`).
+- **Apertura de Contacto:** `.contact-open` lleva `clip-path` de `inset(7% 6% 0 round 3rem)` a `inset(0)` mientras el bloque sube. El `to` es explícito porque de `inset()` a `none` no se interpola.
+- **Verificado en Chrome, WebKit 27.2 y Firefox 159** con los mismos valores.
 - **Para probar:** Lenis reacciona a los `scrollTo` programados y mueve el scroll un poco después del salto. En las pruebas automatizadas, medir con `offsetTop` (sin transforms) y leer después de esperar.
 
 ### Language toggle
@@ -178,7 +189,7 @@ Partículas de fondo (`components/primitives/DustField.tsx`) creadas imperativam
 Nav de escritorio visible desde `lg` (1024px); debajo usa hamburguesa. En `md` los labels en español no caben.
 
 ### Hero
-Entrada con CSS (ver "Regla base"). `useMounted` solo se usa para no aplicar reduced motion al título rotativo antes de hidratar.
+Entrada con CSS (ver "Regla base"). Es sticky y sale con el telón (ver "Escenas especiales"). `useMounted` solo se usa para no aplicar reduced motion al título rotativo antes de hidratar.
 
 ### Reduced motion en animaciones CSS
 Para animaciones CSS infinitas usar clases `motion-reduce:` de Tailwind (p. ej. `animate-[spin-cw_9s_linear_infinite] motion-reduce:animate-none`) en lugar de gatear con `useReducedMotion`: el server siempre ve `false` y causaría hydration mismatch.
