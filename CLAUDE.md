@@ -46,8 +46,8 @@ components/
     SiteHeader.tsx
     SiteFooter.tsx
   primitives/
-    FadeIn.tsx       — Escena: entra y sale atada al scroll (direction, stagger). CSS puro, sin JS
-    ScrollReveal.tsx — Igual que FadeIn, con la etiqueta externa a elegir (li, article…)
+    FadeIn.tsx       — Escena: un elemento que entra y sale atado al scroll (as, direction, stagger). CSS puro, sin JS
+    ScrollReveal.tsx — Alias de FadeIn para tarjetas (la tarjeta de cristal ES la escena)
     ThemedImage.tsx  — Par de screenshots dark/light con next/image (lazy: solo se descarga la del tema activo)
     Parallax.tsx     — Desplaza su contenido con el scroll (capturas de proyectos, brillo del hero). CSS view(), sin JS
     SectionProgress.tsx — Barra de lectura arriba. CSS scroll(root), sin JS
@@ -144,7 +144,7 @@ Las secciones no llevan líneas (`border-y`, `hr`): alternan fondo (`bg-backgrou
 ### Regla base: el contenido llega visible en el HTML
 Nada de contenido puede renderizarse con `opacity:0` en el HTML del servidor (antes 98 elementos lo hacían: la página salía negra sin JS y el LCP en celular era de ~3.9 s). Por eso:
 
-- **Al cargar (hero y headers): animaciones CSS** (`.enter-rise`, `.enter-down` en `globals.css`). Arrancan en cuanto llega el HTML, sin esperar a React. El hero pasa recorrido y retraso por variables (`--enter-y`, `--enter-scale`, `--enter-delay`, `--enter-duration`, `--enter-opacity`).
+- **Al cargar (hero y headers): animaciones CSS** (`.enter-rise`, `.enter-down` en `globals.css`). Arrancan en cuanto llega el HTML, sin esperar a React. El hero pasa recorrido y retraso por variables (`--enter-y`, `--enter-scale`, `--enter-delay`, `--enter-duration`, `--enter-opacity`). Van con `fill: backwards` (no `both`) para que se suelten al terminar; ver "Cristal y animaciones".
 - **LCP:** Chrome no registra el LCP de un texto que empieza en `opacity: 0` y solo anima la opacidad (no lo vuelve a pintar). El párrafo del hero (el texto más grande) arranca en `--enter-opacity: 0.2`. Medido en celular simulado con CPU 4×: LCP ~0.6 s (antes ~3.9 s).
 - **Al hacer scroll: escenas CSS atadas al scroll** (ver "Escenas" abajo). Son CSS puro: funcionan sin JS y antes de hidratar. Sin soporte, con "reducir movimiento" o al imprimir no se aplican y el contenido queda quieto y visible.
 - Ya no existen `useScrollReveal`, `instantHidden`, `PageReveal` ni `lib/scroll-frame.ts`.
@@ -152,18 +152,35 @@ Nada de contenido puede renderizarse con `opacity:0` en el HTML del servidor (an
 ### Escenas: entrar y salir atado al scroll (2026-11-18)
 Scroll-driven animations (`animation-timeline: view()`): la animación avanza y retrocede con el scroll, no se "dispara" una vez. Soporte: Chrome 115, Safari 26 y Firefox 159 (Baseline). Verificado en Chrome, WebKit 27.2 y Firefox 159 con los mismos valores.
 
-- **Dos elementos por escena** (`FadeIn`/`ScrollReveal`):
-  - El externo (`.scene-out`) sale.
-  - El interno (`.scene-in`) entra.
-  - Juntas en un solo elemento, las dos animaciones se pisarían `opacity` y `translate`.
-  - En `FadeIn`, `className` va al interno (layout del contenido) y `outerClassName` al externo (márgenes, z-index, lugar en la cuadrícula).
+- **Un solo elemento por escena** (`.scene`, que pone `FadeIn`/`ScrollReveal`): entra y sale en el mismo elemento.
+  - Las dos animaciones no se pisan porque sus tramos nunca se cruzan.
+  - La entrada se aplica antes y durante su tramo (`backwards`) y la salida durante y después del suyo (`forwards`). En reposo no queda ninguna aplicada.
+  - `.scene-in` (solo entrada) queda para hijos en cascada dentro de una escena (la columna de Research).
 - **Rangos medidos en `svh`, no en %**, para que un bloque alto entre al mismo ritmo que uno bajo:
   - **Entrada:** mientras el borde superior sube del fondo de la pantalla al 60 % (`--scene-in-len`).
   - **Salida:** mientras el borde inferior cruza el 30 % superior (`--scene-out-len`). Se mide desde el borde inferior para que una tarjeta alta no se desvanezca mientras se lee.
 - **Direcciones** en `lib/scene.ts`: `up`, `left`, `right`, `zoom`, `pop` y `none`. Recorridos iguales a la landing de Grupo Cumulus (80 px, ±160 px, zoom desde 0.8). Van como variables `--in-x`, `--in-y` y `--in-s`.
 - **Cascada con `stagger`** (`--i`): en una línea de tiempo de scroll no hay `delay`, así que cada paso retrasa el rango `--scene-step` (3 svh). Las pastillas de Skills usan un paso de 1.2 svh.
 - **`overflow-clip`, nunca `overflow-hidden`, en un ancestro de algo animado:** `hidden` crea un contenedor de scroll y `view()` se mediría contra él (quieto). Ya están en clip Hero, Work (sección, tarjeta y marco de la captura), Research, Approach y Contact.
-- **El cristal sigue funcionando:** comparado con y sin las animaciones, desenfoca igual (las animaciones no vuelven a su ancestro un "backdrop root").
+- **Cartas apiladas (Proyectos):** cada `.stack-item` es `sticky`, un escalón (`--stack-step`) más abajo que el anterior, y la siguiente tarjeta sube encima.
+  - La pila declara `view-timeline: --stack`, y sus descendientes la usan sin `timeline-scope`. Mientras la pila cruza el borde superior (`exit-crossing`), la tarjeta i se encoge (hasta 1 − 0.05·rev) y se oscurece (`.stack-dim`) en su tramo [i/n, (n−1)/n].
+  - `.stack::after` (30 svh) sostiene las tres apiladas antes de irse. Tiene que ser contenido, no `padding`: `sticky` se suelta cuando el borde del contenido del contenedor lo alcanza.
+  - Las tarjetas son anchas (captura a la izquierda, texto a la derecha; en celular, una sobre otra).
+  - Verificado igual en Chrome, WebKit y Firefox.
+
+### Cristal y animaciones (importante)
+Una animación de `opacity` (o `filter`, `clip-path`, `mask`) en un **ancestro** de un `.glass`/`.glass-panel` lo vuelve "backdrop root": el cristal solo desenfoca lo que hay dentro de ese ancestro, no lo de atrás. Pasa también en reposo:
+- **Animaciones atadas al scroll:** siempre están enganchadas a su línea de tiempo.
+- **Animaciones por tiempo con `fill: both`:** se quedan aplicadas al terminar.
+
+Se detectó porque la tarjeta de arriba de la pila dejaba leer nítido el texto de la de abajo. El header y los botones del hero lo tenían roto desde que llegó el cristal; no se notaba porque detrás solo había fondos difusos.
+
+Reglas:
+- **La escena debe ser el propio elemento de cristal** (`<ScrollReveal as="article" className="glass-panel …">`), nunca un envoltorio. La animación en el propio elemento no afecta su desenfoque.
+- Así quedaron Experience (la tarjeta, sin el punto), Testimonials (la `figure`), Contact (cada botón es su escena), los botones del hero (cada uno lleva `.hero-layer-body`), las pastillas de Skills y las tarjetas de Proyectos.
+- **Animaciones por tiempo con `fill: backwards`** (`.enter-rise`, `.enter-down`): se sueltan al terminar y el estado final es el mismo.
+- Animar `translate` o `scale` en un ancestro sí está bien (`.stack-card`, `.parallax`).
+- **Para probar:** poner un texto de color nítido detrás del cristal (fijo, `z-index: 0`). Si se lee, está roto; si sale como brillo, desenfoca. Compararlo contra fondos difusos (manchas de luz) no detecta el problema.
 ### Escenas especiales (CSS, en globals.css)
 - **Telón del hero:**
   - En `app/page.tsx`, el hero es `sticky top-0` dentro de un envoltorio que termina después de About. La cinta y About van en un `relative z-10` encima y son opacos (`bg-band-deep`, `bg-band`).

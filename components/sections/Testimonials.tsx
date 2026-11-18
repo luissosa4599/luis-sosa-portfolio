@@ -43,8 +43,7 @@ export function Testimonials() {
 
       <div className="mt-10 flex flex-col gap-4">
         {TESTIMONIALS.map((t, i) => (
-          <FadeIn key={i}>
-            <figure className="glass-panel flex flex-col gap-5 rounded-3xl p-7">
+          <FadeIn as="figure" key={i} className="glass-panel flex flex-col gap-5 rounded-3xl p-7">
               <span
                 className="font-serif text-5xl leading-none text-accent-fg select-none"
                 aria-hidden
@@ -81,7 +80,6 @@ export function Testimonials() {
                   </a>
                 )}
               </figcaption>
-            </figure>
           </FadeIn>
         ))}
       </div>

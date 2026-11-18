@@ -176,8 +176,7 @@ export function Experience() {
 
           <div className="flex flex-col gap-10">
             {EXPERIENCE.map((item, i) => (
-              <ScrollReveal key={item.company} direction="left">
-                <div className="flex gap-6">
+              <div key={item.company} className="flex gap-6">
                   {/* Dot */}
                   <div className="relative z-10 shrink-0 mt-1.5">
                     {/* Puesto actual: punto verde que pulsa (verde de estados, como el
@@ -192,8 +191,9 @@ export function Experience() {
                     />
                   </div>
 
-                  {/* Card */}
-                  <div
+                  {/* Card: la escena es la propia tarjeta de cristal (ver FadeIn) */}
+                  <ScrollReveal
+                    direction="left"
                     className="glass-panel flex-1 rounded-2xl p-5 sm:p-6 -mt-px transition-colors duration-200 hover:border-accent/40"
                   >
 
@@ -278,9 +278,8 @@ export function Experience() {
                         {item.pdf.label[language]}
                       </a>
                     )}
-                  </div>
+                  </ScrollReveal>
                 </div>
-              </ScrollReveal>
             ))}
           </div>
         </div>

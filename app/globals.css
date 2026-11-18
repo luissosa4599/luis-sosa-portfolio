@@ -235,12 +235,15 @@ body {
   to   { opacity: 1; }
 }
 
+/* fill backwards, no both: al terminar la animación se suelta. Una animación de opacidad que
+   se queda aplicada vuelve a su elemento un "backdrop root" y el cristal de adentro deja de
+   desenfocar lo de atrás (el header y los botones del hero lo tenían roto). */
 .enter-rise {
-  animation: enter-rise var(--enter-duration, 0.6s) cubic-bezier(0, 0, 0.2, 1) var(--enter-delay, 0s) both;
+  animation: enter-rise var(--enter-duration, 0.6s) cubic-bezier(0, 0, 0.2, 1) var(--enter-delay, 0s) backwards;
 }
 
 .enter-down {
-  animation: enter-down 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
+  animation: enter-down 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.1s backwards;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -251,13 +254,20 @@ body {
    Scroll-driven animations (animation-timeline: view()): el avance de la animación ES la
    posición del elemento en pantalla, así que todo avanza y retrocede con el scroll, sin JS
    y desde el HTML del servidor. Soporte: Chrome 115, Safari 26, Firefox 159 (Baseline).
-   - .scene-in  (FadeIn/ScrollReveal, elemento interno): entra mientras su borde superior
-                sube del fondo de la pantalla hasta --scene-in-len (40 % del alto).
-                Recorrido por dirección en --in-x/--in-y/--in-s (lib/scene.ts);
-                cascada con --i (pasos de --scene-step).
-   - .scene-out (elemento externo): sale mientras su borde inferior cruza el último
-                --scene-out-len superior. Medido desde el borde inferior, no el superior,
-                para que una tarjeta alta no se desvanezca mientras aún se lee.
+   - .scene     (FadeIn/ScrollReveal): entra Y sale, en el mismo elemento.
+                Entra mientras su borde superior sube del fondo de la pantalla hasta
+                --scene-in-len (40 % del alto); sale mientras su borde inferior cruza el
+                --scene-out-len superior (medido desde abajo para que una tarjeta alta no se
+                desvanezca mientras se lee). Los tramos nunca se cruzan, y la entrada solo se
+                aplica antes y durante (backwards) y la salida durante y después (forwards):
+                en reposo no queda ninguna animación aplicada.
+                Recorrido por dirección en --in-x/--in-y/--in-s (lib/scene.ts); cascada con
+                --i (pasos de --scene-step).
+   - .scene-in  solo la entrada (hijos en cascada dentro de una escena, Research).
+   CRISTAL: un ancestro con una animación de opacidad atada al scroll es un "backdrop root"
+   aunque esté en reposo, y el .glass de adentro solo desenfoca lo que hay dentro de él. La
+   escena debe ser el propio elemento de cristal, nunca un envoltorio (verificado: con
+   envoltorio, el texto de la tarjeta de abajo se leía nítido a través de la de arriba).
    - .parallax  (Parallax): de −--px a +--px mientras cruza la pantalla.
    Rangos con longitudes (svh), no %, para que un bloque alto entre al mismo ritmo que uno
    bajo. Sin soporte, con "reducir movimiento" o al imprimir: quieto y visible.
@@ -288,18 +298,22 @@ body {
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
     /* El shorthand `animation` reinicia timeline y range: van después */
+    .scene {
+      animation:
+        scene-in cubic-bezier(0.2, 0.7, 0.25, 1) backwards,
+        scene-out cubic-bezier(0.55, 0, 0.75, 0.3) forwards;
+      animation-timeline: view(), view();
+      animation-range:
+        cover calc(var(--i, 0) * var(--scene-step)) cover calc(var(--scene-in-len) + var(--i, 0) * var(--scene-step)),
+        cover calc(100% - var(--scene-out-len)) cover 100%;
+    }
+
     .scene-in {
-      animation: scene-in cubic-bezier(0.2, 0.7, 0.25, 1) both;
+      animation: scene-in cubic-bezier(0.2, 0.7, 0.25, 1) backwards;
       animation-timeline: view();
       animation-range:
         cover calc(var(--i, 0) * var(--scene-step))
         cover calc(var(--scene-in-len) + var(--i, 0) * var(--scene-step));
-    }
-
-    .scene-out {
-      animation: scene-out cubic-bezier(0.55, 0, 0.75, 0.3) both;
-      animation-timeline: view();
-      animation-range: cover calc(100% - var(--scene-out-len)) cover 100%;
     }
 
     .parallax {
@@ -358,9 +372,9 @@ body {
     }
 
     .hero-layer-body {
-      animation: hero-body-out cubic-bezier(0.4, 0, 0.6, 1) both;
+      animation: hero-body-out cubic-bezier(0.4, 0, 0.6, 1) forwards;
       animation-timeline: scroll(root);
-      animation-range: 0 35svh;
+      animation-range: 1px 35svh;
     }
 
     .timeline-fill {
@@ -376,16 +390,83 @@ body {
     }
 
     .contact-open {
-      animation: contact-open cubic-bezier(0.2, 0.7, 0.25, 1) both;
+      animation: contact-open cubic-bezier(0.2, 0.7, 0.25, 1) backwards;
       animation-timeline: view();
       animation-range: cover 0% cover 75svh;
     }
   }
 }
 
+/* ─── Cartas apiladas (Proyectos) ───────────────────────────────────────────────
+   Cada .stack-item es sticky, un escalón (--stack-step) más abajo que el anterior, así que
+   la siguiente tarjeta sube y se queda encima. La pila declara una línea de tiempo con
+   nombre (view-timeline: --stack) que sus descendientes usan sin timeline-scope: mientras
+   la pila cruza el borde superior (exit-crossing), la tarjeta i se encoge y se oscurece en
+   su tramo [i/n, (n−1)/n]. Cuanto más abajo en la pila (--rev), más pequeña y oscura.
+   Sin soporte o con reducir movimiento se apilan igual (sticky es layout), sin encogerse. */
+
+.stack {
+  view-timeline: --stack;
+  --stack-top: 5rem;
+  --stack-step: 1rem;
+}
+
+/* Las tres se sostienen apiladas 30 svh antes de irse juntas. Tiene que ser contenido (no
+   padding): sticky se suelta cuando el borde del CONTENIDO del contenedor lo alcanza. */
+.stack::after {
+  content: "";
+  display: block;
+  height: 30svh;
+}
+
+@media (min-width: 768px) {
+  .stack { --stack-top: 6rem; --stack-step: 1.25rem; }
+}
+
+.stack-item {
+  position: sticky;
+  top: calc(var(--stack-top) + var(--i) * var(--stack-step));
+  margin-bottom: 12svh;
+}
+
+.stack-item:last-child { margin-bottom: 0; }
+
+.stack-card { transform-origin: 50% 0; }
+
+.stack-dim { opacity: 0; }
+
+@keyframes stack-shrink {
+  to { scale: calc(1 - var(--rev) * 0.05); }
+}
+
+@keyframes stack-darken {
+  to { opacity: calc(var(--rev) * 0.28); }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .stack-card {
+      animation: stack-shrink linear both;
+      animation-timeline: --stack;
+      animation-range:
+        exit-crossing calc(var(--i) / var(--cards) * 100%)
+        exit-crossing calc((var(--cards) - 1) / var(--cards) * 100%);
+    }
+
+    .stack-dim {
+      animation: stack-darken linear both;
+      animation-timeline: --stack;
+      animation-range:
+        exit-crossing calc(var(--i) / var(--cards) * 100%)
+        exit-crossing calc((var(--cards) - 1) / var(--cards) * 100%);
+    }
+  }
+}
+
 @media print {
-  .scene-in, .scene-out, .parallax,
-  .hero-layer-title, .hero-layer-body, .timeline-fill, .timeline-dot, .contact-open { animation: none !important; }
+  .scene, .scene-in, .parallax,
+  .hero-layer-title, .hero-layer-body, .timeline-fill, .timeline-dot, .contact-open,
+  .stack-card, .stack-dim { animation: none !important; }
 }
 
 /* Barra de progreso de lectura (SectionProgress): crece con el scroll de la página.

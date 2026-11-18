@@ -5,18 +5,17 @@ import { ArrowUpRight, ExternalLink } from "lucide-react"
 import { Container } from "@/components/layout/Container"
 import { SectionLabel } from "@/components/primitives/SectionLabel"
 import { FadeIn } from "@/components/primitives/FadeIn"
-import { ScrollReveal } from "@/components/primitives/ScrollReveal"
 import { ThemedImage } from "@/components/primitives/ThemedImage"
 import { Parallax } from "@/components/primitives/Parallax"
 import { AmbientBlobs } from "@/components/primitives/AmbientBlobs"
 import { getProjects } from "@/lib/data/projects"
 import { useLanguage } from "@/lib/i18n"
-import { alternate } from "@/lib/scene"
+import { sceneVars } from "@/lib/scene"
 import type { ProjectEntry } from "@/lib/types"
 
 // ─── Visuals ──────────────────────────────────────────────────────────────────
 
-const CARD_IMAGE_SIZES = "(min-width: 768px) 420px, 100vw"
+const CARD_IMAGE_SIZES = "(min-width: 768px) 620px, 100vw"
 
 function DashboardVisual() {
   return (
@@ -127,16 +126,18 @@ function ProjectVisual({ slug }: { slug: string }) {
 }
 
 // ─── Card ─────────────────────────────────────────────────────────────────────
+// Tarjeta ancha: captura a la izquierda y texto a la derecha (en celular, una sobre otra).
 
-function ProjectCard({ project }: { project: ProjectEntry }) {
+function ProjectCard({ project, style }: { project: ProjectEntry; style?: React.CSSProperties }) {
   const { language } = useLanguage()
 
   return (
     <div
-      className="glass-panel group relative flex flex-col rounded-3xl overflow-clip hover:border-accent/40 transition-colors duration-300 h-full"
+      className="scene glass-panel group relative flex flex-col md:flex-row rounded-3xl overflow-clip hover:border-accent/40 transition-colors duration-300"
+      style={style}
     >
       {/* Visual */}
-      <div className="relative overflow-clip" style={{ height: 220 }}>
+      <div className="relative overflow-clip h-[200px] md:h-auto md:min-h-[320px] md:w-[55%] shrink-0">
         {/* Las capturas se desplazan dentro de su marco al hacer scroll (parallax); la tarjeta
             de investigación es texto y va fija. */}
         {project.slug === "salva-lomitos" ? (
@@ -146,7 +147,7 @@ function ProjectCard({ project }: { project: ProjectEntry }) {
             <ProjectVisual slug={project.slug} />
           </Parallax>
         )}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-background/30 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-b md:bg-gradient-to-r from-transparent to-background/30 pointer-events-none" />
         {project.featured && (
           <span className="absolute top-3 right-3 inline-flex items-center px-2 py-0.5 glass rounded-full text-xs font-medium text-accent-fg">
             {language === "es" ? "Destacado" : "Featured"}
@@ -155,12 +156,12 @@ function ProjectCard({ project }: { project: ProjectEntry }) {
       </div>
 
       {/* Info */}
-      <div className="flex flex-col gap-3 px-5 pb-5 pt-4 border-t border-border/50 flex-1">
+      <div className="flex flex-col gap-4 p-6 md:p-8 border-t md:border-t-0 md:border-l border-border/50 flex-1">
         <div>
-          <h2 className="text-base font-semibold text-foreground group-hover:text-accent-fg transition-colors duration-200">
+          <h2 className="text-xl md:text-2xl font-semibold tracking-tight text-foreground group-hover:text-accent-fg transition-colors duration-200">
             {project.title}
           </h2>
-          <p className="mt-1 text-body text-muted line-clamp-2">
+          <p className="mt-2 text-body text-muted line-clamp-3">
             {project.description}
           </p>
         </div>
@@ -209,6 +210,9 @@ function ProjectCard({ project }: { project: ProjectEntry }) {
 }
 
 // ─── Section ──────────────────────────────────────────────────────────────────
+// Cartas apiladas (globals.css, "Cartas apiladas"): cada tarjeta se queda fija arriba
+// (sticky, un escalón más abajo que la anterior) y la siguiente sube encima mientras la
+// de abajo se encoge y se oscurece, según el avance de la pila (--stack) por la pantalla.
 
 export function Projects() {
   const { language } = useLanguage()
@@ -222,15 +226,19 @@ export function Projects() {
           <SectionLabel>{language === "es" ? "Trabajo" : "Work"}</SectionLabel>
         </FadeIn>
 
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="stack" style={{ "--cards": projects.length } as React.CSSProperties}>
           {projects.map((project, i) => (
-            <ScrollReveal
+            <div
               key={project.slug}
-              direction={alternate(i)}
-              stagger={i % 2}
+              className="stack-item"
+              style={{ "--i": i, "--rev": projects.length - 1 - i } as React.CSSProperties}
             >
-              <ProjectCard project={project} />
-            </ScrollReveal>
+              <div className="stack-card relative">
+                {/* Llega creciendo desde abajo antes de fijarse (la escena es la tarjeta) */}
+                <ProjectCard project={project} style={sceneVars("zoom")} />
+                <div aria-hidden className="stack-dim pointer-events-none absolute inset-0 rounded-3xl bg-background" />
+              </div>
+            </div>
           ))}
         </div>
       </Container>

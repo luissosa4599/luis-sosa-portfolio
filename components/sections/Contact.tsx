@@ -2,6 +2,7 @@
 
 import { SectionWrapper } from "@/components/layout/SectionWrapper"
 import { FadeIn } from "@/components/primitives/FadeIn"
+import { sceneVars } from "@/lib/scene"
 import { Mail } from "lucide-react"
 import { contact } from "@/lib/data/contact"
 import { useLanguage } from "@/lib/i18n"
@@ -68,40 +69,41 @@ export function Contact() {
         style={{ background: "radial-gradient(circle closest-side, var(--blob-b), transparent)" }}
       />
 
-      <FadeIn outerClassName="relative z-10" className="text-center flex flex-col items-center">
+      <div className="relative z-10 text-center flex flex-col items-center">
         {/* Estado con el verde de estados (fijo en todas las paletas) */}
-        <p className="mb-5 inline-flex items-center gap-2.5 text-meta font-medium text-success-fg">
+        <FadeIn as="p" className="mb-5 inline-flex items-center gap-2.5 text-meta font-medium text-success-fg">
           <span className="relative flex h-2.5 w-2.5">
             <span className="absolute inline-flex h-full w-full rounded-full bg-success opacity-60 animate-ping motion-reduce:hidden" />
             <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-success" />
           </span>
           {language === "es" ? "Disponible para trabajo remoto" : "Open to full-time remote"}
-        </p>
-        <h2 className="text-section font-semibold tracking-tight text-foreground">
+        </FadeIn>
+        <FadeIn as="h2" stagger={1} className="text-section font-semibold tracking-tight text-foreground">
           {language === "es" ? "Construyamos algo útil" : "Let's build something useful"}
-        </h2>
-        <p className="mt-4 text-lead text-muted max-w-[52ch]">
+        </FadeIn>
+        <FadeIn as="p" stagger={2} className="mt-4 text-lead text-muted max-w-[52ch]">
           {language === "es"
             ? "Estoy buscando roles de frontend y product engineering donde pueda trabajar en inglés, colaborar con distintas áreas y construir interfaces claras para productos complejos."
             : "I'm looking for frontend and product engineering roles where I can work in English, collaborate across functions, and build clear interfaces for complex products."}
-        </p>
+        </FadeIn>
 
         {/* Contact buttons */}
         <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
-          {CONTACT_LINKS.map((link) => (
+          {CONTACT_LINKS.map((link, i) => (
             <a
               key={link.label}
               href={link.href}
               target={link.external ? "_blank" : undefined}
               rel={link.external ? "noopener noreferrer" : undefined}
-              className="glass inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium text-foreground transition-colors duration-200 hover:text-accent-fg"
+              className="scene glass inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium text-foreground transition-colors duration-200 hover:text-accent-fg"
+              style={sceneVars("pop", 3 + i)}
             >
               {link.icon}
               {link.label}
             </a>
           ))}
         </div>
-      </FadeIn>
+      </div>
     </SectionWrapper>
   )
 }

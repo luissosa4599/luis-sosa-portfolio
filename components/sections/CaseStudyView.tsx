@@ -211,7 +211,7 @@ export function CaseStudyView({ slug }: { slug: string }) {
 
           {/* Hero screenshot */}
           {project.screenshots && project.screenshots.length > 0 && (
-            <FadeIn outerClassName="mt-10">
+            <FadeIn className="mt-10">
               <div className="rounded-2xl overflow-hidden border border-border">
                 <ThemedImage
                   src={project.screenshots[0].src}

@@ -137,12 +137,14 @@ export function Hero() {
 
           </div>
 
-          <div className="hero-layer-body flex flex-col items-center gap-6">
+          {/* Capa del texto: la salida va en el párrafo y en cada botón por separado. Los botones
+              son cristal y un envoltorio animado les cortaría el desenfoque. */}
+          <div className="flex flex-col items-center gap-6">
 
           {/* Subtitle */}
           {/* Es el texto más grande del hero (el LCP): arranca en opacidad 0.2, ver globals.css */}
           <p
-            className="enter-rise text-lead text-muted max-w-[46ch]"
+            className="hero-layer-body enter-rise text-lead text-muted max-w-[46ch]"
             style={enter(1.1, 28, { "--enter-opacity": "0.2" } as React.CSSProperties)}
           >
             {copy.subtitle}
@@ -155,14 +157,14 @@ export function Hero() {
           >
             <a
               href="#work"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-accent text-on-accent text-sm font-semibold shadow-[inset_0_1px_0_oklch(1_0_0/0.25)] hover:bg-accent/90 transition-colors duration-200"
+              className="hero-layer-body inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-accent text-on-accent text-sm font-semibold shadow-[inset_0_1px_0_oklch(1_0_0/0.25)] hover:bg-accent/90 transition-colors duration-200"
             >
               {copy.projects}
               <ArrowRight size={15} />
             </a>
             <a
               href="#contact"
-              className="inline-flex items-center gap-2 px-5 py-2.5 glass rounded-full text-sm font-medium text-foreground hover:text-accent-fg transition-colors duration-200"
+              className="hero-layer-body inline-flex items-center gap-2 px-5 py-2.5 glass rounded-full text-sm font-medium text-foreground hover:text-accent-fg transition-colors duration-200"
             >
               <Mail size={14} />
               {copy.contact}
@@ -171,7 +173,7 @@ export function Hero() {
               href={language === "en" ? "/CV_Luis_Sosa.pdf" : "/CV_Luis_Alberto.pdf"}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-5 py-2.5 glass rounded-full text-sm font-medium text-foreground hover:text-accent-fg transition-colors duration-200"
+              className="hero-layer-body inline-flex items-center gap-2 px-5 py-2.5 glass rounded-full text-sm font-medium text-foreground hover:text-accent-fg transition-colors duration-200"
             >
               <Download size={14} />
               {copy.resume}
