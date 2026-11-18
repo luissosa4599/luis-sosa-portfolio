@@ -106,11 +106,41 @@ body {
 @keyframes spin-cw  { to { transform: rotate(360deg);  } }
 @keyframes spin-ccw { to { transform: rotate(-360deg); } }
 
-/* ─── Page entrance overlay ───────────────────────────────────────────────── */
+/* ─── Entradas al cargar (CSS puro) ──────────────────────────────────────────
+   Arrancan en cuanto llega el HTML prerenderizado, sin esperar a que hidrate React:
+   el contenido ya viene en el HTML y el LCP no depende del JS.
+   .enter-rise: hero. Recorrido y retraso por elemento con --enter-y, --enter-scale,
+                --enter-delay y --enter-duration (ver Hero.tsx).
+   .enter-down: headers fijos. */
 
-@keyframes overlay-out {
-  from { opacity: 1; }
-  to   { opacity: 0; }
+/* --enter-opacity: opacidad inicial. Chrome no registra el LCP de un texto que empieza en
+   opacity 0 y solo se anima la opacidad (no lo vuelve a pintar): el texto más grande del
+   hero (el párrafo) arranca en 0.2 para contar desde el primer pintado. */
+@keyframes enter-rise {
+  from { opacity: var(--enter-opacity, 0); transform: translateY(var(--enter-y, 20px)) scale(var(--enter-scale, 1)); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes enter-down {
+  from { opacity: 0; transform: translateY(-28px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes glow-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.enter-rise {
+  animation: enter-rise var(--enter-duration, 0.6s) cubic-bezier(0, 0, 0.2, 1) var(--enter-delay, 0s) both;
+}
+
+.enter-down {
+  animation: enter-down 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .enter-rise, .enter-down { animation: none; }
 }
 
 /* ─── Dust particle animations — 4 variants for natural variation ────────── */

@@ -1,6 +1,5 @@
 "use client"
 
-import { useRef } from "react"
 import type { SimpleIcon } from "simple-icons"
 import {
   siVuedotjs, siNuxt, siReact, siAngular, siNextdotjs,
@@ -11,12 +10,12 @@ import {
   siReactquery, siExpo, siFlutter, siKotlin, siIos, siAndroid,
   siGooglecloud, siVercel,
 } from "simple-icons"
-import { motion, useInView, type Variants } from "framer-motion"
+import { motion, type Variants } from "framer-motion"
 import { cn } from "@/lib/utils"
 import { FadeIn } from "@/components/primitives/FadeIn"
 import { Container } from "@/components/layout/Container"
 import { useLanguage } from "@/lib/i18n"
-import { usePageReady } from "@/lib/page-ready"
+import { useScrollReveal, instantHidden } from "@/hooks/useScrollReveal"
 
 // ── Animation variants ───────────────────────────────────────────────────────
 
@@ -191,27 +190,24 @@ const SKILL_GROUPS: SkillGroup[] = [
   },
 ]
 
-// ── Skill group item — own ref so useInView works inside a map ────────────────
+// ── Skill group item — revelado propio por grupo; llega visible en el HTML del servidor ──
 type Language = "en" | "es"
 
 function SkillGroupItem({
   group,
   language,
-  ready,
 }: {
   group: SkillGroup
   language: Language
-  ready: boolean
 }) {
-  const ref = useRef<HTMLDivElement>(null)
-  const inView = useInView(ref, { once: true, margin: "0px" })
+  const { ref, animate } = useScrollReveal<HTMLDivElement>()
 
   return (
     <motion.div
       ref={ref}
-      variants={groupVariant}
-      initial="hidden"
-      animate={inView && ready ? "visible" : "hidden"}
+      variants={instantHidden(groupVariant)}
+      initial={false}
+      animate={animate}
       className="w-full flex flex-col gap-4"
     >
       <motion.span
@@ -241,7 +237,6 @@ function SkillGroupItem({
 // ── Section ──────────────────────────────────────────────────────────────────
 export function Skills() {
   const { language } = useLanguage()
-  const ready = usePageReady()
 
   const copy = {
     en: {
@@ -272,7 +267,6 @@ export function Skills() {
               key={group.category.en}
               group={group}
               language={language}
-              ready={ready}
             />
           ))}
         </div>

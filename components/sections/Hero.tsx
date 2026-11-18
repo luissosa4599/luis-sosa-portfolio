@@ -68,31 +68,13 @@ export function Hero() {
     },
   }[language]
 
-  // ── Entrance variants — each element has its own trajectory ──────────────
-  const skip = { hidden: { opacity: 1, y: 0, scale: 1, x: 0 }, visible: { opacity: 1, y: 0, scale: 1, x: 0 } }
-
-  const v = {
-    greeting: effectiveReduced ? skip : {
-      hidden:  { opacity: 0, y: 20 },
-      visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: transition.easeOut, delay: 0.25 } },
-    },
-    name: effectiveReduced ? skip : {
-      hidden:  { opacity: 0, y: 52, scale: 0.92 },
-      visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.85, ease: transition.easeOut, delay: 0.42 } },
-    },
-    title: effectiveReduced ? skip : {
-      hidden:  { opacity: 0, y: 16 },
-      visible: { opacity: 1, y: 0, transition: { duration: 0.5,  ease: transition.easeOut, delay: 0.88 } },
-    },
-    subtitle: effectiveReduced ? skip : {
-      hidden:  { opacity: 0, y: 28 },
-      visible: { opacity: 1, y: 0, transition: { duration: 0.6,  ease: transition.easeOut, delay: 1.1  } },
-    },
-    ctas: effectiveReduced ? skip : {
-      hidden:  { opacity: 0, y: 22 },
-      visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: transition.easeOut, delay: 1.32 } },
-    },
-  }
+  // ── Entrance — CSS (.enter-rise en globals.css) ───────────────────────────
+  // Arranca en cuanto llega el HTML, sin esperar a que hidrate React: el contenido ya
+  // viene en el HTML del servidor y el LCP no depende del JS. Cada elemento tiene su
+  // propio recorrido (--enter-y / --enter-scale) y retraso. Con "reducir movimiento"
+  // la regla CSS la apaga.
+  const enter = (delay: number, y: number, extra?: React.CSSProperties) =>
+    ({ "--enter-delay": `${delay}s`, "--enter-y": `${y}px`, ...extra }) as React.CSSProperties
 
   return (
     <section
@@ -100,12 +82,9 @@ export function Hero() {
       className="relative flex items-center justify-center min-h-svh pt-20 overflow-hidden text-center"
     >
       {/* Ambient glow — fades in slowly after content */}
-      <motion.div
+      <div
         aria-hidden
-        initial={{ opacity: 0 }}
-        animate={mounted ? { opacity: 1 } : { opacity: 0 }}
-        transition={{ duration: 2, ease: "easeOut", delay: 0.6 }}
-        className="pointer-events-none absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full"
+        className="pointer-events-none absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full animate-[glow-in_2s_ease-out_0.6s_both] motion-reduce:animate-none"
         style={{
           background: "radial-gradient(circle, hsl(213 100% 70% / 0.06) 0%, transparent 65%)",
         }}
@@ -115,33 +94,21 @@ export function Hero() {
         <div className="flex flex-col items-center gap-6">
 
           {/* Greeting */}
-          <motion.span
-            variants={v.greeting}
-            initial="hidden"
-            animate={mounted ? "visible" : "hidden"}
-            className="text-base text-muted font-mono"
-          >
+          <span className="enter-rise text-base text-muted font-mono" style={enter(0.25, 20)}>
             {copy.greeting}
-          </motion.span>
+          </span>
 
           {/* Name — main event */}
-          <motion.h1
-            variants={v.name}
-            initial="hidden"
-            animate={mounted ? "visible" : "hidden"}
-            className="text-[clamp(3rem,6vw,5rem)] font-semibold tracking-tight leading-[1.05] text-foreground -mt-4"
+          <h1
+            className="enter-rise text-[clamp(3rem,6vw,5rem)] font-semibold tracking-tight leading-[1.05] text-foreground -mt-4"
+            style={enter(0.42, 52, { "--enter-scale": "0.92", "--enter-duration": "0.85s" } as React.CSSProperties)}
           >
             {copy.name}<span className="text-accent">.</span>
-          </motion.h1>
+          </h1>
 
-          {/* Rotating title */}
-          <motion.div
-            variants={v.title}
-            initial="hidden"
-            animate={mounted ? "visible" : "hidden"}
-            className="h-8 flex items-center justify-center"
-          >
-            <AnimatePresence mode="wait">
+          {/* Rotating title — el primero llega visible en el HTML (initial={false}) */}
+          <div className="enter-rise h-8 flex items-center justify-center" style={enter(0.88, 16)}>
+            <AnimatePresence mode="wait" initial={false}>
               <motion.span
                 key={`${language}-${titleIndex}`}
                 initial={effectiveReduced ? false : { opacity: 0, y: 8 }}
@@ -153,24 +120,21 @@ export function Hero() {
                 {TITLES[language][titleIndex]}
               </motion.span>
             </AnimatePresence>
-          </motion.div>
+          </div>
 
           {/* Subtitle */}
-          <motion.p
-            variants={v.subtitle}
-            initial="hidden"
-            animate={mounted ? "visible" : "hidden"}
-            className="text-base text-muted leading-relaxed max-w-lg"
+          {/* Es el texto más grande del hero (el LCP): arranca en opacidad 0.2, ver globals.css */}
+          <p
+            className="enter-rise text-base text-muted leading-relaxed max-w-lg"
+            style={enter(1.1, 28, { "--enter-opacity": "0.2" } as React.CSSProperties)}
           >
             {copy.subtitle}
-          </motion.p>
+          </p>
 
           {/* CTAs */}
-          <motion.div
-            variants={v.ctas}
-            initial="hidden"
-            animate={mounted ? "visible" : "hidden"}
-            className="flex flex-wrap items-center justify-center gap-3 pt-2"
+          <div
+            className="enter-rise flex flex-wrap items-center justify-center gap-3 pt-2"
+            style={enter(1.32, 22, { "--enter-duration": "0.55s" } as React.CSSProperties)}
           >
             <a
               href="#work"
@@ -195,7 +159,7 @@ export function Hero() {
               <Download size={14} />
               {copy.resume}
             </a>
-          </motion.div>
+          </div>
 
         </div>
       </Container>

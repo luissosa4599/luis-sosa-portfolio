@@ -11,12 +11,11 @@ import { Testimonials } from "@/components/sections/Testimonials"
 import { Contact } from "@/components/sections/Contact"
 import { SectionProgress } from "@/components/primitives/SectionProgress"
 import { DustField } from "@/components/primitives/DustField"
-import { PageReveal } from "@/components/primitives/PageReveal"
 import { BackToTop } from "@/components/primitives/BackToTop"
 
 export default function Home() {
   return (
-    <PageReveal>
+    <>
       {/* Dot-grid background — fixed, full page */}
       <div
         aria-hidden
@@ -39,6 +38,6 @@ export default function Home() {
       </main>
       <SiteFooter />
       <BackToTop />
-    </PageReveal>
+    </>
   )
 }

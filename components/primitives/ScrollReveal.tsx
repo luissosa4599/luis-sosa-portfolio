@@ -1,9 +1,7 @@
 "use client"
 
-import { useRef, useEffect } from "react"
-import { motion, useInView, useAnimation, type Variants } from "framer-motion"
-import { useReducedMotion } from "@/hooks/useReducedMotion"
-import { usePageReady } from "@/lib/page-ready"
+import { motion, type Variants } from "framer-motion"
+import { useScrollReveal, instantHidden } from "@/hooks/useScrollReveal"
 import { cn } from "@/lib/utils"
 
 type Tag = "div" | "article" | "section" | "li"
@@ -17,6 +15,10 @@ interface ScrollRevealProps {
   transition?: Record<string, unknown>
 }
 
+/**
+ * Como FadeIn pero con cualquier tag y variantes propias; los hijos con `variants` heredan
+ * los estados. Llega visible en el HTML del servidor (ver useScrollReveal).
+ */
 export function ScrollReveal({
   children,
   variants,
@@ -26,20 +28,7 @@ export function ScrollReveal({
   transition,
 }: ScrollRevealProps) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const ref = useRef<any>(null)
-  const reduced = useReducedMotion()
-  const ready = usePageReady()
-  const inView = useInView(ref, { once: true, margin: "0px" })
-  const controls = useAnimation()
-
-  useEffect(() => {
-    if (inView && ready) controls.start("visible")
-  }, [inView, ready, controls])
-
-  if (reduced) {
-    const PlainTag = Tag
-    return <PlainTag className={cn(className)} style={style}>{children}</PlainTag>
-  }
+  const { ref, animate } = useScrollReveal<any>()
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const MotionTag = motion[Tag] as any
@@ -47,9 +36,9 @@ export function ScrollReveal({
   return (
     <MotionTag
       ref={ref}
-      variants={variants}
-      initial="hidden"
-      animate={controls}
+      variants={instantHidden(variants)}
+      initial={false}
+      animate={animate}
       className={cn(className)}
       style={style}
       transition={transition}

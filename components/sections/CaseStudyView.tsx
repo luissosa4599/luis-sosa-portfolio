@@ -2,9 +2,9 @@
 
 import Link from "next/link"
 import { ArrowLeft, ArrowRight } from "lucide-react"
-import { motion } from "framer-motion"
 import { Container } from "@/components/layout/Container"
 import { FadeIn } from "@/components/primitives/FadeIn"
+import { ScrollReveal } from "@/components/primitives/ScrollReveal"
 import { ThemedImage } from "@/components/primitives/ThemedImage"
 import { getProjects } from "@/lib/data/projects"
 import { useLanguage } from "@/lib/i18n"
@@ -296,17 +296,18 @@ export function CaseStudyView({ slug }: { slug: string }) {
                 <CsHeading>{labels.impact}</CsHeading>
                 <ul className="flex flex-col gap-3">
                   {project.impact.map((item, i) => (
-                    <motion.li
+                    <ScrollReveal
+                      as="li"
                       key={i}
-                      initial={{ opacity: 0, x: -8 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.3, delay: i * 0.07 }}
+                      variants={{
+                        hidden: { opacity: 0, x: -8 },
+                        visible: { opacity: 1, x: 0, transition: { duration: 0.3, delay: i * 0.07 } },
+                      }}
                       className="flex items-start gap-3"
                     >
                       <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 shrink-0" />
                       <span className="text-base text-foreground/85">{item}</span>
-                    </motion.li>
+                    </ScrollReveal>
                   ))}
                 </ul>
               </FadeIn>
