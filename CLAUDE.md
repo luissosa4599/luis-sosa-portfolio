@@ -104,14 +104,14 @@ Todos los colores salen de **un solo tono** (`--hue`) en **OKLCH** (`app/globals
 - **Prohibido escribir colores a mano** (`hsl(213 …)`, `#hex`, `emerald-500`) en componentes: no cambiarían con la paleta. Para transparencias del acento: `color-mix(in oklch, var(--color-accent) N%, transparent)` o `bg-accent/N`. Única excepción: `opengraph-image.tsx` (imagen estática, azul).
 - **Auditoría (2026-11-18): 0 textos bajo WCAG AA en las 6 paletas × 2 temas.** El script convierte los colores computados (oklch/color-mix) a sRGB pintándolos en un canvas. Los auditores que solo leen `rgb()` se saltan esos textos sin avisar: así pasaron sin detectarse los números decorativos de Approach (1.2:1, ahora `aria-hidden`).
 
-## Cristal (Liquid Glass) y selector de color
+## Cristal (Liquid Glass) y panel de apariencia
 
 Estilo general en ambos temas, a partir del Liquid Glass de Apple (iOS 26) y su ajuste de iOS 27 (WWDC 2026): un deslizante para elegir qué tan transparente u opaco se ve el cristal. Utilidades en `globals.css`:
 
 - **`glass`** → capa flotante: píldora del header (ambos headers), botones secundarios del hero, botones de Contact, la etiqueta Destacado y el botón de subir.
 - **`glass-panel`** → tarjetas de contenido: Work, Experience, Approach, Research y Testimonials. Es más ligero, para que se vea el color de atrás.
   - Detrás de Work y Approach van `<AmbientBlobs>` (manchas de luz con parallax, en `-z-10`), para que el cristal tenga color que mostrar.
-- **`glass-menu`** → menús que se abren desde el header (selector de color). **Es opaco:** un `backdrop-filter` dentro de otro (la píldora del header) solo desenfoca lo que hay dentro del padre, así que el texto del hero se veía nítido detrás del menú. Incluso con 98 % de opacidad se notaba (~1.15:1 sobre fondo oscuro).
+- **`glass-menu`** → menús que se abren desde el header (panel de apariencia). **Es opaco:** un `backdrop-filter` dentro de otro (la píldora del header) solo desenfoca lo que hay dentro del padre, así que el texto del hero se veía nítido detrás del menú. Incluso con 98 % de opacidad se notaba (~1.15:1 sobre fondo oscuro).
 - **El material:**
   - Tinte de la paleta con `--glass-opacity` (0.35 a 0.9, 0.6 por defecto), más desenfoque y saturación del fondo.
   - Brillo especular: sombra interna arriba y un reflejo diagonal.
@@ -120,9 +120,13 @@ Estilo general en ambos temas, a partir del Liquid Glass de Apple (iOS 26) y su 
 - **Formas de cápsula** (`rounded-full`) en controles y botones, y `rounded-3xl` en paneles, como en iOS.
 - **No combinar** `glass`/`glass-panel` con `border-border`, `bg-*` ni estilos `backgroundColor`: el cristal ya define borde y fondo.
 
-**Selector de color** (`components/primitives/PalettePicker.tsx`): va junto a EN/ES en ambos headers.
+**Panel de apariencia** (`components/primitives/PalettePicker.tsx`): el botón con la muestra de color va junto a EN/ES en ambos headers. Es el único control de tema: el botón sol/luna (`ThemeToggle`) se quitó del header el 2026-11-18 y su archivo se borró.
 
-- **Contenido:** 6 muestras (radiogroup: flechas, Enter y Espacio) y el deslizante de cristal. Escape o clic fuera cierran y devuelven el foco al botón.
+- **Contenido, en este orden:**
+  - **Tema:** Claro / Oscuro / Sistema (control segmentado; `setTheme` de next-themes). Sistema sigue al dispositivo y es el valor por defecto.
+  - **Color:** 6 muestras.
+  - **Cristal:** el deslizante de transparencia.
+- **Accesibilidad:** tema y color son radiogroups (flechas, Enter y Espacio). Al abrir, el foco va al tema activo. Escape o clic fuera cierran y devuelven el foco al botón, cuyo `aria-label` dice paleta y tema ("Apariencia: Azul, sistema").
 - **Dónde vive:**
   - `lib/palette-config.ts`: datos y script de arranque, sin React (lo importa el layout de servidor).
   - `lib/palette.ts`: tienda sobre localStorage con `useSyncExternalStore` (como `i18n.tsx`). Claves: `portfolio-palette` y `portfolio-glass`.

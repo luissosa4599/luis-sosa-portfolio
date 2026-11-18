@@ -6,7 +6,6 @@ import { AnimatePresence, motion } from "framer-motion"
 import { Menu, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useLanguage } from "@/lib/i18n"
-import { ThemeToggle } from "@/components/primitives/ThemeToggle"
 import { LanguageToggle } from "@/components/primitives/LanguageToggle"
 import { PalettePicker } from "@/components/primitives/PalettePicker"
 
@@ -127,7 +126,6 @@ export function SiteHeader() {
             <div className="flex items-center gap-2 shrink-0">
               <LanguageToggle />
               <PalettePicker />
-              <ThemeToggle />
               {/* Hamburger — mobile only */}
               <button
                 type="button"

@@ -2,7 +2,6 @@
 
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
-import { ThemeToggle } from "@/components/primitives/ThemeToggle"
 import { LanguageToggle } from "@/components/primitives/LanguageToggle"
 import { PalettePicker } from "@/components/primitives/PalettePicker"
 import { useLanguage } from "@/lib/i18n"
@@ -35,7 +34,6 @@ export function CaseStudyHeader() {
             <div className="flex items-center gap-2">
               <LanguageToggle />
               <PalettePicker />
-              <ThemeToggle />
             </div>
 
           </div>
