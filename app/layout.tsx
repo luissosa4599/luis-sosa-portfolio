@@ -5,6 +5,7 @@ import { LanguageTransition } from "@/components/layout/LanguageTransition"
 import { SmoothScroll } from "@/components/layout/SmoothScroll"
 import { SkipLink } from "@/components/layout/SkipLink"
 import { LanguageProvider } from "@/lib/i18n"
+import { SITE_URL } from "@/lib/site"
 import "./globals.css"
 
 const geistSans = Geist({
@@ -21,12 +22,12 @@ export const metadata: Metadata = {
   title: "Luis Sosa — Full-Stack Engineer",
   description:
     "Full-stack engineer with 4+ years building production software in fintech, payments, SaaS, and enterprise.",
-  metadataBase: new URL("https://luissosa.dev"),
+  metadataBase: new URL(SITE_URL),
   openGraph: {
     title: "Luis Sosa — Full-Stack Engineer",
     description:
       "Full-stack engineer with 4+ years building production software in fintech, payments, SaaS, and enterprise.",
-    url: "https://luissosa.dev",
+    url: SITE_URL,
     siteName: "Luis Sosa",
     locale: "en_US",
     type: "website",
