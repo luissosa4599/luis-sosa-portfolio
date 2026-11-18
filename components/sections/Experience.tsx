@@ -152,15 +152,15 @@ export function Experience() {
   }[language]
 
   return (
-    <section id="experience" className="py-24 md:py-32 scroll-mt-20">
+    <section id="experience" className="section-y scroll-mt-20">
       <Container size="md">
         {/* Heading */}
         <FadeIn>
           <div className="mb-14">
-            <h2 className="text-3xl font-semibold tracking-tight text-foreground">
+            <h2 className="text-section font-semibold tracking-tight text-foreground">
               {copy.title}<span className="text-accent-fg">.</span>
             </h2>
-            <p className="mt-2 text-sm text-muted max-w-lg">{copy.subtitle}</p>
+            <p className="mt-3 text-body text-muted max-w-[60ch]">{copy.subtitle}</p>
           </div>
         </FadeIn>
 
@@ -194,16 +194,16 @@ export function Experience() {
 
                     {/* Top row: role + date */}
                     <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-1 mb-1">
-                      <h3 className="text-sm font-semibold text-foreground leading-snug">
+                      <h3 className="text-body font-semibold text-foreground leading-snug">
                         {item.role[language]}
                       </h3>
-                      <span className="font-mono text-xs text-muted-2 shrink-0">
+                      <span className="font-mono text-meta text-muted-2 shrink-0">
                         {item.year[language]}
                       </span>
                     </div>
 
                     {/* Company — linked full name + short name in gray */}
-                    <p className="text-sm mb-4">
+                    <p className="text-body mb-4">
                       {item.companyUrl ? (
                         <a
                           href={item.companyUrl}
@@ -217,16 +217,16 @@ export function Experience() {
                         <span className="font-medium text-accent-fg">{item.companyFull}</span>
                       )}
                       {item.companyFull !== item.company && (
-                        <span className="ml-2 text-xs text-muted-2">{item.company}</span>
+                        <span className="ml-2 text-meta text-muted-2">{item.company}</span>
                       )}
                     </p>
 
                     {/* Bullets */}
-                    <ul className="flex flex-col gap-1.5 mb-4">
+                    <ul className="flex flex-col gap-2 mb-4 max-w-[75ch]">
                       {item.bullets[language].map((bullet, j) => (
-                        <li key={j} className="flex items-start gap-2 text-sm text-muted leading-relaxed">
+                        <li key={j} className="flex items-start gap-2.5 text-body text-muted">
                           <span
-                            className="mt-[7px] shrink-0 w-1 h-1 rounded-full"
+                            className="mt-[calc(0.825em-2px)] shrink-0 w-1 h-1 rounded-full"
                             style={{ background: "var(--color-accent)" }}
                             aria-hidden
                           />

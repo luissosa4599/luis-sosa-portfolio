@@ -160,7 +160,7 @@ function ProjectCard({ project }: { project: ProjectEntry }) {
           <h2 className="text-base font-semibold text-foreground group-hover:text-accent-fg transition-colors duration-200">
             {project.title}
           </h2>
-          <p className="mt-1 text-sm text-muted leading-relaxed line-clamp-2">
+          <p className="mt-1 text-body text-muted line-clamp-2">
             {project.description}
           </p>
         </div>
@@ -215,7 +215,7 @@ export function Projects() {
   const projects = getProjects(language)
 
   return (
-    <section id="work" className="py-24 md:py-32 scroll-mt-20">
+    <section id="work" className="section-y scroll-mt-20">
       <Container size="md">
         <FadeIn>
           <SectionLabel>{language === "es" ? "Trabajo" : "Work"}</SectionLabel>

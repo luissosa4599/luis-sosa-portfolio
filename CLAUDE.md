@@ -73,7 +73,19 @@ Auditado con WCAG AA en ambos temas (2026-11-18): **0 textos bajo 4.5:1** (antes
 - **Azul como texto = `text-accent-fg`**, nunca `text-accent`. `--color-accent` es para fondos, botones, puntos y bordes (texto blanco encima: 5.1:1). `--color-accent-fg` cambia por tema (`--accent-fg` en `:root` / `.light`).
 - **`--muted-2`** (metadatos, etiquetas): 58 % en oscuro y 42 % en claro, calculado contra el peor fondo (`surface-2`, badges, botones y bandas). No volver a aclararlo.
 - **Nada de colores fijos pensados solo para oscuro** (p. ej. `hsl(213 90% 70%)` inline): en claro bajaban a 1.8:1. Usar los tokens.
-- **Escala de texto:** `text-xs` = 13 px y `text-sm` = 15 px (sobrescritos en `@theme`). Mínimo en el sitio: 12 px (`text-[12px]`, solo en etiquetas mono). No usar 10–11 px.
+- **Dos familias de tamaño** (definidas en `@theme`, `globals.css`):
+  - **Lectura, fluida con `clamp()`** (crece con la pantalla, como la landing de Grupo Cumulus):
+    - `text-body` (16 → 18 px): párrafos y viñetas.
+    - `text-lead` (17 → 20 px): entradillas del hero y del contacto.
+    - `text-meta` (14 → 15 px): fechas, empresa y metadatos.
+    - `text-section` (30 → 44 px): h2 de sección.
+  - **Interfaz, fija:** `text-xs` = 13 px y `text-sm` = 15 px (sobrescritos). Para menú, botones y etiquetas. No subirla: el menú en español deja de caber a 1024 px.
+  - **Todo texto que se lee va en `text-body`/`text-lead`**, nunca en `text-sm`. Mínimo en el sitio: 12 px (`text-[12px]`, solo etiquetas mono).
+- **Ancho de línea:** los párrafos llevan `max-w-[60ch]`–`[75ch]` aunque el contenedor sea más ancho (medido: ~55 caracteres por línea).
+- **Espacio:**
+  - Aire de sección: `section-y` (`@utility`, `clamp(56px, 7vw, 104px)` por lado), no `py-24 md:py-32`.
+  - `Container`: `md` = 1120 px y `lg` = 1280 px con margen fluido `clamp(20px, 4vw, 40px)` (contenido de hasta 1200 px). El header usa el mismo ancho y margen para quedar alineado.
+- **Medido contra la landing (2026-11-18), texto de lectura:** 16.1 px en celular, 17.6 px a 1280 y 18 px a 1920 (antes 15.1 px fijo, 91 % bajo 16 px). Aire por sección: 108 px en celular y 158 px en escritorio (antes 168 y 216).
 
 ## Separadores por tono
 

@@ -22,7 +22,7 @@ export function SectionWrapper({
       id={id}
       className={cn(
         "scroll-mt-20", // espacio para el header fijo al llegar por un link interno
-        !noPadding && "py-24 md:py-32",
+        !noPadding && "section-y",
         className
       )}
     >

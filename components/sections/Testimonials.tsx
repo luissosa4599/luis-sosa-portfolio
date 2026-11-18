@@ -36,7 +36,7 @@ export function Testimonials() {
         <SectionLabel className="mb-0">
           {language === "es" ? "Referencias" : "References"}
         </SectionLabel>
-        <h2 className="mt-3 text-3xl md:text-4xl font-semibold tracking-tight text-foreground">
+        <h2 className="mt-3 text-section font-semibold tracking-tight text-foreground">
           {language === "es" ? "Lo que dicen de mi trabajo" : "What people say"}
         </h2>
       </FadeIn>
@@ -53,7 +53,7 @@ export function Testimonials() {
               </span>
 
               <blockquote className="flex-1">
-                <p className="text-sm text-muted leading-relaxed">{t.quote[language]}</p>
+                <p className="text-body text-muted">{t.quote[language]}</p>
               </blockquote>
 
               <figcaption className="flex items-center justify-between gap-3 border-t border-border/50 pt-4 flex-wrap">

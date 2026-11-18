@@ -46,7 +46,7 @@ function Decisions({ decisions }: { decisions: CaseStudyDecision[] }) {
           </span>
           <div>
             <h3 className="text-sm font-semibold text-foreground mb-1.5">{d.title}</h3>
-            <p className="text-sm text-muted leading-relaxed">{d.body}</p>
+            <p className="text-body text-muted">{d.body}</p>
           </div>
         </div>
       ))}
@@ -236,7 +236,7 @@ export function CaseStudyView({ slug }: { slug: string }) {
             {project.context && (
               <FadeIn>
                 <CsHeading>{labels.context}</CsHeading>
-                <p className="text-base text-foreground/85 leading-relaxed whitespace-pre-line">
+                <p className="text-body text-foreground/85 whitespace-pre-line">
                   {project.context}
                 </p>
               </FadeIn>
@@ -245,7 +245,7 @@ export function CaseStudyView({ slug }: { slug: string }) {
             {project.myRole && (
               <FadeIn>
                 <CsHeading>{labels.myRole}</CsHeading>
-                <p className="text-base text-foreground/85 leading-relaxed whitespace-pre-line">
+                <p className="text-body text-foreground/85 whitespace-pre-line">
                   {project.myRole}
                 </p>
               </FadeIn>
@@ -285,7 +285,7 @@ export function CaseStudyView({ slug }: { slug: string }) {
             {project.challenges && (
               <FadeIn>
                 <CsHeading>{labels.challenges}</CsHeading>
-                <p className="text-base text-foreground/85 leading-relaxed whitespace-pre-line">
+                <p className="text-body text-foreground/85 whitespace-pre-line">
                   {project.challenges}
                 </p>
               </FadeIn>
@@ -306,7 +306,7 @@ export function CaseStudyView({ slug }: { slug: string }) {
                       className="flex items-start gap-3"
                     >
                       <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 shrink-0" />
-                      <span className="text-base text-foreground/85">{item}</span>
+                      <span className="text-body text-foreground/85">{item}</span>
                     </ScrollReveal>
                   ))}
                 </ul>
@@ -316,7 +316,7 @@ export function CaseStudyView({ slug }: { slug: string }) {
             {project.lessons && (
               <FadeIn>
                 <CsHeading>{labels.lessons}</CsHeading>
-                <p className="text-base text-foreground/85 leading-relaxed whitespace-pre-line">
+                <p className="text-body text-foreground/85 whitespace-pre-line">
                   {project.lessons}
                 </p>
               </FadeIn>

@@ -11,8 +11,8 @@ export function CaseStudyHeader() {
 
   return (
     // Entrada con CSS (.enter-down en globals.css): arranca con el HTML, sin esperar a JS
-    <header className="enter-down fixed top-4 inset-x-0 z-50 px-4 md:px-6">
-      <div className="max-w-6xl mx-auto">
+    <header className="enter-down fixed top-4 inset-x-0 z-50 px-[clamp(1.25rem,4vw,2.5rem)]">
+      <div className="max-w-[75rem] mx-auto">
         <div
           className="rounded-2xl border border-border shadow-lg backdrop-blur-md"
           style={{ background: "var(--nav-bg)" }}

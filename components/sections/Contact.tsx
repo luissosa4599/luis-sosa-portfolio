@@ -56,10 +56,10 @@ export function Contact() {
   return (
     <SectionWrapper id="contact" containerSize="md">
       <FadeIn className="text-center flex flex-col items-center">
-        <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-foreground">
+        <h2 className="text-section font-semibold tracking-tight text-foreground">
           {language === "es" ? "Construyamos algo útil" : "Let's build something useful"}
         </h2>
-        <p className="mt-4 text-base text-muted leading-relaxed max-w-md">
+        <p className="mt-4 text-lead text-muted max-w-[52ch]">
           {language === "es"
             ? "Estoy buscando roles de frontend y product engineering donde pueda trabajar en inglés, colaborar con distintas áreas y construir interfaces claras para productos complejos."
             : "I'm looking for frontend and product engineering roles where I can work in English, collaborate across functions, and build clear interfaces for complex products."}

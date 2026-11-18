@@ -250,14 +250,14 @@ export function Skills() {
   }[language]
 
   return (
-    <section id="skills" className="bg-band py-24 md:py-32 scroll-mt-20">
+    <section id="skills" className="bg-band section-y scroll-mt-20">
       <Container size="md">
         <FadeIn>
           <div className="mb-12">
-            <h2 className="text-3xl font-semibold tracking-tight text-foreground">
+            <h2 className="text-section font-semibold tracking-tight text-foreground">
               {copy.title}<span className="text-accent-fg">.</span>
             </h2>
-            <p className="mt-2 text-sm text-muted max-w-lg">{copy.subtitle}</p>
+            <p className="mt-3 text-body text-muted max-w-[60ch]">{copy.subtitle}</p>
           </div>
         </FadeIn>
 

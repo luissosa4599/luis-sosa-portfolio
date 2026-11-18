@@ -185,9 +185,9 @@ export function Research() {
   if (!entry) return null
 
   return (
-    <section id="research" className="relative flex items-center min-h-[90svh] overflow-hidden scroll-mt-20 bg-band">
+    <section id="research" className="relative flex items-center overflow-hidden scroll-mt-20 bg-band">
 
-      <Container className="w-full py-24">
+      <Container className="w-full section-y">
         <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
 
           {/* ── Left column — content ─────────────────────────────── */}
@@ -213,7 +213,7 @@ export function Research() {
             {/* Paper title */}
             <motion.h3
               variants={seq(2, reduced)}
-              className="text-base md:text-lg font-medium text-muted leading-snug tracking-tight max-w-md"
+              className="text-lead font-medium text-muted leading-snug tracking-tight max-w-[48ch]"
             >
               {entry.title}
             </motion.h3>
@@ -221,14 +221,14 @@ export function Research() {
             {/* Abstract */}
             <motion.p
               variants={seq(3, reduced)}
-              className="text-sm text-muted leading-relaxed max-w-md"
+              className="text-body text-muted max-w-[60ch]"
             >
               {entry.abstract}
             </motion.p>
 
             <motion.p
               variants={seq(4, reduced)}
-              className="text-sm text-muted-2 leading-relaxed max-w-md"
+              className="text-body text-muted-2 max-w-[60ch]"
             >
               {language === "es"
                 ? "Incluyo este trabajo porque refleja cómo abordo problemas de producto: research estructurado, decisiones claras y la capacidad de llevar una idea hasta un sistema real."

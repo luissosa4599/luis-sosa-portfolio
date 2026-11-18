@@ -19,7 +19,7 @@ export function Approach() {
     <SectionWrapper id="approach">
       <FadeIn>
         <SectionLabel>{language === "es" ? "Enfoque" : "Approach"}</SectionLabel>
-        <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-foreground">
+        <h2 className="text-section font-semibold tracking-tight text-foreground">
           {language === "es" ? "Cómo trabajo" : "How I work"}
         </h2>
       </FadeIn>
@@ -56,7 +56,7 @@ export function Approach() {
                 <h3 className="text-lg font-semibold tracking-tight text-foreground">
                   {principle.heading}
                 </h3>
-                <p className="text-sm text-muted leading-relaxed">
+                <p className="text-body text-muted">
                   {principle.body}
                 </p>
               </div>

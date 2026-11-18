@@ -27,6 +27,22 @@
   --text-xs: 0.8125rem;
   --text-sm: 0.9375rem;
 
+  /* Tamaños de LECTURA (fluidos, crecen con la pantalla como en la landing de Grupo Cumulus).
+     xs/sm se quedan para la interfaz (menú, botones, etiquetas): si crecieran, el menú en
+     español deja de caber a 1024 px. Para texto que se lee, usar estos:
+     - text-body:    párrafos y viñetas.           16 px (390) → ~17.5 (1280) → 18 px
+     - text-lead:    entradillas (hero, contacto).  17 px → 20 px
+     - text-meta:    fechas, empresa, metadatos.    14 px → 15 px
+     - text-section: títulos de sección (h2).       30 px → 44 px */
+  --text-body: clamp(1rem, 0.96rem + 0.17vw, 1.125rem);
+  --text-body--line-height: 1.65;
+  --text-lead: clamp(1.0625rem, 0.98rem + 0.35vw, 1.25rem);
+  --text-lead--line-height: 1.6;
+  --text-meta: clamp(0.875rem, 0.85rem + 0.1vw, 0.9375rem);
+  --text-meta--line-height: 1.5;
+  --text-section: clamp(1.875rem, 3.4vw, 2.75rem);
+  --text-section--line-height: 1.1;
+
   /* Neutral scale (shared dark/light) */
   --color-background:    var(--background);
   --color-surface:       var(--surface);
@@ -164,6 +180,13 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .enter-rise, .enter-down { animation: none; }
+}
+
+/* ─── Aire vertical de sección ────────────────────────────────────────────────
+   Fluido como en la landing: 56 px por lado en celular → 104 px en pantallas grandes.
+   Antes py-24 md:py-32 (96/128 px): el doble de aire que la landing en celular. */
+@utility section-y {
+  padding-block: clamp(3.5rem, 7vw, 6.5rem);
 }
 
 /* ─── Cinta de tecnologías (TechMarquee) ──────────────────────────────────────

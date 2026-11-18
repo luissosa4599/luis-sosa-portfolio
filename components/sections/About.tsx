@@ -52,8 +52,8 @@ export function About() {
               {/* Name + availability */}
               <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
                 <div>
-                  <h2 className="text-base font-semibold text-foreground">Luis Sosa</h2>
-                  <p className="text-sm text-muted">
+                  <h2 className="text-lead font-semibold text-foreground">Luis Sosa</h2>
+                  <p className="text-meta text-muted">
                     {copy.role} · {copy.years}
                   </p>
                 </div>
@@ -67,7 +67,7 @@ export function About() {
               </div>
 
               {/* Bio */}
-              <p className="text-sm text-muted leading-relaxed max-w-2xl">{copy.bio}</p>
+              <p className="text-body text-muted max-w-[72ch]">{copy.bio}</p>
 
               {/* Meta row */}
               <p className="font-mono text-xs text-muted-2">

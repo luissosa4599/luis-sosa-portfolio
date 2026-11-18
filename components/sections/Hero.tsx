@@ -128,7 +128,7 @@ export function Hero() {
           {/* Subtitle */}
           {/* Es el texto más grande del hero (el LCP): arranca en opacidad 0.2, ver globals.css */}
           <p
-            className="enter-rise text-base text-muted leading-relaxed max-w-lg"
+            className="enter-rise text-lead text-muted max-w-[46ch]"
             style={enter(1.1, 28, { "--enter-opacity": "0.2" } as React.CSSProperties)}
           >
             {copy.subtitle}
