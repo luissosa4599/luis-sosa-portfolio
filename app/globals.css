@@ -10,10 +10,20 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 
-  /* Blue / Indigo accent */
-  --color-accent:      hsl(213 60% 50%);
+  /* Blue / Indigo accent
+     --color-accent    → fondos, botones, puntos y bordes (texto blanco encima: 5.1:1).
+     --color-accent-fg → el azul como COLOR DE TEXTO (text-accent-fg). Cambia por tema para
+                         pasar WCAG AA (≥ 4.5:1) también sobre las bandas: no usar
+                         text-accent para texto. */
+  --color-accent:      hsl(213 60% 46%);
+  --color-accent-fg:   var(--accent-fg);
   --color-accent-glow: hsl(213 70% 65%);
   --color-accent-deep: hsl(213 55% 32%);
+
+  /* Escala de texto: +1 px en xs y sm respecto a Tailwind (13 y 15 px). La mayoría del
+     texto vivía en 12–14 px y costaba leerlo. Mínimo en el sitio: 12 px (text-[12px]). */
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
 
   /* Neutral scale (shared dark/light) */
   --color-background:    var(--background);
@@ -44,7 +54,8 @@
   --border-strong: hsl(0 0% 100% / 0.10);
   --foreground:    hsl(0 0% 97%);
   --muted:         hsl(220 8% 65%);
-  --muted-2:       hsl(220 6% 45%);
+  --muted-2:       hsl(220 8% 58%);   /* antes 45 %: 3.1:1 → 4.9:1 en el peor fondo */
+  --accent-fg:     hsl(213 80% 64%);  /* azul para texto sobre oscuro: 5.4:1 en el peor fondo */
   --nav-bg:              hsl(220 12% 11% / 0.92);
   --nav-active-bg:       radial-gradient(ellipse at center, hsl(213 70% 24%) 0%, hsl(213 65% 10%) 100%);
   --nav-active-shadow:   0 0 14px -2px var(--color-accent), 0 0 4px -1px var(--color-accent);
@@ -68,7 +79,8 @@
   --border-strong: hsl(0 0% 0% / 0.10);
   --foreground:    hsl(220 20% 10%);
   --muted:         hsl(220 12% 38%);
-  --muted-2:       hsl(220 10% 55%);
+  --muted-2:       hsl(220 10% 42%);  /* antes 55 %: 2.9:1 → 4.7:1 en el peor fondo */
+  --accent-fg:     hsl(213 70% 40%);  /* azul para texto sobre claro: 5.3:1 en el peor fondo */
   --nav-bg:              hsl(0 0% 98% / 0.88);
   --nav-active-bg:       radial-gradient(ellipse at center, hsl(213 60% 88%) 0%, hsl(213 55% 95%) 100%);
   --nav-active-shadow:   0 0 8px -3px var(--color-accent);

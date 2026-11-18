@@ -146,7 +146,7 @@ function CiteButton({ entry }: { entry: ResearchEntry }) {
       onClick={handleCopy}
       className="inline-flex items-center gap-1.5 py-1 -my-1 text-sm text-muted hover:text-foreground transition-colors duration-200"
     >
-      {copied ? <Check size={13} className="text-accent" /> : <Copy size={13} />}
+      {copied ? <Check size={13} className="text-accent-fg" /> : <Copy size={13} />}
       {copied ? "Copied!" : "Cite (BibTeX)"}
     </button>
   )
@@ -241,7 +241,7 @@ export function Research() {
                 <span className="text-sm font-medium text-foreground tabular-nums">
                   {entry.year}
                 </span>
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium bg-accent/10 text-accent border border-accent/20">
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium bg-accent/10 text-accent-fg border border-accent/20">
                   {entry.venue}
                 </span>
                 <span className="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium bg-surface text-muted border border-border">

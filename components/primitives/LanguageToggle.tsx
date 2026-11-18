@@ -29,7 +29,7 @@ export function LanguageToggle({ className }: LanguageToggleProps) {
           className={cn(
             "px-2.5 py-1 rounded text-xs font-semibold uppercase transition-colors duration-150",
             language === lang
-              ? "bg-accent/15 text-accent"
+              ? "bg-accent/15 text-accent-fg"
               : "text-muted hover:text-foreground"
           )}
         >

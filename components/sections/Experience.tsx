@@ -158,7 +158,7 @@ export function Experience() {
         <FadeIn>
           <div className="mb-14">
             <h2 className="text-3xl font-semibold tracking-tight text-foreground">
-              {copy.title}<span className="text-accent">.</span>
+              {copy.title}<span className="text-accent-fg">.</span>
             </h2>
             <p className="mt-2 text-sm text-muted max-w-lg">{copy.subtitle}</p>
           </div>
@@ -213,12 +213,12 @@ export function Experience() {
                           href={item.companyUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="font-medium text-accent hover:underline underline-offset-2"
+                          className="font-medium text-accent-fg hover:underline underline-offset-2"
                         >
                           {item.companyFull}
                         </a>
                       ) : (
-                        <span className="font-medium text-accent">{item.companyFull}</span>
+                        <span className="font-medium text-accent-fg">{item.companyFull}</span>
                       )}
                       {item.companyFull !== item.company && (
                         <span className="ml-2 text-xs text-muted-2">{item.company}</span>
@@ -241,7 +241,7 @@ export function Experience() {
                                 href={bullet.href}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-accent hover:underline underline-offset-2"
+                                className="text-accent-fg hover:underline underline-offset-2"
                               >
                                 {bullet.linkText}
                               </a>
@@ -271,7 +271,7 @@ export function Experience() {
                         href={item.pdf.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="mt-2 -mb-1 inline-flex items-center gap-1.5 py-1 text-xs text-muted-2 hover:text-accent transition-colors duration-150"
+                        className="mt-2 -mb-1 inline-flex items-center gap-1.5 py-1 text-xs text-muted-2 hover:text-accent-fg transition-colors duration-150"
                       >
                         <ExternalLink size={12} />
                         {item.pdf.label[language]}

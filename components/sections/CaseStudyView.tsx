@@ -24,7 +24,7 @@ function CsHeading({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex items-center gap-3 mb-5">
       <span className="block w-4 h-px bg-accent shrink-0" />
-      <h2 className="font-mono text-[11px] uppercase tracking-widest text-accent">
+      <h2 className="font-mono text-[12px] uppercase tracking-widest text-accent-fg">
         {children}
       </h2>
     </div>
@@ -122,7 +122,7 @@ export function CaseStudyView({ slug }: { slug: string }) {
       <div className="min-h-screen flex items-center justify-center">
         <Container className="text-center py-32">
           <p className="text-muted mb-4">Project not found.</p>
-          <Link href="/#work" className="text-accent hover:underline text-sm">
+          <Link href="/#work" className="text-accent-fg hover:underline text-sm">
             ← Back to work
           </Link>
         </Container>
@@ -158,7 +158,7 @@ export function CaseStudyView({ slug }: { slug: string }) {
         {/* ── Project hero ─────────────────────────────────────── */}
         <Container className="pb-14">
           <FadeIn>
-            <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-mono border border-accent/20 bg-accent/[0.06] text-accent mb-6">
+            <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-mono border border-accent/20 bg-accent/[0.06] text-accent-fg mb-6">
               {labels.caseStudy}
             </span>
 
@@ -189,7 +189,7 @@ export function CaseStudyView({ slug }: { slug: string }) {
                   href={project.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-sm font-medium text-accent hover:text-accent/80 transition-colors"
+                  className="inline-flex items-center gap-1.5 text-sm font-medium text-accent-fg hover:text-accent-fg/80 transition-colors"
                 >
                   {labels.viewLive}
                   <ArrowRight size={14} />

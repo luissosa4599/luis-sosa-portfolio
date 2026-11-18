@@ -43,7 +43,7 @@ export function Approach() {
 
               {/* Top row: icon left, number right */}
               <div className="flex items-start justify-between">
-                <div className="w-11 h-11 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center text-accent shrink-0">
+                <div className="w-11 h-11 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center text-accent-fg shrink-0">
                   <Icon size={20} />
                 </div>
                 <span className="font-mono text-5xl font-bold text-foreground/[0.04] select-none leading-none -mt-1">

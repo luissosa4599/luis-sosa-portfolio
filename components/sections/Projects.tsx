@@ -69,7 +69,7 @@ function SalvaLomitosVisual() {
           style={{
             borderColor: "hsl(213 90% 53% / 0.35)",
             background: "hsl(213 90% 53% / 0.10)",
-            color: "hsl(213 90% 70%)",
+            color: "var(--color-accent-fg)",
           }}
         >
           HCI International 2025 · Springer Nature
@@ -85,11 +85,11 @@ function SalvaLomitosVisual() {
             <div key={label} className="flex flex-col items-center gap-0.5">
               <span
                 className="text-2xl font-semibold tabular-nums"
-                style={{ color: "hsl(213 90% 65%)" }}
+                style={{ color: "var(--color-accent-fg)" }}
               >
                 {value}
               </span>
-              <span className="text-[10px] font-mono uppercase tracking-widest text-muted-2">
+              <span className="text-[12px] font-mono uppercase tracking-widest text-muted-2">
                 {label}
               </span>
             </div>
@@ -101,11 +101,11 @@ function SalvaLomitosVisual() {
           {["Computer Vision", "React Native", "OpenCV", "Python"].map((t) => (
             <span
               key={t}
-              className="text-[10px] font-mono px-2 py-0.5 rounded border"
+              className="text-[12px] font-mono px-2 py-0.5 rounded border"
               style={{
                 borderColor: "hsl(213 90% 53% / 0.25)",
                 background: "hsl(213 90% 53% / 0.07)",
-                color: "hsl(213 90% 70% / 0.8)",
+                color: "var(--color-accent-fg)",
               }}
             >
               {t}
@@ -139,7 +139,7 @@ function ProjectCard({ project }: { project: ProjectEntry }) {
         <ProjectVisual slug={project.slug} />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[var(--card-bg)] pointer-events-none" />
         {project.featured && (
-          <span className="absolute top-3 right-3 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-accent/10 text-accent border border-accent/20">
+          <span className="absolute top-3 right-3 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-background/85 backdrop-blur-sm text-accent-fg border border-accent/30">
             {language === "es" ? "Destacado" : "Featured"}
           </span>
         )}
@@ -148,7 +148,7 @@ function ProjectCard({ project }: { project: ProjectEntry }) {
       {/* Info */}
       <div className="flex flex-col gap-3 px-5 pb-5 pt-4 border-t border-border/50 flex-1">
         <div>
-          <h2 className="text-base font-semibold text-foreground group-hover:text-accent transition-colors duration-200">
+          <h2 className="text-base font-semibold text-foreground group-hover:text-accent-fg transition-colors duration-200">
             {project.title}
           </h2>
           <p className="mt-1 text-sm text-muted leading-relaxed line-clamp-2">
@@ -161,7 +161,7 @@ function ProjectCard({ project }: { project: ProjectEntry }) {
           {project.tags.map((tag) => (
             <span
               key={tag}
-              className="font-mono text-[10px] px-1.5 py-0.5 rounded border border-border text-muted-2"
+              className="font-mono text-[12px] px-1.5 py-0.5 rounded border border-border text-muted-2"
             >
               {tag}
             </span>
@@ -173,7 +173,7 @@ function ProjectCard({ project }: { project: ProjectEntry }) {
           {/* Stretched link — covers the entire card */}
           <Link
             href={`/work/${project.slug}`}
-            className="flex items-center gap-1.5 text-sm font-medium text-accent after:absolute after:inset-0"
+            className="flex items-center gap-1.5 text-sm font-medium text-accent-fg after:absolute after:inset-0"
           >
             {language === "es" ? "Leer caso de estudio" : "Read case study"}
             <ArrowUpRight
@@ -187,7 +187,7 @@ function ProjectCard({ project }: { project: ProjectEntry }) {
               href={project.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="relative z-10 inline-flex items-center gap-1.5 py-1 -my-1 text-xs text-muted-2 hover:text-accent transition-colors duration-150"
+              className="relative z-10 inline-flex items-center gap-1.5 py-1 -my-1 text-xs text-muted-2 hover:text-accent-fg transition-colors duration-150"
             >
               <ExternalLink size={12} />
               {language === "es" ? "Abrir proyecto" : "Open project"}

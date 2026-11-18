@@ -73,7 +73,7 @@ export function Contact() {
               href={link.href}
               target={link.external ? "_blank" : undefined}
               rel={link.external ? "noopener noreferrer" : undefined}
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-md text-sm font-medium transition-all duration-200 border border-border hover:border-accent/30 hover:bg-accent/[0.04] hover:text-accent text-muted"
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-md text-sm font-medium transition-all duration-200 border border-border hover:border-accent/30 hover:bg-accent/[0.04] hover:text-accent-fg text-muted"
             >
               {link.icon}
               {link.label}

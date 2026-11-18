@@ -21,7 +21,7 @@ export function AccentLink({
       rel={external ? "noopener noreferrer" : undefined}
       className={cn(
         "inline-flex items-center gap-1.5 py-1 -my-1 text-sm font-medium",
-        "text-muted hover:text-accent transition-colors duration-200",
+        "text-muted hover:text-accent-fg transition-colors duration-200",
         "group",
         className
       )}

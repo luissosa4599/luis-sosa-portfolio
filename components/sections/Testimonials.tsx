@@ -46,7 +46,7 @@ export function Testimonials() {
           <FadeIn key={i} delay={i * 0.1}>
             <figure className="flex flex-col gap-5 rounded-2xl border border-border bg-surface p-7">
               <span
-                className="font-serif text-5xl leading-none text-accent select-none"
+                className="font-serif text-5xl leading-none text-accent-fg select-none"
                 aria-hidden
               >
                 &ldquo;
@@ -74,7 +74,7 @@ export function Testimonials() {
                     href={t.pdf}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 py-1 -my-1 text-xs text-muted-2 hover:text-accent transition-colors duration-150"
+                    className="inline-flex items-center gap-1.5 py-1 -my-1 text-xs text-muted-2 hover:text-accent-fg transition-colors duration-150"
                   >
                     <ExternalLink size={12} />
                     {language === "es" ? "Ver carta completa" : "View full letter"}

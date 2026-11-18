@@ -63,6 +63,15 @@ lib/
   site.ts          — SITE_URL, base de metadata, robots y sitemap. Hoy es la URL de Vercel (ver docs/dominio-propio.md)
 ```
 
+## Legibilidad (contraste y tamaños)
+
+Auditado con WCAG AA en ambos temas (2026-11-18): **0 textos bajo 4.5:1** (antes 103 en oscuro y 111 en claro). Al tocar colores o fondos, mantenerlo:
+
+- **Azul como texto = `text-accent-fg`**, nunca `text-accent`. `--color-accent` es para fondos, botones, puntos y bordes (texto blanco encima: 5.1:1). `--color-accent-fg` cambia por tema (`--accent-fg` en `:root` / `.light`).
+- **`--muted-2`** (metadatos, etiquetas): 58 % en oscuro y 42 % en claro, calculado contra el peor fondo (`surface-2`, badges, botones y bandas). No volver a aclararlo.
+- **Nada de colores fijos pensados solo para oscuro** (p. ej. `hsl(213 90% 70%)` inline): en claro bajaban a 1.8:1. Usar los tokens.
+- **Escala de texto:** `text-xs` = 13 px y `text-sm` = 15 px (sobrescritos en `@theme`). Mínimo en el sitio: 12 px (`text-[12px]`, solo en etiquetas mono). No usar 10–11 px.
+
 ## Sistema de animaciones
 
 ### Regla base: el contenido llega visible en el HTML

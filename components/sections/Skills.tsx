@@ -255,7 +255,7 @@ export function Skills() {
         <FadeIn>
           <div className="mb-12">
             <h2 className="text-3xl font-semibold tracking-tight text-foreground">
-              {copy.title}<span className="text-accent">.</span>
+              {copy.title}<span className="text-accent-fg">.</span>
             </h2>
             <p className="mt-2 text-sm text-muted max-w-lg">{copy.subtitle}</p>
           </div>

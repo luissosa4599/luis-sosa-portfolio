@@ -103,7 +103,7 @@ export function Hero() {
             className="enter-rise text-[clamp(3rem,6vw,5rem)] font-semibold tracking-tight leading-[1.05] text-foreground -mt-4"
             style={enter(0.42, 52, { "--enter-scale": "0.92", "--enter-duration": "0.85s" } as React.CSSProperties)}
           >
-            {copy.name}<span className="text-accent">.</span>
+            {copy.name}<span className="text-accent-fg">.</span>
           </h1>
 
           {/* Rotating title — el primero llega visible en el HTML (initial={false}) */}
@@ -115,7 +115,7 @@ export function Hero() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={effectiveReduced ? undefined : { opacity: 0, y: -8 }}
                 transition={{ duration: 0.35, ease: transition.easeOut }}
-                className="text-lg font-mono text-accent"
+                className="text-lg font-mono text-accent-fg"
               >
                 {TITLES[language][titleIndex]}
               </motion.span>
