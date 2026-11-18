@@ -4,17 +4,18 @@ import type { CSSProperties } from "react"
 // Las animaciones viven en CSS (globals.css, "Escenas") con animation-timeline: view():
 // avanzan y retroceden con el scroll, sin JS. Aquí solo están los recorridos de entrada
 // de cada dirección, que se pasan como variables CSS (--in-x, --in-y, --in-s) al elemento.
-// Los mismos valores que tenían los revelados de Framer (y la landing de Grupo Cumulus).
+// Rama inmersivo: recorridos 1.5× los de la landing de Grupo Cumulus (abajo).
 
 export type SceneDirection = "up" | "left" | "right" | "zoom" | "pop" | "none"
 
-const PRESETS: Record<SceneDirection, { x: string; y: string; s: number }> = {
-  up:    { x: "0px",    y: "80px", s: 0.96 },
-  left:  { x: "-160px", y: "0px",  s: 0.95 },
-  right: { x: "160px",  y: "0px",  s: 0.95 },
-  zoom:  { x: "0px",    y: "60px", s: 0.8 },
-  pop:   { x: "0px",    y: "12px", s: 0.82 },
-  none:  { x: "0px",    y: "0px",  s: 1 },
+// Inmersivo: recorridos 1.5× los de la landing de Cumulus y un giro leve en las laterales
+const PRESETS: Record<SceneDirection, { x: string; y: string; s: number; r: string }> = {
+  up:    { x: "0px",    y: "120px", s: 0.9,  r: "0deg" },
+  left:  { x: "-240px", y: "24px",  s: 0.9,  r: "-4deg" },
+  right: { x: "240px",  y: "24px",  s: 0.9,  r: "4deg" },
+  zoom:  { x: "0px",    y: "90px",  s: 0.7,  r: "0deg" },
+  pop:   { x: "0px",    y: "18px",  s: 0.7,  r: "0deg" },
+  none:  { x: "0px",    y: "0px",   s: 1,    r: "0deg" },
 }
 
 /**
@@ -24,7 +25,7 @@ const PRESETS: Record<SceneDirection, { x: string; y: string; s: number }> = {
  */
 export function sceneVars(direction: SceneDirection = "up", stagger = 0): CSSProperties {
   const p = PRESETS[direction]
-  return { "--in-x": p.x, "--in-y": p.y, "--in-s": p.s, "--i": stagger } as CSSProperties
+  return { "--in-x": p.x, "--in-y": p.y, "--in-s": p.s, "--in-r": p.r, "--i": stagger } as CSSProperties
 }
 
 /** En una cuadrícula de 2 columnas: la izquierda entra por la izquierda y la derecha por la derecha. */

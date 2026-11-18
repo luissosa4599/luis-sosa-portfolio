@@ -1,11 +1,10 @@
 "use client"
 
-import { useReducedMotion as useFramerReducedMotion } from "framer-motion"
-
 /**
- * Returns true if the user has requested reduced motion.
- * Use this to gate animations and respect accessibility preferences.
+ * Rama inmersivo: siempre false. Por decisión del usuario (2026-11-18) el movimiento no se
+ * limita con "reducir movimiento" del sistema: se ve completo para todos. En las otras ramas
+ * este hook devuelve la preferencia real (useReducedMotion de Framer Motion).
  */
 export function useReducedMotion(): boolean {
-  return useFramerReducedMotion() ?? false
+  return false
 }

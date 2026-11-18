@@ -7,8 +7,8 @@ import Lenis from "lenis"
  * Scroll suavizado de la rueda del mouse (Lenis 1.3.27).
  * - `lerp: 0.1`: suave sin sentirse pesado (antes 0.08). No cambia la velocidad.
  * - Celular y trackpad conservan su scroll nativo (`syncTouch` apagado por defecto).
- * - "Reducir movimiento": Lenis apaga el suavizado solo (`respectReducedMotion`, por defecto
- *   desde 1.3.26) y los saltos a anclas son instantáneos; se detecta en vivo.
+ * - Rama inmersivo: `respectReducedMotion: false`, el suavizado sigue aunque el sistema pida
+ *   reducir movimiento (decisión del usuario, 2026-11-18).
  * - Links internos (`#seccion` y `/#seccion`): se deslizan y le pasan el foco a la sección
  *   (`tabindex="-1"`), igual que un ancla nativa, para que teclado y lectores de pantalla
  *   sigan desde ahí. Sin esto, el foco se quedaba en el link del menú.
@@ -17,7 +17,7 @@ import Lenis from "lenis"
  */
 export function SmoothScroll({ children }: { children: React.ReactNode }) {
   useEffect(() => {
-    const lenis = new Lenis({ autoRaf: true, lerp: 0.1 })
+    const lenis = new Lenis({ autoRaf: true, lerp: 0.1, respectReducedMotion: false })
 
     function onAnchorClick(e: MouseEvent) {
       if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return

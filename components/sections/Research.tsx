@@ -8,6 +8,7 @@ import { SectionLabel } from "@/components/primitives/SectionLabel"
 import { AccentLink } from "@/components/primitives/AccentLink"
 import { ScrollReveal } from "@/components/primitives/ScrollReveal"
 import { FadeIn } from "@/components/primitives/FadeIn"
+import { WordReveal } from "@/components/primitives/WordReveal"
 import { getResearch } from "@/lib/data/research"
 import { sceneVars } from "@/lib/scene"
 import { useLanguage } from "@/lib/i18n"
@@ -37,23 +38,23 @@ function DetectionCircle() {
       {[0, 1, 2].map((i) => (
         <motion.div
           key={i}
-          className="absolute inset-0 rounded-full border border-accent/25 motion-reduce:hidden"
+          className="absolute inset-0 rounded-full border border-accent/25"
           animate={{ scale: [1, 1.35, 1.7], opacity: [0.35, 0.12, 0] }}
           transition={{ duration: 2.8, repeat: Infinity, delay: i * 0.9, ease: "easeOut" }}
         />
       ))}
 
-      {/* Solid outer ring — fully colored, static */}
-      <div
-        className="absolute inset-0 rounded-full"
-        style={{ border: "2.5px solid color-mix(in oklch, var(--color-accent) 55%, transparent)" }}
-      />
-
-      {/* Cardinal targeting marks */}
-      <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-px h-4 bg-accent/55" />
-      <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-px h-4 bg-accent/55" />
-      <div className="absolute top-1/2 -left-1.5 -translate-y-1/2 h-px w-4 bg-accent/55" />
-      <div className="absolute top-1/2 -right-1.5 -translate-y-1/2 h-px w-4 bg-accent/55" />
+      {/* Retícula: anillo exterior y marcas cardinales, gira con el scroll (.research-reticle) */}
+      <div className="research-reticle absolute inset-0">
+        <div
+          className="absolute inset-0 rounded-full"
+          style={{ border: "2.5px solid color-mix(in oklch, var(--color-accent) 55%, transparent)" }}
+        />
+        <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-px h-4 bg-accent/55" />
+        <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-px h-4 bg-accent/55" />
+        <div className="absolute top-1/2 -left-1.5 -translate-y-1/2 h-px w-4 bg-accent/55" />
+        <div className="absolute top-1/2 -right-1.5 -translate-y-1/2 h-px w-4 bg-accent/55" />
+      </div>
 
       {/* Inner circle */}
       <div
@@ -70,7 +71,7 @@ function DetectionCircle() {
 
       {/* Spinning arc — mid ring, counter-clockwise */}
       <div
-        className="absolute inset-4 rounded-full pointer-events-none z-10 animate-[spin-ccw_6s_linear_infinite] motion-reduce:animate-none"
+        className="absolute inset-4 rounded-full pointer-events-none z-10 animate-[spin-ccw_6s_linear_infinite]"
         style={{
           border: "2px solid transparent",
           borderBottomColor: "color-mix(in oklch, var(--color-accent) 85%, transparent)",
@@ -80,7 +81,7 @@ function DetectionCircle() {
 
       {/* Spinning arc — innermost, clockwise */}
       <div
-        className="absolute inset-8 rounded-full pointer-events-none z-10 animate-[spin-cw_9s_linear_infinite] motion-reduce:animate-none"
+        className="absolute inset-8 rounded-full pointer-events-none z-10 animate-[spin-cw_9s_linear_infinite]"
         style={{
           border: "1.5px solid transparent",
           borderTopColor: "color-mix(in oklch, var(--color-accent) 70%, transparent)",
@@ -96,14 +97,19 @@ function DetectionCircle() {
 function Badge({
   icon,
   wrapperStyle,
+  orbitFrom,
 }: {
   icon: ReactNode
   wrapperStyle?: React.CSSProperties
+  /** Ángulo desde el que llega orbitando alrededor del centro del visual */
+  orbitFrom: string
 }) {
   return (
-    <div className="absolute z-20" style={wrapperStyle}>
+    <div className="orbit absolute inset-0 z-20 pointer-events-none" style={{ "--orbit-from": orbitFrom } as React.CSSProperties}>
+    <div className="absolute" style={wrapperStyle}>
+      <div className="orbit-counter">
       <div
-        className="w-14 h-14 rounded-full flex items-center justify-center backdrop-blur-sm text-accent/60"
+        className="orbit-badge w-14 h-14 rounded-full flex items-center justify-center backdrop-blur-sm text-accent/60"
         style={{
           backgroundColor: "color-mix(in oklch, var(--color-accent) 18%, transparent)",
           border: "1px solid color-mix(in oklch, var(--color-accent) 45%, transparent)",
@@ -111,6 +117,8 @@ function Badge({
       >
         {icon}
       </div>
+      </div>
+    </div>
     </div>
   )
 }
@@ -181,7 +189,7 @@ export function Research() {
               style={sceneVars("up", 1)}
               className="scene-in text-[clamp(2.2rem,4.5vw,3.4rem)] font-semibold tracking-tight leading-[1.1] text-foreground"
             >
-              {language === "es" ? "Publicaciones" : "Research Papers"}
+              <WordReveal text={language === "es" ? "Publicaciones" : "Research Papers"} />
             </h2>
 
             {/* Paper title */}
@@ -244,13 +252,13 @@ export function Research() {
           </ScrollReveal>
 
           {/* ── Right column — detection visual ───────────────────── */}
-          <div className="hidden md:flex items-center justify-center">
-            <div className="relative w-[480px] h-[520px] flex items-center justify-center">
+          <div className="flex items-center justify-center">
+            <div className="relative w-full max-w-[480px] aspect-[480/520] flex items-center justify-center">
 
-              <Badge icon={<Eye size={22} />}      wrapperStyle={{ top: "9%",  left: "26%" }} />
-              <Badge icon={<Search size={22} />}   wrapperStyle={{ top: "30%", right: "3%" }} />
-              <Badge icon={<Award size={22} />}    wrapperStyle={{ bottom: "26%", left: "4%" }} />
-              <Badge icon={<ScanFace size={22} />} wrapperStyle={{ bottom: "9%", right: "24%" }} />
+              <Badge icon={<Eye size={22} />}      wrapperStyle={{ top: "9%",  left: "26%" }}    orbitFrom="-150deg" />
+              <Badge icon={<Search size={22} />}   wrapperStyle={{ top: "30%", right: "3%" }}    orbitFrom="-110deg" />
+              <Badge icon={<Award size={22} />}    wrapperStyle={{ bottom: "26%", left: "4%" }}  orbitFrom="-200deg" />
+              <Badge icon={<ScanFace size={22} />} wrapperStyle={{ bottom: "9%", right: "24%" }} orbitFrom="-170deg" />
 
               {/* Detection circle — centered */}
               <FadeIn direction="zoom">

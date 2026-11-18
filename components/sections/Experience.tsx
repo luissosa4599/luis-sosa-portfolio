@@ -1,6 +1,7 @@
 "use client"
 
 import { FadeIn } from "@/components/primitives/FadeIn"
+import { WordReveal } from "@/components/primitives/WordReveal"
 import { ScrollReveal } from "@/components/primitives/ScrollReveal"
 import { Container } from "@/components/layout/Container"
 import { useLanguage } from "@/lib/i18n"
@@ -157,7 +158,7 @@ export function Experience() {
         <FadeIn>
           <div className="mb-14">
             <h2 className="text-section font-semibold tracking-tight text-foreground">
-              {copy.title}<span className="text-accent-fg">.</span>
+              <WordReveal text={copy.title} suffix={<span className="text-accent-fg">.</span>} />
             </h2>
             <p className="mt-3 text-body text-muted max-w-[60ch]">{copy.subtitle}</p>
           </div>
@@ -182,7 +183,7 @@ export function Experience() {
                     {/* Puesto actual: punto verde que pulsa (verde de estados, como el
                         "Listo para cobrar" de Cumulus); los anteriores, anillo del acento */}
                     {i === 0 && (
-                      <span className="absolute inset-0 rounded-full bg-success opacity-60 animate-ping motion-reduce:hidden" />
+                      <span className="absolute inset-0 rounded-full bg-success opacity-60 animate-ping" />
                     )}
                     <span
                       className={`relative block w-3.5 h-3.5 rounded-full border-2 ${

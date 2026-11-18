@@ -141,6 +141,10 @@ Las secciones no llevan líneas (`border-y`, `hr`): alternan fondo (`bg-backgrou
 
 ## Sistema de animaciones
 
+> **Rama `inmersivo` (2026-11-18): el movimiento no se limita con "reducir movimiento".** Decisión del usuario: verlo "en toda su expresión". `useReducedMotion` devuelve siempre `false`, el CSS no tiene bloques `prefers-reduced-motion`, no hay clases `motion-reduce:` y Lenis va con `respectReducedMotion: false`.
+>
+> La rama `base-4-escenas` (y `main`) sí lo respeta. Donde este documento dice que algo "queda quieto con reducir movimiento", eso aplica solo a esas ramas. Si esta rama se publica, valorar volver a respetarlo: afecta a personas con trastornos vestibulares (WCAG 2.3.3, nivel AAA).
+
 ### Regla base: el contenido llega visible en el HTML
 Nada de contenido puede renderizarse con `opacity:0` en el HTML del servidor (antes 98 elementos lo hacían: la página salía negra sin JS y el LCP en celular era de ~3.9 s). Por eso:
 
@@ -180,6 +184,30 @@ Reglas:
 - Así quedaron Experience (la tarjeta, sin el punto), Testimonials (la `figure`), Contact (cada botón es su escena), los botones del hero (cada uno lleva `.hero-layer-body`), las pastillas de Skills y las tarjetas de Proyectos.
 - **Animaciones por tiempo con `fill: backwards`** (`.enter-rise`, `.enter-down`): se sueltan al terminar y el estado final es el mismo.
 - Animar `translate` o `scale` en un ancestro sí está bien (`.stack-card`, `.parallax`).
+### Inmersivo (solo rama `inmersivo`)
+- **Más amplitud:**
+  - Recorridos de entrada 1.5× (`lib/scene.ts`: 120 px hacia arriba, ±240 px a los lados con giro de ±4°, zoom desde 0.7).
+  - Salida a −96 px con escala 0.9.
+  - Rangos de 45 svh (entrada) y 32 svh (salida).
+  - Parallax de hasta 240 px; la foto se mueve 10 % con zoom 1.24.
+- **Títulos palabra por palabra** (`components/primitives/WordReveal.tsx`):
+  - Cada `.word` pasa de tenue, más baja y desenfocada a nítida mientras el título sube por la mitad inferior. `--w` desplaza el rango por palabra.
+  - Se usa en Experience, Skills, Research, Approach, Testimonials y Contact.
+  - Sigue siendo texto normal: spans en línea separados por espacios.
+- **Skills:** cada grupo llega del lado contrario al anterior (`alternate(index)`), con sus pastillas en cascada desde ese lado.
+- **Research:**
+  - El visual se ve también en celular, con tamaño fluido.
+  - `.research-reticle` (anillo y marcas cardinales) gira de −140° a 140° mientras el visual cruza la pantalla.
+  - Cada ícono llega orbitando alrededor del centro: `.orbit` gira una capa del tamaño del visual y `.orbit-counter` contragira para que el ícono quede derecho.
+  - El desvanecido va en el propio ícono (`.orbit-badge`), porque tiene desenfoque (ver "Cristal y animaciones").
+- **Approach, "reparto" (escena fija):**
+  - `.approach-scene` mide 100svh + 4 × 45svh y su escenario es `sticky`.
+  - Con `view-timeline: --approach` (el rango `contain` es justo lo que dura fijo), la tarjeta k llega desde `--dx`/`--dy`/`--dr` en el tramo [k × 22 %, k × 22 % + 18 %].
+  - **Escritorio:** caen en la cuadrícula de 2×2.
+  - **Debajo de `md`:** comparten la celda (`grid-area: 1 / 1`) y se apilan como un mazo; cada una se lee mientras está arriba.
+  - **Sin soporte:** la sección queda alta con el escenario fijo y las tarjetas quietas.
+- **Auditoría de contraste:** `contrast-all.mjs` apaga las animaciones con CSS para medir en reposo, porque ya no se congelan emulando "reducir movimiento". 0 fallas en 284 textos.
+- **Verificado igual en Chrome 157, WebKit 27.2 y Firefox 159.**
 - **Para probar:** poner un texto de color nítido detrás del cristal (fijo, `z-index: 0`). Si se lee, está roto; si sale como brillo, desenfoca. Compararlo contra fondos difusos (manchas de luz) no detecta el problema.
 ### Escenas especiales (CSS, en globals.css)
 - **Telón del hero:**
@@ -209,7 +237,7 @@ Nav de escritorio visible desde `lg` (1024px); debajo usa hamburguesa. En `md` l
 Entrada con CSS (ver "Regla base"). Es sticky y sale con el telón (ver "Escenas especiales"). `useMounted` solo se usa para no aplicar reduced motion al título rotativo antes de hidratar.
 
 ### Reduced motion en animaciones CSS
-Para animaciones CSS infinitas usar clases `motion-reduce:` de Tailwind (p. ej. `animate-[spin-cw_9s_linear_infinite] motion-reduce:animate-none`) en lugar de gatear con `useReducedMotion`: el server siempre ve `false` y causaría hydration mismatch.
+(En la rama `inmersivo` no aplica: ver la nota al inicio de esta sección.) Para animaciones CSS infinitas usar clases `motion-reduce:` de Tailwind (p. ej. `animate-[spin-cw_9s_linear_infinite] motion-reduce:animate-none`) en lugar de gatear con `useReducedMotion`: el server siempre ve `false` y causaría hydration mismatch.
 
 - Los laterales (±160 px) necesitan `overflow-x-clip` en `<main>` (ya está). En `<body>` no sirve: el navegador lo pasa a la ventana y no recorta igual (medido: 127 px de desborde en celular).
 

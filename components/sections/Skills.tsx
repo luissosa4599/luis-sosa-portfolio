@@ -12,9 +12,10 @@ import {
 } from "simple-icons"
 import { cn } from "@/lib/utils"
 import { FadeIn } from "@/components/primitives/FadeIn"
+import { WordReveal } from "@/components/primitives/WordReveal"
 import { Container } from "@/components/layout/Container"
 import { useLanguage } from "@/lib/i18n"
-import { sceneVars } from "@/lib/scene"
+import { alternate, sceneVars } from "@/lib/scene"
 
 // ── Icon renderer ────────────────────────────────────────────────────────────
 function SkillIcon({ icon }: { icon: SimpleIcon }) {
@@ -160,15 +161,18 @@ type Language = "en" | "es"
 function SkillGroupItem({
   group,
   language,
+  index,
 }: {
   group: SkillGroup
   language: Language
+  index: number
 }) {
+  const side = alternate(index)
   return (
     <div className="w-full flex flex-col gap-4">
       <span
         className="scene font-mono text-xs uppercase tracking-widest text-accent-fg"
-        style={sceneVars("left")}
+        style={sceneVars(side)}
       >
         {group.category[language]}
       </span>
@@ -179,7 +183,7 @@ function SkillGroupItem({
           <span
             key={label}
             className="scene inline-flex items-center gap-2 rounded-lg border border-border px-3 py-1.5 text-sm font-mono text-muted hover:text-foreground hover:border-border-strong transition-colors duration-150 backdrop-blur-sm"
-            style={{ ...sceneVars("pop", j), backgroundColor: "var(--badge-bg)" }}
+            style={{ ...sceneVars(side, j), backgroundColor: "var(--badge-bg)" }}
           >
             {icon && <SkillIcon icon={icon} />}
             {language === "es" && es ? es : label}
@@ -211,18 +215,19 @@ export function Skills() {
         <FadeIn>
           <div className="mb-12">
             <h2 className="text-section font-semibold tracking-tight text-foreground">
-              {copy.title}<span className="text-accent-fg">.</span>
+              <WordReveal text={copy.title} suffix={<span className="text-accent-fg">.</span>} />
             </h2>
             <p className="mt-3 text-body text-muted max-w-[60ch]">{copy.subtitle}</p>
           </div>
         </FadeIn>
 
         <div className="flex flex-col gap-8">
-          {SKILL_GROUPS.map((group) => (
+          {SKILL_GROUPS.map((group, index) => (
             <SkillGroupItem
               key={group.category.en}
               group={group}
               language={language}
+              index={index}
             />
           ))}
         </div>

@@ -2,6 +2,7 @@
 
 import { SectionWrapper } from "@/components/layout/SectionWrapper"
 import { FadeIn } from "@/components/primitives/FadeIn"
+import { WordReveal } from "@/components/primitives/WordReveal"
 import { sceneVars } from "@/lib/scene"
 import { Mail } from "lucide-react"
 import { contact } from "@/lib/data/contact"
@@ -73,13 +74,13 @@ export function Contact() {
         {/* Estado con el verde de estados (fijo en todas las paletas) */}
         <FadeIn as="p" className="mb-5 inline-flex items-center gap-2.5 text-meta font-medium text-success-fg">
           <span className="relative flex h-2.5 w-2.5">
-            <span className="absolute inline-flex h-full w-full rounded-full bg-success opacity-60 animate-ping motion-reduce:hidden" />
+            <span className="absolute inline-flex h-full w-full rounded-full bg-success opacity-60 animate-ping" />
             <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-success" />
           </span>
           {language === "es" ? "Disponible para trabajo remoto" : "Open to full-time remote"}
         </FadeIn>
         <FadeIn as="h2" stagger={1} className="text-section font-semibold tracking-tight text-foreground">
-          {language === "es" ? "Construyamos algo útil" : "Let's build something useful"}
+          <WordReveal text={language === "es" ? "Construyamos algo útil" : "Let's build something useful"} />
         </FadeIn>
         <FadeIn as="p" stagger={2} className="mt-4 text-lead text-muted max-w-[52ch]">
           {language === "es"

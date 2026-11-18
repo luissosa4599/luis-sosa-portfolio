@@ -1,6 +1,7 @@
 "use client"
 
 import { FadeIn } from "@/components/primitives/FadeIn"
+import { WordReveal } from "@/components/primitives/WordReveal"
 import { SectionWrapper } from "@/components/layout/SectionWrapper"
 import { SectionLabel } from "@/components/primitives/SectionLabel"
 import { useLanguage } from "@/lib/i18n"
@@ -37,7 +38,7 @@ export function Testimonials() {
           {language === "es" ? "Referencias" : "References"}
         </SectionLabel>
         <h2 className="mt-3 text-section font-semibold tracking-tight text-foreground">
-          {language === "es" ? "Lo que dicen de mi trabajo" : "What people say"}
+          <WordReveal text={language === "es" ? "Lo que dicen de mi trabajo" : "What people say"} />
         </h2>
       </FadeIn>
 

@@ -87,14 +87,14 @@ export function Hero() {
       <Parallax factor={0.32} className="pointer-events-none absolute inset-0">
         <div
           aria-hidden
-          className="absolute -top-40 -right-32 w-[34rem] h-[34rem] rounded-full animate-[glow-in_2s_ease-out_0.4s_both] motion-reduce:animate-none"
+          className="absolute -top-40 -right-32 w-[34rem] h-[34rem] rounded-full animate-[glow-in_2s_ease-out_0.4s_both]"
           style={{ background: "radial-gradient(circle closest-side, var(--blob-a), transparent)" }}
         />
       </Parallax>
       <Parallax factor={-0.22} className="pointer-events-none absolute inset-0">
         <div
           aria-hidden
-          className="absolute -bottom-48 -left-40 w-[36rem] h-[36rem] rounded-full animate-[glow-in_2s_ease-out_0.6s_both] motion-reduce:animate-none"
+          className="absolute -bottom-48 -left-40 w-[36rem] h-[36rem] rounded-full animate-[glow-in_2s_ease-out_0.6s_both]"
           style={{ background: "radial-gradient(circle closest-side, var(--blob-b), transparent)" }}
         />
       </Parallax>

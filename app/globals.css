@@ -246,10 +246,6 @@ body {
   animation: enter-down 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.1s backwards;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .enter-rise, .enter-down { animation: none; }
-}
-
 /* ─── Escenas: entrar y salir atado al scroll ────────────────────────────────────
    Scroll-driven animations (animation-timeline: view()): el avance de la animación ES la
    posición del elemento en pantalla, así que todo avanza y retrocede con el scroll, sin JS
@@ -270,20 +266,21 @@ body {
    envoltorio, el texto de la tarjeta de abajo se leía nítido a través de la de arriba).
    - .parallax  (Parallax): de −--px a +--px mientras cruza la pantalla.
    Rangos con longitudes (svh), no %, para que un bloque alto entre al mismo ritmo que uno
-   bajo. Sin soporte, con "reducir movimiento" o al imprimir: quieto y visible.
+   bajo. Sin soporte o al imprimir: quieto y visible. INMERSIVO: "reducir movimiento" no
+   se respeta (decisión del usuario, 2026-11-18): el movimiento se ve completo para todos.
    OJO: un ancestro con overflow: hidden es un contenedor de scroll y view() se mediría
    contra él (quieto): usar overflow-clip para recortar. */
 
 :root {
-  --scene-in-len: 40svh;
-  --scene-out-len: 30svh;
+  --scene-in-len: 45svh;
+  --scene-out-len: 32svh;
   --scene-step: 3svh;
-  --out-y: -64px;
-  --out-s: 0.94;
+  --out-y: -96px;
+  --out-s: 0.9;
 }
 
 @keyframes scene-in {
-  from { opacity: 0; translate: var(--in-x, 0px) var(--in-y, 80px); scale: var(--in-s, 0.96); }
+  from { opacity: 0; translate: var(--in-x, 0px) var(--in-y, 80px); scale: var(--in-s, 0.96); rotate: var(--in-r, 0deg); }
 }
 
 @keyframes scene-out {
@@ -296,31 +293,29 @@ body {
 }
 
 @supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    /* El shorthand `animation` reinicia timeline y range: van después */
-    .scene {
-      animation:
-        scene-in cubic-bezier(0.2, 0.7, 0.25, 1) backwards,
-        scene-out cubic-bezier(0.55, 0, 0.75, 0.3) forwards;
-      animation-timeline: view(), view();
-      animation-range:
-        cover calc(var(--i, 0) * var(--scene-step)) cover calc(var(--scene-in-len) + var(--i, 0) * var(--scene-step)),
-        cover calc(100% - var(--scene-out-len)) cover 100%;
-    }
+  /* El shorthand `animation` reinicia timeline y range: van después */
+  .scene {
+    animation:
+      scene-in cubic-bezier(0.2, 0.7, 0.25, 1) backwards,
+      scene-out cubic-bezier(0.55, 0, 0.75, 0.3) forwards;
+    animation-timeline: view(), view();
+    animation-range:
+      cover calc(var(--i, 0) * var(--scene-step)) cover calc(var(--scene-in-len) + var(--i, 0) * var(--scene-step)),
+      cover calc(100% - var(--scene-out-len)) cover 100%;
+  }
 
-    .scene-in {
-      animation: scene-in cubic-bezier(0.2, 0.7, 0.25, 1) backwards;
-      animation-timeline: view();
-      animation-range:
-        cover calc(var(--i, 0) * var(--scene-step))
-        cover calc(var(--scene-in-len) + var(--i, 0) * var(--scene-step));
-    }
+  .scene-in {
+    animation: scene-in cubic-bezier(0.2, 0.7, 0.25, 1) backwards;
+    animation-timeline: view();
+    animation-range:
+      cover calc(var(--i, 0) * var(--scene-step))
+      cover calc(var(--scene-in-len) + var(--i, 0) * var(--scene-step));
+  }
 
-    .parallax {
-      animation: parallax linear both;
-      animation-timeline: view();
-      animation-range: cover 0% cover 100%;
-    }
+  .parallax {
+    animation: parallax linear both;
+    animation-timeline: view();
+    animation-range: cover 0% cover 100%;
   }
 }
 
@@ -364,36 +359,34 @@ body {
 .timeline-fill { transform-origin: top; }
 
 @supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .hero-layer-title {
-      animation: hero-title-out linear both;
-      animation-timeline: scroll(root);
-      animation-range: 0 65svh;
-    }
+  .hero-layer-title {
+    animation: hero-title-out linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0 65svh;
+  }
 
-    .hero-layer-body {
-      animation: hero-body-out cubic-bezier(0.4, 0, 0.6, 1) forwards;
-      animation-timeline: scroll(root);
-      animation-range: 1px 35svh;
-    }
+  .hero-layer-body {
+    animation: hero-body-out cubic-bezier(0.4, 0, 0.6, 1) forwards;
+    animation-timeline: scroll(root);
+    animation-range: 1px 35svh;
+  }
 
-    .timeline-fill {
-      animation: line-draw linear both;
-      animation-timeline: view();
-      animation-range: cover 40svh cover calc(100% - 60svh);
-    }
+  .timeline-fill {
+    animation: line-draw linear both;
+    animation-timeline: view();
+    animation-range: cover 40svh cover calc(100% - 60svh);
+  }
 
-    .timeline-dot {
-      animation: dot-light ease-out both;
-      animation-timeline: view();
-      animation-range: cover 37svh cover 43svh;
-    }
+  .timeline-dot {
+    animation: dot-light ease-out both;
+    animation-timeline: view();
+    animation-range: cover 37svh cover 43svh;
+  }
 
-    .contact-open {
-      animation: contact-open cubic-bezier(0.2, 0.7, 0.25, 1) backwards;
-      animation-timeline: view();
-      animation-range: cover 0% cover 75svh;
-    }
+  .contact-open {
+    animation: contact-open cubic-bezier(0.2, 0.7, 0.25, 1) backwards;
+    animation-timeline: view();
+    animation-range: cover 0% cover 75svh;
   }
 }
 
@@ -444,26 +437,103 @@ body {
 }
 
 @supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .stack-card {
-      animation: stack-shrink linear both;
-      animation-timeline: --stack;
-      animation-range:
-        exit-crossing calc(var(--i) / var(--cards) * 100%)
-        exit-crossing calc((var(--cards) - 1) / var(--cards) * 100%);
-    }
+  .stack-card {
+    animation: stack-shrink linear both;
+    animation-timeline: --stack;
+    animation-range:
+      exit-crossing calc(var(--i) / var(--cards) * 100%)
+      exit-crossing calc((var(--cards) - 1) / var(--cards) * 100%);
+  }
 
-    .stack-dim {
-      animation: stack-darken linear both;
-      animation-timeline: --stack;
-      animation-range:
-        exit-crossing calc(var(--i) / var(--cards) * 100%)
-        exit-crossing calc((var(--cards) - 1) / var(--cards) * 100%);
-    }
+  .stack-dim {
+    animation: stack-darken linear both;
+    animation-timeline: --stack;
+    animation-range:
+      exit-crossing calc(var(--i) / var(--cards) * 100%)
+      exit-crossing calc((var(--cards) - 1) / var(--cards) * 100%);
+  }
+}
+
+/* ─── Inmersivo ──────────────────────────────────────────────────────────────────
+   - Títulos palabra por palabra (WordReveal): cada .word pasa de tenue, baja y desenfocada a
+     nítida mientras el título sube por la mitad inferior; --w desplaza el rango por palabra.
+   - Research: la retícula gira con el scroll mientras el visual cruza la pantalla; cada
+     ícono llega orbitando alrededor del centro (.orbit gira la capa, .orbit-counter
+     contragira para que el ícono quede derecho, .orbit-badge se desvanece en el propio ícono
+     porque tiene desenfoque).
+   - Enfoque: reparto. .approach-scene mide 100svh + 4 × 45svh y su escenario es sticky; con
+     su línea de tiempo (contain = lo que dura fijo), la tarjeta k llega desde (--dx, --dy,
+     --dr) en el tramo [k × 22 %, k × 22 % + 18 %]. Debajo de md las tarjetas comparten la
+     misma celda (un mazo); desde md caen en la cuadrícula de 2×2. */
+
+.word { display: inline-block; }
+
+@keyframes word-in {
+  from { opacity: 0.12; translate: 0 0.4em; filter: blur(8px); }
+}
+
+@keyframes reticle-spin {
+  from { rotate: -140deg; }
+  to   { rotate: 140deg; }
+}
+
+@keyframes orbit-in {
+  from { rotate: var(--orbit-from); }
+}
+
+@keyframes orbit-counter {
+  from { rotate: calc(-1 * var(--orbit-from)); scale: 0.4; }
+}
+
+@keyframes orbit-fade {
+  from { opacity: 0; }
+}
+
+.approach-scene {
+  view-timeline: --approach;
+  height: calc(100svh + 4 * 45svh);
+}
+
+@media (max-width: 767px) {
+  .approach-deck > .approach-card { grid-area: 1 / 1; align-self: start; }
+}
+
+@keyframes deal-in {
+  from { opacity: 0; translate: var(--dx) var(--dy); rotate: var(--dr); scale: 0.8; }
+}
+
+@supports (animation-timeline: view()) {
+  .word {
+    animation: word-in cubic-bezier(0.2, 0.7, 0.25, 1) backwards;
+    animation-timeline: view();
+    animation-range: cover calc(6svh + var(--w, 0) * 3svh) cover calc(32svh + var(--w, 0) * 3svh);
+  }
+
+  .research-reticle {
+    animation: reticle-spin linear both;
+    animation-timeline: view();
+    animation-range: cover 0% cover 100%;
+  }
+
+  .orbit, .orbit-counter, .orbit-badge {
+    animation-timeline: view();
+    animation-range: cover 5% cover 45%;
+  }
+  .orbit         { animation-name: orbit-in;      animation-timing-function: cubic-bezier(0.2, 0.7, 0.25, 1); animation-fill-mode: backwards; }
+  .orbit-counter { animation-name: orbit-counter; animation-timing-function: cubic-bezier(0.2, 0.7, 0.25, 1); animation-fill-mode: backwards; }
+  /* El ícono mide su propia posición (es chico): aparece apenas entra a la pantalla */
+  .orbit-badge   { animation-name: orbit-fade;    animation-timing-function: linear;                      animation-fill-mode: backwards; animation-range: cover 0% cover 18%; }
+
+  .approach-card {
+    animation: deal-in cubic-bezier(0.2, 0.75, 0.25, 1) backwards;
+    animation-timeline: --approach;
+    animation-range: contain calc(var(--k) * 22%) contain calc(var(--k) * 22% + 18%);
   }
 }
 
 @media print {
+  .word, .research-reticle, .orbit, .orbit-counter, .orbit-badge, .approach-card { animation: none !important; }
+  .approach-scene { height: auto; }
   .scene, .scene-in, .parallax,
   .hero-layer-title, .hero-layer-body, .timeline-fill, .timeline-dot, .contact-open,
   .stack-card, .stack-dim { animation: none !important; }
@@ -546,7 +616,7 @@ body {
 
 /* ─── Cinta de tecnologías (TechMarquee) ──────────────────────────────────────
    Dos grupos idénticos; el track se desplaza hasta −50 % y vuelve a empezar sin corte.
-   Los bordes se desvanecen con una máscara. Pausa con hover; quieta con reduced motion. */
+   Los bordes se desvanecen con una máscara. Pausa con hover. */
 
 @keyframes marquee {
   from { transform: translateX(0); }
@@ -563,10 +633,6 @@ body {
 
 .marquee:hover .marquee-track {
   animation-play-state: paused;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .marquee-track { animation: none; }
 }
 
 /* Al usar un link interno, SmoothScroll le pasa el foco a la sección (tabindex="-1") para
