@@ -54,8 +54,29 @@ export function Contact() {
   const { language } = useLanguage()
 
   return (
-    <SectionWrapper id="contact" containerSize="md">
-      <FadeIn className="text-center flex flex-col items-center">
+    // Bloque de tinta en ambos temas (surface-ink), con manchas de luz del color: el cierre
+    // fuerte de la página, como el "Pide tu terminal" de la landing de Grupo Cumulus.
+    <SectionWrapper id="contact" containerSize="md" className="surface-ink relative overflow-hidden">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -top-32 -right-24 w-[30rem] h-[30rem] rounded-full"
+        style={{ background: "radial-gradient(circle closest-side, var(--blob-a), transparent)" }}
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -bottom-40 -left-32 w-[32rem] h-[32rem] rounded-full"
+        style={{ background: "radial-gradient(circle closest-side, var(--blob-b), transparent)" }}
+      />
+
+      <FadeIn className="relative z-10 text-center flex flex-col items-center">
+        {/* Estado con el verde de estados (fijo en todas las paletas) */}
+        <p className="mb-5 inline-flex items-center gap-2.5 text-meta font-medium text-success-fg">
+          <span className="relative flex h-2.5 w-2.5">
+            <span className="absolute inline-flex h-full w-full rounded-full bg-success opacity-60 animate-ping motion-reduce:hidden" />
+            <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-success" />
+          </span>
+          {language === "es" ? "Disponible para trabajo remoto" : "Open to full-time remote"}
+        </p>
         <h2 className="text-section font-semibold tracking-tight text-foreground">
           {language === "es" ? "Construyamos algo útil" : "Let's build something useful"}
         </h2>

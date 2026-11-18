@@ -87,6 +87,23 @@ Auditado con WCAG AA en ambos temas (2026-11-18): **0 textos bajo 4.5:1** (antes
   - `Container`: `md` = 1120 px y `lg` = 1280 px con margen fluido `clamp(20px, 4vw, 40px)` (contenido de hasta 1200 px). El header usa el mismo ancho y margen para quedar alineado.
 - **Medido contra la landing (2026-11-18), texto de lectura:** 16.1 px en celular, 17.6 px a 1280 y 18 px a 1920 (antes 15.1 px fijo, 91 % bajo 16 px). Aire por sección: 108 px en celular y 158 px en escritorio (antes 168 y 216).
 
+## Color y paletas
+
+Todos los colores salen de **un solo tono** (`--hue`) en **OKLCH** (`app/globals.css`), como la landing de Grupo Cumulus: fondos, bandas, tinta, texto secundario, bordes, acento, brillos, cuadrícula y partículas. OKLCH mantiene la luminosidad al cambiar de tono, así que el contraste se conserva en todas las paletas.
+
+- **Paletas:** `<html data-palette="…">`. Sin atributo = azul (255), `violet` 292, `teal` 195, `pink` 350, `amber` 70, `neutral` (`--k: 0`, quita el croma: grises).
+  - Turquesa oscurece su acento (`--accent-l`): al recortarse a sRGB el texto blanco del botón bajaba a 4.0:1.
+- **Papeles del color:**
+  - `accent` → fondos y botones; texto encima en `text-on-accent`.
+  - `accent-fg` → acento como texto.
+  - `accent-glow` y `accent-deep` → brillos y degradados.
+  - `ink` e `ink-deep` → bloques oscuros teñidos del color.
+  - `success` (verde menta, fijo en todas las paletas) → estados: "disponible", puesto actual. Texto en `text-success-fg`.
+  - `--blob-a` y `--blob-b` → manchas de luz. Usar `radial-gradient(circle closest-side, …)` para que no se vea el borde del disco.
+- **Bloques de tinta en ambos temas:** Contact (`surface-ink`) y el footer (`surface-ink bg-ink-deep`). `.surface-ink` reusa los tokens del tema oscuro dentro del tema claro; su regla de fondo vive en `@layer components` para que `bg-*` la pueda cambiar.
+- **Prohibido escribir colores a mano** (`hsl(213 …)`, `#hex`, `emerald-500`) en componentes: no cambiarían con la paleta. Para transparencias del acento: `color-mix(in oklch, var(--color-accent) N%, transparent)` o `bg-accent/N`. Única excepción: `opengraph-image.tsx` (imagen estática, azul).
+- **Auditoría (2026-11-18): 0 textos bajo WCAG AA en las 6 paletas × 2 temas.** El script convierte los colores computados (oklch/color-mix) a sRGB pintándolos en un canvas. Los auditores que solo leen `rgb()` se saltan esos textos sin avisar: así pasaron sin detectarse los números decorativos de Approach (1.2:1, ahora `aria-hidden`).
+
 ## Separadores por tono
 
 Las secciones no llevan líneas (`border-y`, `hr`): alternan fondo (`bg-background`) y banda (`bg-band`), y la cinta de tecnologías y el footer van en `bg-band-deep`. Orden: Hero · About (banda) · Work · Skills (banda) · Experience · Research (banda) · Approach · Testimonials (banda) · Contact · footer (profundo). Al agregar una sección, respetar la alternancia. Las bandas tapan la cuadrícula de puntos y las partículas (fijas en `z-0`, debajo de `<main>` en `z-10`); el footer va `relative z-10` por lo mismo.

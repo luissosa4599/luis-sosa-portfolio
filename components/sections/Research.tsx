@@ -47,7 +47,7 @@ function DetectionCircle() {
       {/* Solid outer ring — fully colored, static */}
       <div
         className="absolute inset-0 rounded-full"
-        style={{ border: "2.5px solid hsl(213 90% 53% / 0.55)" }}
+        style={{ border: "2.5px solid color-mix(in oklch, var(--color-accent) 55%, transparent)" }}
       />
 
       {/* Cardinal targeting marks */}
@@ -64,7 +64,7 @@ function DetectionCircle() {
         <div
           aria-hidden
           className="absolute inset-0 rounded-full"
-          style={{ background: "radial-gradient(circle, hsl(213 100% 70% / 0.12) 0%, transparent 65%)" }}
+          style={{ background: "radial-gradient(circle, var(--blob-a) 0%, transparent 65%)" }}
         />
         <DogSilhouette className="relative w-40 h-40 md:w-52 md:h-52 text-accent/30" />
       </div>
@@ -74,8 +74,8 @@ function DetectionCircle() {
         className="absolute inset-4 rounded-full pointer-events-none z-10 animate-[spin-ccw_6s_linear_infinite] motion-reduce:animate-none"
         style={{
           border: "2px solid transparent",
-          borderBottomColor: "hsl(213 90% 53% / 0.85)",
-          borderLeftColor: "hsl(213 90% 53% / 0.30)",
+          borderBottomColor: "color-mix(in oklch, var(--color-accent) 85%, transparent)",
+          borderLeftColor: "color-mix(in oklch, var(--color-accent) 30%, transparent)",
         }}
       />
 
@@ -84,8 +84,8 @@ function DetectionCircle() {
         className="absolute inset-8 rounded-full pointer-events-none z-10 animate-[spin-cw_9s_linear_infinite] motion-reduce:animate-none"
         style={{
           border: "1.5px solid transparent",
-          borderTopColor: "hsl(213 90% 53% / 0.70)",
-          borderRightColor: "hsl(213 90% 53% / 0.25)",
+          borderTopColor: "color-mix(in oklch, var(--color-accent) 70%, transparent)",
+          borderRightColor: "color-mix(in oklch, var(--color-accent) 25%, transparent)",
         }}
       />
     </div>
@@ -106,8 +106,8 @@ function Badge({
       <div
         className="w-14 h-14 rounded-full flex items-center justify-center backdrop-blur-sm text-accent/60"
         style={{
-          backgroundColor: "hsl(213 90% 53% / 0.18)",
-          border: "1px solid hsl(213 90% 53% / 0.45)",
+          backgroundColor: "color-mix(in oklch, var(--color-accent) 18%, transparent)",
+          border: "1px solid color-mix(in oklch, var(--color-accent) 45%, transparent)",
         }}
       >
         {icon}

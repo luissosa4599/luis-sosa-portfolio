@@ -169,7 +169,7 @@ export function Experience() {
           {/* Vertical line */}
           <div
             aria-hidden
-            className="absolute left-[6px] top-2 bottom-2 w-[2px] bg-gradient-to-b from-accent/80 via-accent/50 to-accent/10"
+            className="absolute left-[6px] top-2 bottom-2 w-[2px] bg-gradient-to-b from-success via-accent to-accent/10"
           />
 
           <div className="flex flex-col gap-10">
@@ -178,11 +178,15 @@ export function Experience() {
                 <div className="flex gap-6">
                   {/* Dot */}
                   <div className="relative z-10 shrink-0 mt-1.5">
+                    {/* Puesto actual: punto verde que pulsa (verde de estados, como el
+                        "Listo para cobrar" de Cumulus); los anteriores, anillo del acento */}
+                    {i === 0 && (
+                      <span className="absolute inset-0 rounded-full bg-success opacity-60 animate-ping motion-reduce:hidden" />
+                    )}
                     <span
-                      className={`block w-3.5 h-3.5 rounded-full border-2 ${
-                        i === 0 ? "bg-accent" : "bg-background"
+                      className={`relative block w-3.5 h-3.5 rounded-full border-2 ${
+                        i === 0 ? "bg-success border-success" : "bg-background border-accent"
                       }`}
-                      style={{ borderColor: "var(--color-accent)" }}
                     />
                   </div>
 

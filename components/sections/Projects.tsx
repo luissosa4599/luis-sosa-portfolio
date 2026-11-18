@@ -49,7 +49,7 @@ function SalvaLomitosVisual() {
       className="w-full h-full flex flex-col items-center justify-center gap-4 relative overflow-hidden px-6"
       style={{
         background:
-          "linear-gradient(135deg, hsl(213 90% 53% / 0.10) 0%, hsl(250 80% 55% / 0.06) 100%)",
+          `linear-gradient(135deg, color-mix(in oklch, var(--color-accent) 14%, transparent) 0%, color-mix(in oklch, var(--color-accent-deep) 12%, transparent) 100%)`,
       }}
     >
       {/* Subtle grid */}
@@ -58,7 +58,7 @@ function SalvaLomitosVisual() {
         aria-hidden
         style={{
           backgroundImage:
-            "linear-gradient(hsl(213 90% 53% / 0.05) 1px, transparent 1px), linear-gradient(90deg, hsl(213 90% 53% / 0.05) 1px, transparent 1px)",
+            `linear-gradient(color-mix(in oklch, var(--color-accent) 7%, transparent) 1px, transparent 1px), linear-gradient(90deg, color-mix(in oklch, var(--color-accent) 7%, transparent) 1px, transparent 1px)`,
           backgroundSize: "24px 24px",
         }}
       />
@@ -68,8 +68,8 @@ function SalvaLomitosVisual() {
         <span
           className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-mono border"
           style={{
-            borderColor: "hsl(213 90% 53% / 0.35)",
-            background: "hsl(213 90% 53% / 0.10)",
+            borderColor: "color-mix(in oklch, var(--color-accent) 35%, transparent)",
+            background: "color-mix(in oklch, var(--color-accent) 10%, transparent)",
             color: "var(--color-accent-fg)",
           }}
         >
@@ -104,8 +104,8 @@ function SalvaLomitosVisual() {
               key={t}
               className="text-[12px] font-mono px-2 py-0.5 rounded border"
               style={{
-                borderColor: "hsl(213 90% 53% / 0.25)",
-                background: "hsl(213 90% 53% / 0.07)",
+                borderColor: "color-mix(in oklch, var(--color-accent) 25%, transparent)",
+                background: "color-mix(in oklch, var(--color-accent) 8%, transparent)",
                 color: "var(--color-accent-fg)",
               }}
             >

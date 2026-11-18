@@ -21,7 +21,7 @@ const FOOTER_LINKS = [
 
 export function SiteFooter() {
   return (
-    <footer className="relative z-10 bg-band-deep py-10">
+    <footer className="surface-ink relative z-10 bg-ink-deep py-10">
       <Container>
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-sm text-muted">
@@ -35,7 +35,7 @@ export function SiteFooter() {
                 href={link.href}
                 target={link.external ? "_blank" : undefined}
                 rel={link.external ? "noopener noreferrer" : undefined}
-                className="py-1 -my-1 text-sm text-muted hover:text-foreground transition-colors duration-200"
+                className="py-1 -my-1 text-sm text-muted hover:text-accent-fg transition-colors duration-200"
               >
                 {link.label}
               </a>

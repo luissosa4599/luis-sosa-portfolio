@@ -82,14 +82,20 @@ export function Hero() {
       id="hero"
       className="relative flex items-center justify-center min-h-svh pt-20 overflow-hidden text-center"
     >
-      {/* Ambient glow — fades in slowly after content, y se queda atrás al hacer scroll */}
-      <Parallax factor={0.3} className="pointer-events-none absolute inset-0">
+      {/* Manchas de luz del color de la paleta (como el hero de Cumulus). Entran despacio y
+          se mueven con el scroll en sentidos opuestos (parallax). */}
+      <Parallax factor={0.32} className="pointer-events-none absolute inset-0">
         <div
           aria-hidden
-          className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full animate-[glow-in_2s_ease-out_0.6s_both] motion-reduce:animate-none"
-          style={{
-            background: "radial-gradient(circle, hsl(213 100% 70% / 0.06) 0%, transparent 65%)",
-          }}
+          className="absolute -top-40 -right-32 w-[34rem] h-[34rem] rounded-full animate-[glow-in_2s_ease-out_0.4s_both] motion-reduce:animate-none"
+          style={{ background: "radial-gradient(circle closest-side, var(--blob-a), transparent)" }}
+        />
+      </Parallax>
+      <Parallax factor={-0.22} className="pointer-events-none absolute inset-0">
+        <div
+          aria-hidden
+          className="absolute -bottom-48 -left-40 w-[36rem] h-[36rem] rounded-full animate-[glow-in_2s_ease-out_0.6s_both] motion-reduce:animate-none"
+          style={{ background: "radial-gradient(circle closest-side, var(--blob-b), transparent)" }}
         />
       </Parallax>
 
@@ -141,7 +147,7 @@ export function Hero() {
           >
             <a
               href="#work"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-md bg-accent text-white text-sm font-semibold hover:bg-accent/90 transition-colors duration-200"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-md bg-accent text-on-accent text-sm font-semibold hover:bg-accent/90 transition-colors duration-200"
             >
               {copy.projects}
               <ArrowRight size={15} />

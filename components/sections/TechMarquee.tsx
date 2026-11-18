@@ -45,7 +45,7 @@ export function TechMarquee() {
                 className="flex items-center gap-2.5 whitespace-nowrap text-lg font-medium text-muted"
               >
                 {tech.icon && (
-                  <svg viewBox="0 0 24 24" className="w-5 h-5 shrink-0 fill-current opacity-80">
+                  <svg viewBox="0 0 24 24" className="w-5 h-5 shrink-0 fill-current text-accent-fg">
                     <path d={tech.icon.path} />
                   </svg>
                 )}

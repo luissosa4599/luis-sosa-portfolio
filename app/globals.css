@@ -12,15 +12,20 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 
-  /* Blue / Indigo accent
-     --color-accent    → fondos, botones, puntos y bordes (texto blanco encima: 5.1:1).
-     --color-accent-fg → el azul como COLOR DE TEXTO (text-accent-fg). Cambia por tema para
-                         pasar WCAG AA (≥ 4.5:1) también sobre las bandas: no usar
-                         text-accent para texto. */
-  --color-accent:      hsl(213 60% 46%);
+  /* Acento (sale de la paleta activa, ver "Paleta" más abajo)
+     --color-accent    → fondos, botones, puntos y bordes. Texto encima: text-on-accent.
+     --color-accent-fg → el acento como COLOR DE TEXTO (text-accent-fg). Cambia por tema para
+                         pasar WCAG AA (≥ 4.5:1): no usar text-accent para texto.
+     --color-accent-glow / -deep → brillos, manchas de luz y degradados.
+     --color-success   → estados (disponible, puesto actual). Fijo en todas las paletas;
+                         text-success-fg para texto. */
+  --color-accent:      var(--accent);
   --color-accent-fg:   var(--accent-fg);
-  --color-accent-glow: hsl(213 70% 65%);
-  --color-accent-deep: hsl(213 55% 32%);
+  --color-accent-glow: var(--accent-glow);
+  --color-accent-deep: var(--accent-deep);
+  --color-on-accent:   var(--on-accent);
+  --color-success:     var(--success);
+  --color-success-fg:  var(--success-fg);
 
   /* Escala de texto: +1 px en xs y sm respecto a Tailwind (13 y 15 px). La mayoría del
      texto vivía en 12–14 px y costaba leerlo. Mínimo en el sitio: 12 px (text-[12px]). */
@@ -57,6 +62,9 @@
      (bg-band); la cinta de tecnologías y el footer van en el tono más profundo (bg-band-deep). */
   --color-band:          var(--band);
   --color-band-deep:     var(--band-deep);
+  /* Tinta: bloques oscuros teñidos del color (Contact y footer, en ambos temas) */
+  --color-ink:           var(--ink);
+  --color-ink-deep:      var(--ink-deep);
 
   /* Radius */
   --radius-sm:   4px;
@@ -67,55 +75,112 @@
   --radius-full: 9999px;
 }
 
-/* ─── Dark mode (default) ─────────────────────────────────────────────────── */
+/* ─── Paleta ─────────────────────────────────────────────────────────────────
+   Todos los colores salen de UN tono (--hue) en OKLCH, como la landing de Grupo Cumulus
+   (todo construido desde un color). OKLCH mantiene la luminosidad al cambiar de tono, así
+   que el contraste se conserva en todas las paletas (auditado: 0 fallas WCAG AA en las 6
+   paletas × 2 temas). --k escala el croma: 1 en paletas de color, 0 en neutral (grises).
+   La paleta se elige con <html data-palette="…"> (PalettePicker); sin atributo = azul. */
 
 :root {
-  --background:    hsl(220 14% 6%);
-  --surface:       hsl(220 12% 11%);
-  --surface-2:     hsl(220 11% 15%);
-  --border-color:  hsl(0 0% 100% / 0.06);
-  --border-strong: hsl(0 0% 100% / 0.10);
-  --foreground:    hsl(0 0% 97%);
-  --muted:         hsl(220 8% 65%);
-  --muted-2:       hsl(220 8% 58%);   /* antes 45 %: 3.1:1 → 4.9:1 en el peor fondo */
-  --accent-fg:     hsl(213 80% 64%);  /* azul para texto sobre oscuro: 5.4:1 en el peor fondo */
-  --band:          hsl(220 13% 10%);  /* un paso más claro que el fondo (6 % → 10 %) */
-  --band-deep:     hsl(220 15% 4%);   /* más profundo que el fondo: cinta y footer */
-  --nav-bg:              hsl(220 12% 11% / 0.92);
-  --nav-active-bg:       radial-gradient(ellipse at center, hsl(213 70% 24%) 0%, hsl(213 65% 10%) 100%);
-  --nav-active-shadow:   0 0 14px -2px var(--color-accent), 0 0 4px -1px var(--color-accent);
-  /* ↓ Button / badge surface */
-  --btn-bg:              #1a1d23;
-  --btn-bg-hover:        #22262e;
-  --badge-bg:            #181a1d;
-  /* ↓ Card surface — semi-transparent so bg grid shows through */
-  --card-bg:             hsl(220 12% 11% / 0.22);
-  /* ↓ Dust particle color */
-  --dust-color:          hsl(0 0% 100%);
+  --hue: 255;  /* Azul (predeterminado) */
+  --k: 1;
+  /* Intensidad del cristal (deslizante Transparente ↔ Tintado del PalettePicker) */
+  --glass-opacity: 0.6;
+}
+[data-palette="violet"]  { --hue: 292; }
+[data-palette="teal"]    { --hue: 195; --accent-l: 0.49; --accent-l-light: 0.47; }  /* el turquesa pierde contraste con texto blanco al recortarse a sRGB: acento más oscuro */
+[data-palette="pink"]    { --hue: 350; }
+[data-palette="amber"]   { --hue: 70; }
+[data-palette="neutral"] { --k: 0; }
+
+/* ─── Tema oscuro (predeterminado) y bloques de tinta ──────────────────────────
+   .surface-ink reusa estos valores dentro del tema claro: Contact y el footer son bloques
+   oscuros en ambos temas, y su texto necesita los colores del tema oscuro. */
+
+:root, .surface-ink {
+  --background:    oklch(0.17 calc(0.03 * var(--k)) var(--hue));
+  --band:          oklch(0.21 calc(0.04 * var(--k)) var(--hue));
+  --band-deep:     oklch(0.15 calc(0.06 * var(--k)) var(--hue));
+  --surface:       oklch(0.23 calc(0.04 * var(--k)) var(--hue));
+  --surface-2:     oklch(0.27 calc(0.045 * var(--k)) var(--hue));
+  --ink:           oklch(0.24 calc(0.085 * var(--k)) var(--hue));
+  --ink-deep:      oklch(0.15 calc(0.06 * var(--k)) var(--hue));
+  --foreground:    oklch(0.97 calc(0.01 * var(--k)) var(--hue));
+  --muted:         oklch(0.82 calc(0.035 * var(--k)) var(--hue));  /* ≥ 8.6:1 en el peor fondo */
+  --muted-2:       oklch(0.72 calc(0.045 * var(--k)) var(--hue));  /* ≥ 6.0:1 */
+  --accent:        oklch(var(--accent-l, 0.55) calc(0.17 * var(--k)) var(--hue));  /* texto blanco encima ≥ 4.6:1 */
+  --accent-fg:     oklch(0.8 calc(0.13 * var(--k)) var(--hue));   /* ≥ 7.7:1 */
+  --accent-glow:   oklch(0.7 calc(0.16 * var(--k)) var(--hue));
+  --accent-deep:   oklch(0.42 calc(0.15 * var(--k)) var(--hue));
+  --on-accent:     oklch(1 0 0);
+  --success:       oklch(0.85 0.13 165);
+  --success-fg:    oklch(0.85 0.13 165);
+  --border-color:  oklch(0.85 calc(0.06 * var(--k)) var(--hue) / 0.1);
+  --border-strong: oklch(0.85 calc(0.06 * var(--k)) var(--hue) / 0.18);
+  --nav-bg:              oklch(0.23 calc(0.04 * var(--k)) var(--hue) / 0.92);
+  --nav-active-bg:       radial-gradient(ellipse at center, oklch(0.4 calc(0.12 * var(--k)) var(--hue)) 0%, oklch(0.22 calc(0.08 * var(--k)) var(--hue)) 100%);
+  --nav-active-shadow:   0 0 14px -2px var(--accent), 0 0 4px -1px var(--accent);
+  --btn-bg:              oklch(0.25 calc(0.04 * var(--k)) var(--hue));
+  --btn-bg-hover:        oklch(0.3 calc(0.05 * var(--k)) var(--hue));
+  --badge-bg:            oklch(0.23 calc(0.04 * var(--k)) var(--hue));
+  --card-bg:             oklch(0.23 calc(0.04 * var(--k)) var(--hue) / 0.35);
+  --dust-color:          oklch(0.9 calc(0.06 * var(--k)) var(--hue));
+  --dot-color:           oklch(0.7 calc(0.15 * var(--k)) var(--hue) / 0.12);
+  /* Manchas de luz (hero, Work, Contact): lo que el cristal deja ver detrás */
+  --blob-a:              oklch(0.7 calc(0.16 * var(--k)) var(--hue) / 0.3);
+  --blob-b:              oklch(0.55 calc(0.17 * var(--k)) var(--hue) / 0.35);
+  /* Cristal (Liquid Glass, ver .glass) */
+  --glass-tint:          oklch(0.25 calc(0.05 * var(--k)) var(--hue));
+  --glass-rim:           oklch(1 0 0 / 0.14);
+  --glass-highlight:     oklch(1 0 0 / 0.22);
+  --glass-shadow:        0 12px 40px -12px oklch(0 0 0 / 0.6);
+  --scroll-thumb:        oklch(0.85 calc(0.05 * var(--k)) var(--hue) / 0.14);
 }
 
-/* ─── Light mode ──────────────────────────────────────────────────────────── */
+/* En una capa (no suelta): las utilidades de Tailwind (bg-ink-deep) viven en @layer
+   utilities y una regla sin capa les ganaría siempre. */
+@layer components {
+  .surface-ink {
+    background-color: var(--ink);
+    color: var(--foreground);
+  }
+}
+
+/* ─── Tema claro ──────────────────────────────────────────────────────────────── */
 
 .light {
-  --background:    hsl(0 0% 99%);
-  --surface:       hsl(0 0% 100%);
-  --surface-2:     hsl(220 20% 97%);
-  --border-color:  hsl(0 0% 0% / 0.06);
-  --border-strong: hsl(0 0% 0% / 0.10);
-  --foreground:    hsl(220 20% 10%);
-  --muted:         hsl(220 12% 38%);
-  --muted-2:       hsl(220 10% 42%);  /* antes 55 %: 2.9:1 → 4.7:1 en el peor fondo */
-  --accent-fg:     hsl(213 70% 40%);  /* azul para texto sobre claro: 5.3:1 en el peor fondo */
-  --band:          hsl(220 22% 95%);  /* gris azulado suave */
-  --band-deep:     hsl(220 18% 92%);
-  --nav-bg:              hsl(0 0% 98% / 0.88);
-  --nav-active-bg:       radial-gradient(ellipse at center, hsl(213 60% 88%) 0%, hsl(213 55% 95%) 100%);
-  --nav-active-shadow:   0 0 8px -3px var(--color-accent);
-  --btn-bg:              #e8eaf0;
-  --btn-bg-hover:        #d8dbe4;
-  --badge-bg:            #ecedf3;
-  --card-bg:             hsl(0 0% 100% / 0.22);
-  --dust-color:          hsl(220 20% 15%);
+  --background:    oklch(0.99 calc(0.005 * var(--k)) var(--hue));
+  --band:          oklch(0.965 calc(0.022 * var(--k)) var(--hue));  /* como el #F6F2FF de Cumulus */
+  --band-deep:     oklch(0.935 calc(0.03 * var(--k)) var(--hue));
+  --surface:       oklch(1 0 0);
+  --surface-2:     oklch(0.955 calc(0.02 * var(--k)) var(--hue));
+  --foreground:    oklch(0.24 calc(0.06 * var(--k)) var(--hue));    /* tinta, no negro */
+  --muted:         oklch(0.4 calc(0.06 * var(--k)) var(--hue));    /* como el #3A2E66 de Cumulus */
+  --muted-2:       oklch(0.48 calc(0.055 * var(--k)) var(--hue));   /* ≥ 5.3:1 en el peor fondo */
+  --accent:        oklch(var(--accent-l-light, 0.52) calc(0.19 * var(--k)) var(--hue));  /* texto blanco encima ≥ 5.2:1 */
+  --accent-fg:     oklch(0.47 calc(0.17 * var(--k)) var(--hue));    /* ≥ 5.5:1 */
+  --accent-glow:   oklch(0.75 calc(0.14 * var(--k)) var(--hue));
+  --accent-deep:   oklch(0.38 calc(0.15 * var(--k)) var(--hue));
+  --success-fg:    oklch(0.48 0.12 165);
+  --border-color:  oklch(0.45 calc(0.08 * var(--k)) var(--hue) / 0.12);
+  --border-strong: oklch(0.45 calc(0.08 * var(--k)) var(--hue) / 0.2);
+  --nav-bg:              oklch(0.99 calc(0.01 * var(--k)) var(--hue) / 0.88);
+  --nav-active-bg:       radial-gradient(ellipse at center, oklch(0.9 calc(0.06 * var(--k)) var(--hue)) 0%, oklch(0.96 calc(0.03 * var(--k)) var(--hue)) 100%);
+  --nav-active-shadow:   0 0 8px -3px var(--accent);
+  --btn-bg:              oklch(0.94 calc(0.025 * var(--k)) var(--hue));
+  --btn-bg-hover:        oklch(0.91 calc(0.035 * var(--k)) var(--hue));
+  --badge-bg:            oklch(0.94 calc(0.025 * var(--k)) var(--hue));
+  --card-bg:             oklch(1 0 0 / 0.5);
+  --dust-color:          oklch(0.35 calc(0.08 * var(--k)) var(--hue));
+  --dot-color:           oklch(0.55 calc(0.18 * var(--k)) var(--hue) / 0.16);
+  --blob-a:              oklch(0.75 calc(0.14 * var(--k)) var(--hue) / 0.28);
+  --blob-b:              oklch(0.65 calc(0.16 * var(--k)) var(--hue) / 0.22);
+  --glass-tint:          oklch(0.99 calc(0.012 * var(--k)) var(--hue));
+  --glass-rim:           oklch(1 0 0 / 0.75);
+  --glass-highlight:     oklch(1 0 0 / 0.65);
+  --glass-shadow:        0 12px 32px -14px oklch(0.3 calc(0.08 * var(--k)) var(--hue) / 0.28);
+  --scroll-thumb:        oklch(0.4 calc(0.05 * var(--k)) var(--hue) / 0.22);
 }
 
 /* ─── Base styles ─────────────────────────────────────────────────────────── */
@@ -254,12 +319,8 @@ section[tabindex="-1"]:focus {
 /* ─── Dot-grid background ─────────────────────────────────────────────────── */
 
 .dot-grid {
-  background-image: radial-gradient(circle, hsl(213 90% 53% / 0.18) 1px, transparent 1px);
+  background-image: radial-gradient(circle, var(--dot-color) 1px, transparent 1px);
   background-size: 28px 28px;
-}
-
-.dark .dot-grid {
-  background-image: radial-gradient(circle, hsl(213 90% 53% / 0.10) 1px, transparent 1px);
 }
 
 .theme-dark-only {
@@ -282,5 +343,5 @@ section[tabindex="-1"]:focus {
 
 ::-webkit-scrollbar       { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: hsl(0 0% 100% / 0.08); border-radius: 9999px; }
-::-webkit-scrollbar-thumb:hover { background: hsl(0 0% 100% / 0.15); }
+::-webkit-scrollbar-thumb { background: var(--scroll-thumb); border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover { background: var(--border-strong); }

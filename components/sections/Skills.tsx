@@ -212,7 +212,7 @@ function SkillGroupItem({
     >
       <motion.span
         variants={labelVariant}
-        className="font-mono text-xs uppercase tracking-widest text-muted-2"
+        className="font-mono text-xs uppercase tracking-widest text-accent-fg"
       >
         {group.category[language]}
       </motion.span>

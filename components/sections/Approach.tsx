@@ -9,6 +9,14 @@ import { alternateReveal, withDelay } from "@/lib/motion"
 import { getApproach } from "@/lib/data/approach"
 import { useLanguage } from "@/lib/i18n"
 
+// Barra superior de cada tarjeta: recorre la paleta (acento, brillo, verde de estados, profundo)
+const BAR_COLORS = [
+  "var(--color-accent)",
+  "var(--color-accent-glow)",
+  "var(--color-success)",
+  "var(--color-accent-deep)",
+]
+
 const ICONS = [Eye, Target, MessageSquare, Cpu]
 
 export function Approach() {
@@ -34,11 +42,18 @@ export function Approach() {
               variants={withDelay(alternateReveal(i), (i % 2) * 0.12)}
               className="group relative flex flex-col gap-6 rounded-2xl border border-border bg-surface p-7 md:p-8 overflow-hidden hover:border-accent/25 transition-colors duration-300"
             >
+              {/* Barra superior de color */}
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-x-0 top-0 h-[3px]"
+                style={{ background: BAR_COLORS[i % BAR_COLORS.length] }}
+              />
+
               {/* Ambient glow blob — top-right corner */}
               <div
                 aria-hidden
-                className="pointer-events-none absolute -top-12 -right-12 w-40 h-40 rounded-full blur-3xl opacity-50 group-hover:opacity-100 transition-opacity duration-500"
-                style={{ background: "radial-gradient(circle, hsl(213 100% 70% / 0.14), transparent 70%)" }}
+                className="pointer-events-none absolute -top-12 -right-12 w-40 h-40 rounded-full blur-3xl opacity-60 group-hover:opacity-100 transition-opacity duration-500"
+                style={{ background: "radial-gradient(circle, var(--blob-a), transparent 70%)" }}
               />
 
               {/* Top row: icon left, number right */}
@@ -46,7 +61,8 @@ export function Approach() {
                 <div className="w-11 h-11 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center text-accent-fg shrink-0">
                   <Icon size={20} />
                 </div>
-                <span className="font-mono text-5xl font-bold text-foreground/[0.04] select-none leading-none -mt-1">
+                {/* Número decorativo (marca de agua): aria-hidden, no se lee ni cuenta para contraste */}
+                <span aria-hidden className="font-mono text-5xl font-bold text-accent/[0.14] select-none leading-none -mt-1">
                   {principle.index}
                 </span>
               </div>
@@ -65,7 +81,7 @@ export function Approach() {
               <div
                 aria-hidden
                 className="pointer-events-none absolute inset-x-0 bottom-0 h-px opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                style={{ background: "linear-gradient(90deg, transparent, hsl(213 90% 53% / 0.45), transparent)" }}
+                style={{ background: "linear-gradient(90deg, transparent, var(--color-accent), transparent)" }}
               />
             </ScrollReveal>
           )
