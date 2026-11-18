@@ -6,6 +6,7 @@ import { SmoothScroll } from "@/components/layout/SmoothScroll"
 import { SkipLink } from "@/components/layout/SkipLink"
 import { LanguageProvider } from "@/lib/i18n"
 import { SITE_URL } from "@/lib/site"
+import { PALETTE_BOOT_SCRIPT } from "@/lib/palette-config"
 import "./globals.css"
 
 const geistSans = Geist({
@@ -54,6 +55,11 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable}`}
       suppressHydrationWarning
     >
+      <head>
+        {/* Paleta y cristal guardados, antes del primer pintado: sin destello del azul por
+            defecto. Cambia atributos de <html> (por eso suppressHydrationWarning). */}
+        <script dangerouslySetInnerHTML={{ __html: PALETTE_BOOT_SCRIPT }} />
+      </head>
       <body className="font-sans antialiased bg-background text-foreground">
         <ThemeProvider
           attribute="class"

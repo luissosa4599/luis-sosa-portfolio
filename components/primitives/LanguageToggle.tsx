@@ -15,7 +15,7 @@ export function LanguageToggle({ className }: LanguageToggleProps) {
       role="tablist"
       aria-label="Language"
       className={cn(
-        "inline-flex items-center rounded-md border border-border bg-surface p-0.5",
+        "inline-flex items-center rounded-full bg-foreground/[0.07] p-0.5",
         className
       )}
     >
@@ -27,7 +27,7 @@ export function LanguageToggle({ className }: LanguageToggleProps) {
           aria-selected={language === lang}
           onClick={() => setLanguage(lang)}
           className={cn(
-            "px-2.5 py-1 rounded text-xs font-semibold uppercase transition-colors duration-150",
+            "px-2.5 py-1 rounded-full text-xs font-semibold uppercase transition-colors duration-150",
             language === lang
               ? "bg-accent/15 text-accent-fg"
               : "text-muted hover:text-foreground"

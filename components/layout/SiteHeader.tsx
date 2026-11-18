@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils"
 import { useLanguage } from "@/lib/i18n"
 import { ThemeToggle } from "@/components/primitives/ThemeToggle"
 import { LanguageToggle } from "@/components/primitives/LanguageToggle"
+import { PalettePicker } from "@/components/primitives/PalettePicker"
 
 // ── Nav config ───────────────────────────────────────────────────────────────
 const NAV_LABELS = {
@@ -84,13 +85,8 @@ export function SiteHeader() {
       {/* Entrada con CSS (.enter-down en globals.css): arranca con el HTML, sin esperar a JS */}
       <header className="enter-down fixed top-4 inset-x-0 z-50 px-[clamp(1.25rem,4vw,2.5rem)]">
         <div className="max-w-[75rem] mx-auto">
-        <div
-          className={cn(
-            "rounded-2xl border border-border shadow-lg backdrop-blur-md transition-shadow duration-300",
-            open && "rounded-b-none border-b-0"
-          )}
-          style={{ background: "var(--nav-bg)" }}
-        >
+        {/* Píldora de cristal (Liquid Glass). El menú móvil se despliega dentro. */}
+        <div className="glass rounded-[1.75rem]">
           <div className="flex h-12 items-center justify-between px-4 md:px-5">
 
             {/* Logo */}
@@ -130,6 +126,7 @@ export function SiteHeader() {
             {/* Right — toggles + CV + hamburger */}
             <div className="flex items-center gap-2 shrink-0">
               <LanguageToggle />
+              <PalettePicker />
               <ThemeToggle />
               {/* Hamburger — mobile only */}
               <button
@@ -137,7 +134,7 @@ export function SiteHeader() {
                 aria-label={open ? "Close menu" : "Open menu"}
                 aria-expanded={open}
                 onClick={() => setOpen((v) => !v)}
-                className="lg:hidden flex items-center justify-center w-8 h-8 rounded-lg text-muted hover:text-foreground hover:bg-surface transition-colors"
+                className="lg:hidden flex items-center justify-center w-8 h-8 rounded-full text-muted hover:text-foreground hover:bg-foreground/[0.07] transition-colors"
               >
                 {open ? <X size={16} /> : <Menu size={16} />}
               </button>
@@ -190,10 +187,6 @@ export function SiteHeader() {
           </AnimatePresence>
         </div>
 
-        {/* Rounded bottom corners when mobile menu is open */}
-        {open && (
-          <div className="rounded-b-2xl border-x border-b border-border backdrop-blur-md -mt-px h-2" style={{ background: "var(--nav-bg)" }} />
-        )}
         </div>{/* /max-w-6xl */}
       </header>
 

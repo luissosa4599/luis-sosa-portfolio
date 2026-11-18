@@ -8,6 +8,7 @@ import { FadeIn } from "@/components/primitives/FadeIn"
 import { ScrollReveal } from "@/components/primitives/ScrollReveal"
 import { ThemedImage } from "@/components/primitives/ThemedImage"
 import { Parallax } from "@/components/primitives/Parallax"
+import { AmbientBlobs } from "@/components/primitives/AmbientBlobs"
 import { getProjects } from "@/lib/data/projects"
 import { useLanguage } from "@/lib/i18n"
 import { alternateReveal, withDelay } from "@/lib/motion"
@@ -132,8 +133,7 @@ function ProjectCard({ project }: { project: ProjectEntry }) {
 
   return (
     <div
-      className="group relative flex flex-col rounded-2xl overflow-hidden border border-border hover:border-accent/30 transition-all duration-300 h-full backdrop-blur-sm"
-      style={{ backgroundColor: "var(--card-bg)" }}
+      className="glass-panel group relative flex flex-col rounded-3xl overflow-hidden hover:border-accent/40 transition-colors duration-300 h-full"
     >
       {/* Visual */}
       <div className="relative overflow-hidden" style={{ height: 220 }}>
@@ -146,9 +146,9 @@ function ProjectCard({ project }: { project: ProjectEntry }) {
             <ProjectVisual slug={project.slug} />
           </Parallax>
         )}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[var(--card-bg)] pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-background/30 pointer-events-none" />
         {project.featured && (
-          <span className="absolute top-3 right-3 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-background/85 backdrop-blur-sm text-accent-fg border border-accent/30">
+          <span className="absolute top-3 right-3 inline-flex items-center px-2 py-0.5 glass rounded-full text-xs font-medium text-accent-fg">
             {language === "es" ? "Destacado" : "Featured"}
           </span>
         )}
@@ -215,7 +215,8 @@ export function Projects() {
   const projects = getProjects(language)
 
   return (
-    <section id="work" className="section-y scroll-mt-20">
+    <section id="work" className="section-y scroll-mt-20 relative overflow-hidden">
+      <AmbientBlobs />
       <Container size="md">
         <FadeIn>
           <SectionLabel>{language === "es" ? "Trabajo" : "Work"}</SectionLabel>

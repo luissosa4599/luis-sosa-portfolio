@@ -147,14 +147,14 @@ export function Hero() {
           >
             <a
               href="#work"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-md bg-accent text-on-accent text-sm font-semibold hover:bg-accent/90 transition-colors duration-200"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-accent text-on-accent text-sm font-semibold shadow-[inset_0_1px_0_oklch(1_0_0/0.25)] hover:bg-accent/90 transition-colors duration-200"
             >
               {copy.projects}
               <ArrowRight size={15} />
             </a>
             <a
               href="#contact"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-md border border-border bg-[var(--btn-bg)] hover:bg-[var(--btn-bg-hover)] text-sm font-medium text-muted hover:text-foreground transition-colors duration-200"
+              className="inline-flex items-center gap-2 px-5 py-2.5 glass rounded-full text-sm font-medium text-foreground hover:text-accent-fg transition-colors duration-200"
             >
               <Mail size={14} />
               {copy.contact}
@@ -163,7 +163,7 @@ export function Hero() {
               href={language === "en" ? "/CV_Luis_Sosa.pdf" : "/CV_Luis_Alberto.pdf"}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-md border border-border bg-[var(--btn-bg)] hover:bg-[var(--btn-bg-hover)] text-sm font-medium text-muted hover:text-foreground transition-colors duration-200"
+              className="inline-flex items-center gap-2 px-5 py-2.5 glass rounded-full text-sm font-medium text-foreground hover:text-accent-fg transition-colors duration-200"
             >
               <Download size={14} />
               {copy.resume}

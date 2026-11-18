@@ -32,7 +32,7 @@ export function ThemeToggle({ className }: ThemeToggleProps) {
     return (
       <div
         className={cn(
-          "no-theme-transition flex h-8 w-8 items-center justify-center rounded-md",
+          "no-theme-transition flex h-8 w-8 items-center justify-center rounded-full",
           className
         )}
       />
@@ -46,7 +46,7 @@ export function ThemeToggle({ className }: ThemeToggleProps) {
       whileTap={{ scale: 0.88 }}
       transition={{ duration: 0.12 }}
       className={cn(
-        "no-theme-transition relative flex h-8 w-8 items-center justify-center rounded-md text-muted overflow-hidden",
+        "no-theme-transition relative flex h-8 w-8 items-center justify-center rounded-full text-muted overflow-hidden",
         "hover:bg-accent/10 hover:text-foreground transition-colors",
         className
       )}

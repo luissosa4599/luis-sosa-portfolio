@@ -5,6 +5,7 @@ import { SectionWrapper } from "@/components/layout/SectionWrapper"
 import { SectionLabel } from "@/components/primitives/SectionLabel"
 import { FadeIn } from "@/components/primitives/FadeIn"
 import { ScrollReveal } from "@/components/primitives/ScrollReveal"
+import { AmbientBlobs } from "@/components/primitives/AmbientBlobs"
 import { alternateReveal, withDelay } from "@/lib/motion"
 import { getApproach } from "@/lib/data/approach"
 import { useLanguage } from "@/lib/i18n"
@@ -24,7 +25,8 @@ export function Approach() {
   const approach = getApproach(language)
 
   return (
-    <SectionWrapper id="approach">
+    <SectionWrapper id="approach" className="relative overflow-hidden">
+      <AmbientBlobs flip />
       <FadeIn>
         <SectionLabel>{language === "es" ? "Enfoque" : "Approach"}</SectionLabel>
         <h2 className="text-section font-semibold tracking-tight text-foreground">
@@ -40,7 +42,7 @@ export function Approach() {
               key={principle.index}
               as="article"
               variants={withDelay(alternateReveal(i), (i % 2) * 0.12)}
-              className="group relative flex flex-col gap-6 rounded-2xl border border-border bg-surface p-7 md:p-8 overflow-hidden hover:border-accent/25 transition-colors duration-300"
+              className="glass-panel group relative flex flex-col gap-6 rounded-3xl p-7 md:p-8 overflow-hidden hover:border-accent/40 transition-colors duration-300"
             >
               {/* Barra superior de color */}
               <div

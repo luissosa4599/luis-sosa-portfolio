@@ -89,7 +89,7 @@
   --glass-opacity: 0.6;
 }
 [data-palette="violet"]  { --hue: 292; }
-[data-palette="teal"]    { --hue: 195; --accent-l: 0.49; --accent-l-light: 0.47; }  /* el turquesa pierde contraste con texto blanco al recortarse a sRGB: acento más oscuro */
+[data-palette="teal"]    { --hue: 195; --accent-l: 0.49; --accent-l-light: 0.47; --accent-fg-l-light: 0.43; }  /* el turquesa pierde contraste con texto blanco al recortarse a sRGB: acento más oscuro */
 [data-palette="pink"]    { --hue: 350; }
 [data-palette="amber"]   { --hue: 70; }
 [data-palette="neutral"] { --k: 0; }
@@ -159,7 +159,7 @@
   --muted:         oklch(0.4 calc(0.06 * var(--k)) var(--hue));    /* como el #3A2E66 de Cumulus */
   --muted-2:       oklch(0.48 calc(0.055 * var(--k)) var(--hue));   /* ≥ 5.3:1 en el peor fondo */
   --accent:        oklch(var(--accent-l-light, 0.52) calc(0.19 * var(--k)) var(--hue));  /* texto blanco encima ≥ 5.2:1 */
-  --accent-fg:     oklch(0.47 calc(0.17 * var(--k)) var(--hue));    /* ≥ 5.5:1 */
+  --accent-fg:     oklch(var(--accent-fg-l-light, 0.47) calc(0.17 * var(--k)) var(--hue));  /* ≥ 5.5:1 */
   --accent-glow:   oklch(0.75 calc(0.14 * var(--k)) var(--hue));
   --accent-deep:   oklch(0.38 calc(0.15 * var(--k)) var(--hue));
   --success-fg:    oklch(0.48 0.12 165);
@@ -245,6 +245,57 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .enter-rise, .enter-down { animation: none; }
+}
+
+/* ─── Cristal (Liquid Glass de Apple, iOS 26 → iOS 27) ──────────────────────────
+   - .glass        → capa flotante: header, controles, selector de color, botón de subir,
+                     botones secundarios. Como en iOS, el cristal vive sobre el contenido.
+   - .glass-panel  → paneles de contenido (tarjetas): un cristal más ligero para que las
+                     manchas de luz y las bandas se vean a través.
+   Material: tinte de la paleta con opacidad --glass-opacity (el deslizante de iOS 27,
+   Transparente ↔ Tintado, en el selector de color) + desenfoque y saturación del fondo.
+   Brillo especular: borde superior iluminado (sombra interna) y un reflejo diagonal suave.
+   Safari no resuelve variables dentro de -webkit-backdrop-filter: valores literales.
+   Sin refracción real (filtro SVG): solo funciona en Chromium y cuesta en el scroll. */
+
+@utility glass {
+  background-color: color-mix(in oklch, var(--glass-tint) calc(var(--glass-opacity) * 100%), transparent);
+  background-image: linear-gradient(135deg, oklch(1 0 0 / 0.12) 0%, oklch(1 0 0 / 0) 40%, oklch(1 0 0 / 0) 65%, oklch(1 0 0 / 0.05) 100%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid var(--glass-rim);
+  box-shadow:
+    inset 0 1px 0 0 var(--glass-highlight),
+    inset 0 -1px 0 0 oklch(0 0 0 / 0.10),
+    var(--glass-shadow);
+}
+
+@utility glass-panel {
+  background-color: color-mix(in oklch, var(--glass-tint) calc(var(--glass-opacity) * 85%), transparent);
+  background-image: linear-gradient(160deg, oklch(1 0 0 / 0.08) 0%, oklch(1 0 0 / 0) 35%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  backdrop-filter: blur(16px) saturate(160%);
+  border: 1px solid var(--glass-rim);
+  box-shadow: inset 0 1px 0 0 var(--glass-highlight), var(--glass-shadow);
+}
+
+/* Menús y paneles que se abren desde el header (selector de color). Un backdrop-filter
+   dentro de otro (la píldora del header) solo desenfoca lo que hay dentro de ese padre, no
+   lo que queda detrás del menú: el texto del hero se leía a través. Como los menús de iOS,
+   este material es casi opaco y no depende del desenfoque. */
+@utility glass-menu {
+  /* Opaco: incluso un 2 % deja ver texto claro sobre fondo oscuro (medido ~1.15:1) */
+  background-color: var(--glass-tint);
+  background-image: linear-gradient(135deg, oklch(1 0 0 / 0.10) 0%, oklch(1 0 0 / 0) 45%);
+  border: 1px solid var(--glass-rim);
+  box-shadow:
+    inset 0 1px 0 0 var(--glass-highlight),
+    0 18px 48px -12px oklch(0 0 0 / 0.5);
+}
+
+/* El deslizante de transparencia toma el color de la paleta */
+.glass-range {
+  accent-color: var(--color-accent);
 }
 
 /* ─── Aire vertical de sección ────────────────────────────────────────────────

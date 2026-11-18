@@ -194,8 +194,7 @@ export function Research() {
           {/* ScrollReveal owns the inView + ready gate; children cascade via variants */}
           <ScrollReveal
             variants={{ hidden: {}, visible: {} }}
-            className="flex flex-col gap-6 rounded-2xl border border-border p-6 md:p-8 backdrop-blur-sm"
-            style={{ backgroundColor: "var(--card-bg)" }}
+            className="glass-panel flex flex-col gap-6 rounded-3xl p-6 md:p-8"
           >
             {/* Section label */}
             <motion.div variants={seq(0, reduced)}>

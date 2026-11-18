@@ -192,8 +192,7 @@ export function Experience() {
 
                   {/* Card */}
                   <div
-                    className="flex-1 rounded-xl border border-border p-5 sm:p-6 -mt-px transition-all duration-200 hover:border-accent/40 backdrop-blur-sm"
-                    style={{ backgroundColor: "var(--card-bg)" }}
+                    className="glass-panel flex-1 rounded-2xl p-5 sm:p-6 -mt-px transition-colors duration-200 hover:border-accent/40"
                   >
 
                     {/* Top row: role + date */}

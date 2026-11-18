@@ -104,6 +104,33 @@ Todos los colores salen de **un solo tono** (`--hue`) en **OKLCH** (`app/globals
 - **Prohibido escribir colores a mano** (`hsl(213 …)`, `#hex`, `emerald-500`) en componentes: no cambiarían con la paleta. Para transparencias del acento: `color-mix(in oklch, var(--color-accent) N%, transparent)` o `bg-accent/N`. Única excepción: `opengraph-image.tsx` (imagen estática, azul).
 - **Auditoría (2026-11-18): 0 textos bajo WCAG AA en las 6 paletas × 2 temas.** El script convierte los colores computados (oklch/color-mix) a sRGB pintándolos en un canvas. Los auditores que solo leen `rgb()` se saltan esos textos sin avisar: así pasaron sin detectarse los números decorativos de Approach (1.2:1, ahora `aria-hidden`).
 
+## Cristal (Liquid Glass) y selector de color
+
+Estilo general en ambos temas, a partir del Liquid Glass de Apple (iOS 26) y su ajuste de iOS 27 (WWDC 2026): un deslizante para elegir qué tan transparente u opaco se ve el cristal. Utilidades en `globals.css`:
+
+- **`glass`** → capa flotante: píldora del header (ambos headers), botones secundarios del hero, botones de Contact, la etiqueta Destacado y el botón de subir.
+- **`glass-panel`** → tarjetas de contenido: Work, Experience, Approach, Research y Testimonials. Es más ligero, para que se vea el color de atrás.
+  - Detrás de Work y Approach van `<AmbientBlobs>` (manchas de luz con parallax, en `-z-10`), para que el cristal tenga color que mostrar.
+- **`glass-menu`** → menús que se abren desde el header (selector de color). **Es opaco:** un `backdrop-filter` dentro de otro (la píldora del header) solo desenfoca lo que hay dentro del padre, así que el texto del hero se veía nítido detrás del menú. Incluso con 98 % de opacidad se notaba (~1.15:1 sobre fondo oscuro).
+- **El material:**
+  - Tinte de la paleta con `--glass-opacity` (0.35 a 0.9, 0.6 por defecto), más desenfoque y saturación del fondo.
+  - Brillo especular: sombra interna arriba y un reflejo diagonal.
+- **Safari:** no resuelve variables dentro de `-webkit-backdrop-filter`, así que se usan valores literales.
+- **No hay refracción real** (filtro SVG): solo funciona en Chromium y cuesta en el scroll.
+- **Formas de cápsula** (`rounded-full`) en controles y botones, y `rounded-3xl` en paneles, como en iOS.
+- **No combinar** `glass`/`glass-panel` con `border-border`, `bg-*` ni estilos `backgroundColor`: el cristal ya define borde y fondo.
+
+**Selector de color** (`components/primitives/PalettePicker.tsx`): va junto a EN/ES en ambos headers.
+
+- **Contenido:** 6 muestras (radiogroup: flechas, Enter y Espacio) y el deslizante de cristal. Escape o clic fuera cierran y devuelven el foco al botón.
+- **Dónde vive:**
+  - `lib/palette-config.ts`: datos y script de arranque, sin React (lo importa el layout de servidor).
+  - `lib/palette.ts`: tienda sobre localStorage con `useSyncExternalStore` (como `i18n.tsx`). Claves: `portfolio-palette` y `portfolio-glass`.
+- **Sin destello del azul:** `PALETTE_BOOT_SCRIPT` va en el `<head>` (`layout.tsx`) y aplica `data-palette` y `--glass-opacity` antes del primer pintado (verificado: antes de `DOMContentLoaded`). El servidor siempre pinta azul.
+- Next no deja importar un módulo con `useSyncExternalStore` desde un componente de servidor, aunque sea para una constante. Por eso el archivo está separado en dos.
+- **Auditoría (2026-11-18):** 0 fallas WCAG AA en las 6 paletas × 2 temas con el cristal por defecto, y también con el cristal en su punto más transparente (0.35).
+  - El turquesa necesitó oscurecer su acento (`--accent-l`, `--accent-l-light`) y su texto de acento en claro (`--accent-fg-l-light`).
+
 ## Separadores por tono
 
 Las secciones no llevan líneas (`border-y`, `hr`): alternan fondo (`bg-background`) y banda (`bg-band`), y la cinta de tecnologías y el footer van en `bg-band-deep`. Orden: Hero · About (banda) · Work · Skills (banda) · Experience · Research (banda) · Approach · Testimonials (banda) · Contact · footer (profundo). Al agregar una sección, respetar la alternancia. Las bandas tapan la cuadrícula de puntos y las partículas (fijas en `z-0`, debajo de `<main>` en `z-10`); el footer va `relative z-10` por lo mismo.

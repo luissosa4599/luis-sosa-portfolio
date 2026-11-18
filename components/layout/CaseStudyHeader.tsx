@@ -4,6 +4,7 @@ import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
 import { ThemeToggle } from "@/components/primitives/ThemeToggle"
 import { LanguageToggle } from "@/components/primitives/LanguageToggle"
+import { PalettePicker } from "@/components/primitives/PalettePicker"
 import { useLanguage } from "@/lib/i18n"
 
 export function CaseStudyHeader() {
@@ -13,10 +14,7 @@ export function CaseStudyHeader() {
     // Entrada con CSS (.enter-down en globals.css): arranca con el HTML, sin esperar a JS
     <header className="enter-down fixed top-4 inset-x-0 z-50 px-[clamp(1.25rem,4vw,2.5rem)]">
       <div className="max-w-[75rem] mx-auto">
-        <div
-          className="rounded-2xl border border-border shadow-lg backdrop-blur-md"
-          style={{ background: "var(--nav-bg)" }}
-        >
+        <div className="glass rounded-[1.75rem]">
           <div className="flex h-12 items-center justify-between px-4 md:px-5">
 
             {/* Back link */}
@@ -36,6 +34,7 @@ export function CaseStudyHeader() {
             {/* Right — toggles */}
             <div className="flex items-center gap-2">
               <LanguageToggle />
+              <PalettePicker />
               <ThemeToggle />
             </div>
 
