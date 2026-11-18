@@ -1,7 +1,6 @@
 "use client"
 
-import { FadeIn } from "@/components/primitives/FadeIn"
-import { WordReveal } from "@/components/primitives/WordReveal"
+import { SectionHeading } from "@/components/primitives/SectionHeading"
 import { ScrollReveal } from "@/components/primitives/ScrollReveal"
 import { Container } from "@/components/layout/Container"
 import { useLanguage } from "@/lib/i18n"
@@ -152,17 +151,10 @@ export function Experience() {
   }[language]
 
   return (
-    <section id="experience" className="section-y scroll-mt-20">
+    <section id="experience" className="section-scope section-y scroll-mt-20">
       <Container size="md">
         {/* Heading */}
-        <FadeIn>
-          <div className="mb-14">
-            <h2 className="text-section font-semibold tracking-tight text-foreground">
-              <WordReveal text={copy.title} suffix={<span className="text-accent-fg">.</span>} />
-            </h2>
-            <p className="mt-3 text-body text-muted max-w-[60ch]">{copy.subtitle}</p>
-          </div>
-        </FadeIn>
+        <SectionHeading title={copy.title} subtitle={copy.subtitle} />
 
         {/* Timeline */}
         <div className="relative">

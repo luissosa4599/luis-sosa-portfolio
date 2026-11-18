@@ -80,7 +80,7 @@ export function Contact() {
           {language === "es" ? "Disponible para trabajo remoto" : "Open to full-time remote"}
         </FadeIn>
         <FadeIn as="h2" stagger={1} className="text-section font-semibold tracking-tight text-foreground">
-          <WordReveal text={language === "es" ? "Construyamos algo útil" : "Let's build something useful"} />
+          <WordReveal text={language === "es" ? "Construyamos algo útil" : "Let's build something useful"} suffix={<span className="text-accent-fg">.</span>} />
         </FadeIn>
         <FadeIn as="p" stagger={2} className="mt-4 text-lead text-muted max-w-[52ch]">
           {language === "es"

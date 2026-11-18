@@ -4,11 +4,10 @@ import { useState, type ReactNode } from "react"
 import { motion } from "framer-motion"
 import { Eye, ScanFace, Award, Search, Copy, Check } from "lucide-react"
 import { Container } from "@/components/layout/Container"
-import { SectionLabel } from "@/components/primitives/SectionLabel"
 import { AccentLink } from "@/components/primitives/AccentLink"
 import { ScrollReveal } from "@/components/primitives/ScrollReveal"
 import { FadeIn } from "@/components/primitives/FadeIn"
-import { WordReveal } from "@/components/primitives/WordReveal"
+import { SectionHeading } from "@/components/primitives/SectionHeading"
 import { getResearch } from "@/lib/data/research"
 import { sceneVars } from "@/lib/scene"
 import { useLanguage } from "@/lib/i18n"
@@ -168,9 +167,11 @@ export function Research() {
   if (!entry) return null
 
   return (
-    <section id="research" className="relative flex items-center overflow-clip scroll-mt-20 bg-band">
+    <section id="research" className="section-scope relative overflow-clip scroll-mt-20 bg-band">
 
       <Container className="w-full section-y">
+        <SectionHeading title={language === "es" ? "Publicaciones" : "Research Papers"} bg="band" />
+
         <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
 
           {/* ── Left column — content ─────────────────────────────── */}
@@ -179,18 +180,6 @@ export function Research() {
             direction="up"
             className="glass-panel flex flex-col gap-6 rounded-3xl p-6 md:p-8"
           >
-            {/* Section label */}
-            <div style={sceneVars("up", 0)} className="scene-in">
-              <SectionLabel>{language === "es" ? "Investigación" : "Research"}</SectionLabel>
-            </div>
-
-            {/* Heading */}
-            <h2
-              style={sceneVars("up", 1)}
-              className="scene-in text-[clamp(2.2rem,4.5vw,3.4rem)] font-semibold tracking-tight leading-[1.1] text-foreground"
-            >
-              <WordReveal text={language === "es" ? "Publicaciones" : "Research Papers"} />
-            </h2>
 
             {/* Paper title */}
             <h3

@@ -3,8 +3,7 @@
 import Link from "next/link"
 import { ArrowUpRight, ExternalLink } from "lucide-react"
 import { Container } from "@/components/layout/Container"
-import { SectionLabel } from "@/components/primitives/SectionLabel"
-import { FadeIn } from "@/components/primitives/FadeIn"
+import { SectionHeading } from "@/components/primitives/SectionHeading"
 import { ThemedImage } from "@/components/primitives/ThemedImage"
 import { Parallax } from "@/components/primitives/Parallax"
 import { AmbientBlobs } from "@/components/primitives/AmbientBlobs"
@@ -219,12 +218,10 @@ export function Projects() {
   const projects = getProjects(language)
 
   return (
-    <section id="work" className="section-y scroll-mt-20 relative overflow-clip">
+    <section id="work" className="section-scope section-y scroll-mt-20 relative overflow-clip">
       <AmbientBlobs />
       <Container size="md">
-        <FadeIn>
-          <SectionLabel>{language === "es" ? "Trabajo" : "Work"}</SectionLabel>
-        </FadeIn>
+        <SectionHeading title={language === "es" ? "Proyectos seleccionados" : "Selected work"} />
 
         <div className="stack" style={{ "--cards": projects.length } as React.CSSProperties}>
           {projects.map((project, i) => (

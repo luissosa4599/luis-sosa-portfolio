@@ -1,9 +1,8 @@
 "use client"
 
 import { FadeIn } from "@/components/primitives/FadeIn"
-import { WordReveal } from "@/components/primitives/WordReveal"
+import { SectionHeading } from "@/components/primitives/SectionHeading"
 import { SectionWrapper } from "@/components/layout/SectionWrapper"
-import { SectionLabel } from "@/components/primitives/SectionLabel"
 import { useLanguage } from "@/lib/i18n"
 import { ExternalLink } from "lucide-react"
 
@@ -32,17 +31,10 @@ export function Testimonials() {
   const { language } = useLanguage()
 
   return (
-    <SectionWrapper id="testimonials" containerSize="md" className="bg-band">
-      <FadeIn>
-        <SectionLabel className="mb-0">
-          {language === "es" ? "Referencias" : "References"}
-        </SectionLabel>
-        <h2 className="mt-3 text-section font-semibold tracking-tight text-foreground">
-          <WordReveal text={language === "es" ? "Lo que dicen de mi trabajo" : "What people say"} />
-        </h2>
-      </FadeIn>
+    <SectionWrapper id="testimonials" containerSize="md" className="section-scope bg-band">
+      <SectionHeading title={language === "es" ? "Lo que dicen de mi trabajo" : "What people say"} bg="band" />
 
-      <div className="mt-10 flex flex-col gap-4">
+      <div className="flex flex-col gap-4">
         {TESTIMONIALS.map((t, i) => (
           <FadeIn as="figure" key={i} className="glass-panel flex flex-col gap-5 rounded-3xl p-7">
               <span

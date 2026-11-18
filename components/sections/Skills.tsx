@@ -12,10 +12,10 @@ import {
 } from "simple-icons"
 import { cn } from "@/lib/utils"
 import { FadeIn } from "@/components/primitives/FadeIn"
-import { WordReveal } from "@/components/primitives/WordReveal"
+import { SectionHeading } from "@/components/primitives/SectionHeading"
 import { Container } from "@/components/layout/Container"
 import { useLanguage } from "@/lib/i18n"
-import { alternate, sceneVars } from "@/lib/scene"
+import { alternate } from "@/lib/scene"
 
 // ── Icon renderer ────────────────────────────────────────────────────────────
 function SkillIcon({ icon }: { icon: SimpleIcon }) {
@@ -167,30 +167,32 @@ function SkillGroupItem({
   language: Language
   index: number
 }) {
-  const side = alternate(index)
+  // Cada grupo entra como un solo bloque desde su lado (alternando), sin giro. Antes cada
+  // pastilla era su propia escena (~35 animándose a la vez, cada una con backdrop-blur) y el
+  // recorrido temblaba; un bloque es una sola capa que el navegador mueve barata.
   return (
-    <div className="w-full flex flex-col gap-4">
-      <span
-        className="scene font-mono text-xs uppercase tracking-widest text-accent-fg"
-        style={sceneVars(side)}
-      >
+    <FadeIn
+      direction={alternate(index)}
+      style={{ "--in-r": "0deg" } as React.CSSProperties}
+      className="w-full flex flex-col gap-4"
+    >
+      <span className="font-mono text-xs uppercase tracking-widest text-accent-fg">
         {group.category[language]}
       </span>
 
-      {/* Cascada: cada pastilla entra un paso de scroll (--scene-step) después de la anterior */}
-      <div className="flex flex-wrap gap-2.5" style={{ "--scene-step": "1.2svh" } as React.CSSProperties}>
-        {group.items.map(({ label, es, icon }, j) => (
+      <div className="flex flex-wrap gap-2.5">
+        {group.items.map(({ label, es, icon }) => (
           <span
             key={label}
-            className="scene inline-flex items-center gap-2 rounded-lg border border-border px-3 py-1.5 text-sm font-mono text-muted hover:text-foreground hover:border-border-strong transition-colors duration-150 backdrop-blur-sm"
-            style={{ ...sceneVars(side, j), backgroundColor: "var(--badge-bg)" }}
+            className="inline-flex items-center gap-2 rounded-lg border border-border px-3 py-1.5 text-sm font-mono text-muted hover:text-foreground hover:border-border-strong transition-colors duration-150"
+            style={{ backgroundColor: "var(--badge-bg)" }}
           >
             {icon && <SkillIcon icon={icon} />}
             {language === "es" && es ? es : label}
           </span>
         ))}
       </div>
-    </div>
+    </FadeIn>
   )
 }
 
@@ -210,16 +212,9 @@ export function Skills() {
   }[language]
 
   return (
-    <section id="skills" className="bg-band section-y scroll-mt-20">
+    <section id="skills" className="section-scope bg-band section-y scroll-mt-20">
       <Container size="md">
-        <FadeIn>
-          <div className="mb-12">
-            <h2 className="text-section font-semibold tracking-tight text-foreground">
-              <WordReveal text={copy.title} suffix={<span className="text-accent-fg">.</span>} />
-            </h2>
-            <p className="mt-3 text-body text-muted max-w-[60ch]">{copy.subtitle}</p>
-          </div>
-        </FadeIn>
+        <SectionHeading title={copy.title} subtitle={copy.subtitle} bg="band" />
 
         <div className="flex flex-col gap-8">
           {SKILL_GROUPS.map((group, index) => (

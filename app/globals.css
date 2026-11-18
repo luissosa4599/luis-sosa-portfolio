@@ -390,6 +390,51 @@ body {
   }
 }
 
+/* ─── Títulos de sección fijos (SectionHeading) ─────────────────────────────────
+   El título (una línea) se queda fijo debajo del header mientras se recorre la sección. Una
+   franja del color de la sección (--section-bg) sube desde el borde de la pantalla y se
+   desvanece debajo del título para que el contenido pase por detrás. La franja aparece solo
+   cuando el título ya está fijo: la sección (.section-scope) declara --sec y la franja se
+   enciende al empezar a cruzar el borde superior (exit-crossing 0 → 4 %). */
+
+:root {
+  --head-top: 4.5rem;                               /* debajo de la píldora del header */
+  --title-size: clamp(1.875rem, 3.4vw, 2.75rem);    /* = text-section */
+}
+
+.section-scope { view-timeline: --sec; }
+
+.section-head {
+  position: sticky;
+  top: var(--head-top);
+  z-index: 20;
+  padding-bottom: 1rem;
+}
+
+.section-head::before {
+  content: "";
+  position: absolute;
+  /* Baja 2rem por debajo del título: el título queda siempre sobre fondo sólido y el
+     contenido se desvanece ya fuera de él (si el degradado empezara dentro, se asomaba
+     detrás de la parte baja del texto) */
+  inset: calc(-1 * var(--head-top)) -100vw -2rem;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(to bottom, var(--section-bg, var(--background)) calc(100% - 2rem), transparent);
+}
+
+@keyframes head-bar {
+  from { opacity: 0; }
+}
+
+@supports (animation-timeline: view()) {
+  .section-head::before {
+    animation: head-bar linear both;
+    animation-timeline: --sec;
+    animation-range: exit-crossing 0% exit-crossing 4%;
+  }
+}
+
 /* ─── Cartas apiladas (Proyectos) ───────────────────────────────────────────────
    Cada .stack-item es sticky, un escalón (--stack-step) más abajo que el anterior, así que
    la siguiente tarjeta sube y se queda encima. La pila declara una línea de tiempo con
@@ -400,7 +445,8 @@ body {
 
 .stack {
   view-timeline: --stack;
-  --stack-top: 5rem;
+  /* Debajo del título fijo de la sección (header + una línea de título + aire) */
+  --stack-top: calc(var(--head-top) + var(--title-size) * 1.1 + 2rem);
   --stack-step: 1rem;
 }
 
@@ -413,7 +459,7 @@ body {
 }
 
 @media (min-width: 768px) {
-  .stack { --stack-top: 6rem; --stack-step: 1.25rem; }
+  .stack { --stack-step: 1.25rem; }
 }
 
 .stack-item {

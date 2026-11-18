@@ -2,10 +2,8 @@
 
 import { Eye, Target, MessageSquare, Cpu } from "lucide-react"
 import { Container } from "@/components/layout/Container"
-import { SectionLabel } from "@/components/primitives/SectionLabel"
-import { FadeIn } from "@/components/primitives/FadeIn"
 import { AmbientBlobs } from "@/components/primitives/AmbientBlobs"
-import { WordReveal } from "@/components/primitives/WordReveal"
+import { SectionHeading } from "@/components/primitives/SectionHeading"
 import { getApproach } from "@/lib/data/approach"
 import { useLanguage } from "@/lib/i18n"
 
@@ -39,14 +37,9 @@ export function Approach() {
       <div className="approach-stage sticky top-0 min-h-svh overflow-clip flex flex-col justify-center pt-20 pb-8">
       <AmbientBlobs flip />
       <Container>
-      <FadeIn>
-        <SectionLabel>{language === "es" ? "Enfoque" : "Approach"}</SectionLabel>
-        <h2 className="text-section font-semibold tracking-tight text-foreground">
-          <WordReveal text={language === "es" ? "Cómo trabajo" : "How I work"} />
-        </h2>
-      </FadeIn>
+      <SectionHeading title={language === "es" ? "Cómo trabajo" : "How I work"} sticky={false} />
 
-      <div className="approach-deck mt-8 md:mt-12 grid md:grid-cols-2 gap-4">
+      <div className="approach-deck grid md:grid-cols-2 gap-4">
         {approach.map((principle, i) => {
           const Icon = ICONS[i]
           return (

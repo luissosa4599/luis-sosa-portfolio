@@ -48,6 +48,8 @@ components/
   primitives/
     FadeIn.tsx       — Escena: un elemento que entra y sale atado al scroll (as, direction, stagger). CSS puro, sin JS
     ScrollReveal.tsx — Alias de FadeIn para tarjetas (la tarjeta de cristal ES la escena)
+    SectionHeading.tsx — Título de sección con el formato único (título + punto de acento, subtítulo opcional); fijo arriba al recorrer la sección
+    WordReveal.tsx   — Título que se enciende palabra por palabra (rama inmersivo)
     ThemedImage.tsx  — Par de screenshots dark/light con next/image (lazy: solo se descarga la del tema activo)
     Parallax.tsx     — Desplaza su contenido con el scroll (capturas de proyectos, brillo del hero). CSS view(), sin JS
     SectionProgress.tsx — Barra de lectura arriba. CSS scroll(root), sin JS
@@ -172,6 +174,22 @@ Scroll-driven animations (`animation-timeline: view()`): la animación avanza y 
   - Las tarjetas son anchas (captura a la izquierda, texto a la derecha; en celular, una sobre otra).
   - Verificado igual en Chrome, WebKit y Firefox.
 
+### Títulos de sección fijos (rama inmersivo, 2026-11-18)
+**Formato único** (`SectionHeading`): título `text-section` con punto de acento, que se enciende palabra por palabra, y subtítulo opcional debajo. Sin etiquetas pequeñas encima: `SectionLabel` se eliminó.
+
+Títulos actuales: Selected work · Skills & Tools · Experience · Research Papers · How I work · What people say · Let's build something useful (Contact, centrado, con el mismo punto). About no lleva título: es la tarjeta de perfil.
+
+- **Fijo:** solo el título (una línea) se queda fijo debajo del header (`.section-head`, `top: --head-top` = 4.5rem) mientras se recorre la sección. El subtítulo se va con el contenido. En Approach no hace falta: su escenario entero ya es sticky (`sticky={false}`).
+- **Franja:** una franja del color de la sección (`--section-bg`, prop `bg`) sube desde el borde de la pantalla y baja 2rem por debajo del título, desvaneciéndose ahí. Así el título siempre queda sobre fondo sólido y el contenido pasa por detrás. Si el degradado empezara dentro del título, el texto de abajo se asomaba detrás de su parte baja.
+- **La franja aparece solo cuando el título ya está fijo:** la sección lleva `section-scope` (`view-timeline: --sec`) y la franja se enciende en `exit-crossing 0 → 4 %`.
+- **Cartas apiladas:** `--stack-top` = header + una línea de título + 2rem, para que se fijen debajo del título (152 px en escritorio, 137 en celular).
+- **Verificado:** título a 72 px en Chrome, WebKit y Firefox.
+
+### Desarrollo: si un cambio de CSS no se ve
+Turbopack guarda una caché persistente en `.next/dev`. El 2026-11-18 dejó de detectar cambios en `globals.css` y siguió sirviendo el CSS viejo, aun reiniciando `npm run dev` (los `.tsx` sí recompilaban). La compilación de producción sí lo tenía.
+
+Solución: detener el servidor, borrar `.next/dev` y volver a arrancar. Para confirmar, buscar la regla nueva en el `.css` que sirve la página.
+
 ### Cristal y animaciones (importante)
 Una animación de `opacity` (o `filter`, `clip-path`, `mask`) en un **ancestro** de un `.glass`/`.glass-panel` lo vuelve "backdrop root": el cristal solo desenfoca lo que hay dentro de ese ancestro, no lo de atrás. Pasa también en reposo:
 - **Animaciones atadas al scroll:** siempre están enganchadas a su línea de tiempo.
@@ -194,7 +212,9 @@ Reglas:
   - Cada `.word` pasa de tenue, más baja y desenfocada a nítida mientras el título sube por la mitad inferior. `--w` desplaza el rango por palabra.
   - Se usa en Experience, Skills, Research, Approach, Testimonials y Contact.
   - Sigue siendo texto normal: spans en línea separados por espacios.
-- **Skills:** cada grupo llega del lado contrario al anterior (`alternate(index)`), con sus pastillas en cascada desde ese lado.
+- **Skills:** cada grupo (etiqueta + pastillas) entra como un solo bloque desde el lado contrario al anterior (`alternate(index)`), sin giro.
+  - No animar cada pastilla por separado: eran ~35 escenas a la vez, cada una con `backdrop-blur`, y el recorrido temblaba.
+  - Las pastillas van sin desenfoque (la banda de fondo es sólida).
 - **Research:**
   - El visual se ve también en celular, con tamaño fluido.
   - `.research-reticle` (anillo y marcas cardinales) gira de −140° a 140° mientras el visual cruza la pantalla.
