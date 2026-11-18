@@ -31,7 +31,7 @@ export function Testimonials() {
   const { language } = useLanguage()
 
   return (
-    <SectionWrapper id="testimonials" containerSize="md">
+    <SectionWrapper id="testimonials" containerSize="md" className="bg-band">
       <FadeIn>
         <SectionLabel className="mb-0">
           {language === "es" ? "Referencias" : "References"}

@@ -35,6 +35,11 @@
   --color-muted:         var(--muted);
   --color-muted-2:       var(--muted-2);
 
+  /* Separadores por tono (en vez de líneas): las secciones alternan fondo y banda
+     (bg-band); la cinta de tecnologías y el footer van en el tono más profundo (bg-band-deep). */
+  --color-band:          var(--band);
+  --color-band-deep:     var(--band-deep);
+
   /* Radius */
   --radius-sm:   4px;
   --radius-md:   6px;
@@ -56,6 +61,8 @@
   --muted:         hsl(220 8% 65%);
   --muted-2:       hsl(220 8% 58%);   /* antes 45 %: 3.1:1 → 4.9:1 en el peor fondo */
   --accent-fg:     hsl(213 80% 64%);  /* azul para texto sobre oscuro: 5.4:1 en el peor fondo */
+  --band:          hsl(220 13% 10%);  /* un paso más claro que el fondo (6 % → 10 %) */
+  --band-deep:     hsl(220 15% 4%);   /* más profundo que el fondo: cinta y footer */
   --nav-bg:              hsl(220 12% 11% / 0.92);
   --nav-active-bg:       radial-gradient(ellipse at center, hsl(213 70% 24%) 0%, hsl(213 65% 10%) 100%);
   --nav-active-shadow:   0 0 14px -2px var(--color-accent), 0 0 4px -1px var(--color-accent);
@@ -81,6 +88,8 @@
   --muted:         hsl(220 12% 38%);
   --muted-2:       hsl(220 10% 42%);  /* antes 55 %: 2.9:1 → 4.7:1 en el peor fondo */
   --accent-fg:     hsl(213 70% 40%);  /* azul para texto sobre claro: 5.3:1 en el peor fondo */
+  --band:          hsl(220 22% 95%);  /* gris azulado suave */
+  --band-deep:     hsl(220 18% 92%);
   --nav-bg:              hsl(0 0% 98% / 0.88);
   --nav-active-bg:       radial-gradient(ellipse at center, hsl(213 60% 88%) 0%, hsl(213 55% 95%) 100%);
   --nav-active-shadow:   0 0 8px -3px var(--color-accent);

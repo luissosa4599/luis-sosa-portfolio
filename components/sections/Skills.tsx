@@ -250,7 +250,7 @@ export function Skills() {
   }[language]
 
   return (
-    <section id="skills" className="py-24 md:py-32 scroll-mt-20">
+    <section id="skills" className="bg-band py-24 md:py-32 scroll-mt-20">
       <Container size="md">
         <FadeIn>
           <div className="mb-12">

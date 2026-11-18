@@ -72,6 +72,10 @@ Auditado con WCAG AA en ambos temas (2026-11-18): **0 textos bajo 4.5:1** (antes
 - **Nada de colores fijos pensados solo para oscuro** (p. ej. `hsl(213 90% 70%)` inline): en claro bajaban a 1.8:1. Usar los tokens.
 - **Escala de texto:** `text-xs` = 13 px y `text-sm` = 15 px (sobrescritos en `@theme`). Mínimo en el sitio: 12 px (`text-[12px]`, solo en etiquetas mono). No usar 10–11 px.
 
+## Separadores por tono
+
+Las secciones no llevan líneas (`border-y`, `hr`): alternan fondo (`bg-background`) y banda (`bg-band`), y la cinta de tecnologías y el footer van en `bg-band-deep`. Orden: Hero · About (banda) · Work · Skills (banda) · Experience · Research (banda) · Approach · Testimonials (banda) · Contact · footer (profundo). Al agregar una sección, respetar la alternancia. Las bandas tapan la cuadrícula de puntos y las partículas (fijas en `z-0`, debajo de `<main>` en `z-10`); el footer va `relative z-10` por lo mismo.
+
 ## Sistema de animaciones
 
 ### Regla base: el contenido llega visible en el HTML

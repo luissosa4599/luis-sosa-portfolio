@@ -185,7 +185,7 @@ export function Research() {
   if (!entry) return null
 
   return (
-    <section id="research" className="relative flex items-center min-h-[90svh] overflow-hidden scroll-mt-20">
+    <section id="research" className="relative flex items-center min-h-[90svh] overflow-hidden scroll-mt-20 bg-band">
 
       <Container className="w-full py-24">
         <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
