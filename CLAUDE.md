@@ -26,7 +26,7 @@ Revisar si hay información nueva sobre arquitectura, patrones o decisiones téc
 - **Framework:** Next.js App Router (ver `node_modules/next/dist/docs/` antes de escribir código — puede haber breaking changes)
 - **Lenguaje:** TypeScript
 - **Estilos:** Tailwind CSS + shadcn/ui
-- **Animaciones:** Framer Motion v12
+- **Animaciones:** CSS scroll-driven (`animation-timeline`) para todo lo que se mueve con el scroll; Framer Motion v12 para la interfaz (header, panel de apariencia, título rotativo)
 - **Scroll suave:** Lenis 1.3.27 (`lerp: 0.1`, `autoRaf`, sin wrapper personalizado — usa el scroll nativo de window)
 - **i18n:** Sistema propio (EN/ES), sin librería externa
 
@@ -37,7 +37,7 @@ app/
   page.tsx         — Server Component. Renderiza todas las secciones. <main id="main"> es el destino del SkipLink
   work/[slug]/page.tsx — Case studies. Slugs y metadata salen de lib/data/projects.ts; dynamicParams=false → slug desconocido = 404
   robots.ts, sitemap.ts, opengraph-image.tsx — SEO. La OG es estática (sin edge runtime); en ImageResponse todo div con >1 hijo necesita display:flex
-  globals.css      — Tokens, y las entradas CSS al cargar: .enter-rise (hero) y .enter-down (headers)
+  globals.css      — Tokens, entradas CSS al cargar (.enter-rise, .enter-down) y escenas atadas al scroll (.scene-in, .scene-out, .parallax, .scroll-progress)
 components/
   layout/
     LanguageTransition.tsx  — AnimatePresence mode="wait", key={language}, remonta el tree al cambiar idioma
@@ -46,21 +46,21 @@ components/
     SiteHeader.tsx
     SiteFooter.tsx
   primitives/
-    FadeIn.tsx       — Entrada al hacer scroll con dirección. Usa useScrollReveal (llega visible en el HTML)
-    ScrollReveal.tsx — Igual que FadeIn pero acepta cualquier tag HTML y variantes propias
+    FadeIn.tsx       — Escena: entra y sale atada al scroll (direction, stagger). CSS puro, sin JS
+    ScrollReveal.tsx — Igual que FadeIn, con la etiqueta externa a elegir (li, article…)
     ThemedImage.tsx  — Par de screenshots dark/light con next/image (lazy: solo se descarga la del tema activo)
-    Parallax.tsx     — Desplaza su contenido con el scroll (capturas de proyectos, brillo del hero). Usa lib/scroll-frame.ts
+    Parallax.tsx     — Desplaza su contenido con el scroll (capturas de proyectos, brillo del hero). CSS view(), sin JS
+    SectionProgress.tsx — Barra de lectura arriba. CSS scroll(root), sin JS
   sections/
     Hero.tsx        — Entrada con CSS (.enter-rise); solo el título rotativo usa Framer
     TechMarquee.tsx — Cinta de tecnologías entre el hero y About. Server component, animación CSS (.marquee-track)
     About.tsx, Skills.tsx, Experience.tsx, Projects.tsx, Research.tsx, Approach.tsx, Contact.tsx
 hooks/
   useMounted.ts       — Retorna true después de 2 requestAnimationFrame (garantiza hidratación)
-  useScrollReveal.ts  — Revelado al hacer scroll sin ocultar nada en el HTML del servidor (+ instantHidden)
   useReducedMotion.ts — Wrapper de useReducedMotion de Framer Motion
 lib/
-  motion.ts        — Variantes de Framer Motion: fadeUp, fadeLeft, fadeRight, zoomIn, cardReveal, fadeIn, heroSequence; alternateReveal(i) y withDelay()
-  scroll-frame.ts  — Un solo listener de scroll/resize con rAF para todo el parallax
+  scene.ts         — Recorridos de entrada por dirección (sceneVars) y alternate(i) para cuadrículas
+  motion.ts        — Curvas de Framer Motion que quedan (título rotativo, header)
   i18n.tsx         — LanguageProvider y useLanguage. Store sobre localStorage vía useSyncExternalStore (server snapshot "en" → sin hydration mismatch). Sincroniza <html lang>
   language.ts      — Constante LANGUAGE_STORAGE_KEY y tipo Language
   site.ts          — SITE_URL, base de metadata, robots y sitemap. Hoy es la URL de Vercel (ver docs/dominio-propio.md)
@@ -146,10 +146,25 @@ Nada de contenido puede renderizarse con `opacity:0` en el HTML del servidor (an
 
 - **Al cargar (hero y headers): animaciones CSS** (`.enter-rise`, `.enter-down` en `globals.css`). Arrancan en cuanto llega el HTML, sin esperar a React. El hero pasa recorrido y retraso por variables (`--enter-y`, `--enter-scale`, `--enter-delay`, `--enter-duration`, `--enter-opacity`).
 - **LCP:** Chrome no registra el LCP de un texto que empieza en `opacity: 0` y solo anima la opacidad (no lo vuelve a pintar). El párrafo del hero (el texto más grande) arranca en `--enter-opacity: 0.2`. Medido en celular simulado con CPU 4×: LCP ~0.6 s (antes ~3.9 s).
-- **Al hacer scroll: `useScrollReveal`** (usado por `FadeIn`, `ScrollReveal`, `Skills`, `Research`). El elemento se renderiza con `initial={false}` y sin `animate` → visible. En el navegador, el primer aviso del IntersectionObserver decide: si alguna parte ya está en pantalla se queda como vino (sin parpadeo); si no, pasa a `"hidden"` al instante (`instantHidden`) y se anima a `"visible"` al entrar (umbral 15 %, margen inferior −8 %, una vez). Con reduced motion nunca se oculta.
-- **Por qué declarativo (`animate={state}`) y no `useAnimation().set()`:** al hidratar, Framer v12 conecta los controls después de que corre el efecto del padre y `set` no se aplicaba (verificado).
-- Los hijos con `variants` heredan `"hidden"`/`"visible"` (cascada de Research y Skills).
-- Ya no existe `PageReveal` / `usePageReady` (la cortina de 560 ms que retrasaba todo).
+- **Al hacer scroll: escenas CSS atadas al scroll** (ver "Escenas" abajo). Son CSS puro: funcionan sin JS y antes de hidratar. Sin soporte, con "reducir movimiento" o al imprimir no se aplican y el contenido queda quieto y visible.
+- Ya no existen `useScrollReveal`, `instantHidden`, `PageReveal` ni `lib/scroll-frame.ts`.
+
+### Escenas: entrar y salir atado al scroll (2026-11-18)
+Scroll-driven animations (`animation-timeline: view()`): la animación avanza y retrocede con el scroll, no se "dispara" una vez. Soporte: Chrome 115, Safari 26 y Firefox 159 (Baseline). Verificado en Chrome, WebKit 27.2 y Firefox 159 con los mismos valores.
+
+- **Dos elementos por escena** (`FadeIn`/`ScrollReveal`):
+  - El externo (`.scene-out`) sale.
+  - El interno (`.scene-in`) entra.
+  - Juntas en un solo elemento, las dos animaciones se pisarían `opacity` y `translate`.
+  - En `FadeIn`, `className` va al interno (layout del contenido) y `outerClassName` al externo (márgenes, z-index, lugar en la cuadrícula).
+- **Rangos medidos en `svh`, no en %**, para que un bloque alto entre al mismo ritmo que uno bajo:
+  - **Entrada:** mientras el borde superior sube del fondo de la pantalla al 60 % (`--scene-in-len`).
+  - **Salida:** mientras el borde inferior cruza el 30 % superior (`--scene-out-len`). Se mide desde el borde inferior para que una tarjeta alta no se desvanezca mientras se lee.
+- **Direcciones** en `lib/scene.ts`: `up`, `left`, `right`, `zoom`, `pop` y `none`. Recorridos iguales a la landing de Grupo Cumulus (80 px, ±160 px, zoom desde 0.8). Van como variables `--in-x`, `--in-y` y `--in-s`.
+- **Cascada con `stagger`** (`--i`): en una línea de tiempo de scroll no hay `delay`, así que cada paso retrasa el rango `--scene-step` (3 svh). Las pastillas de Skills usan un paso de 1.2 svh.
+- **`overflow-clip`, nunca `overflow-hidden`, en un ancestro de algo animado:** `hidden` crea un contenedor de scroll y `view()` se mediría contra él (quieto). Ya están en clip Hero, Work (sección, tarjeta y marco de la captura), Research, Approach y Contact.
+- **El cristal sigue funcionando:** comparado con y sin las animaciones, desenfoca igual (las animaciones no vuelven a su ancestro un "backdrop root").
+- **Para probar:** Lenis reacciona a los `scrollTo` programados y mueve el scroll un poco después del salto. En las pruebas automatizadas, medir con `offsetTop` (sin transforms) y leer después de esperar.
 
 ### Language toggle
 `LanguageTransition` usa `key={language}` dentro de `AnimatePresence mode="wait"`. Cambiar idioma remonta todo el tree: lo que está en pantalla queda visible y lo de abajo se vuelve a armar para revelarse.
@@ -168,16 +183,10 @@ Entrada con CSS (ver "Regla base"). `useMounted` solo se usa para no aplicar red
 ### Reduced motion en animaciones CSS
 Para animaciones CSS infinitas usar clases `motion-reduce:` de Tailwind (p. ej. `animate-[spin-cw_9s_linear_infinite] motion-reduce:animate-none`) en lugar de gatear con `useReducedMotion`: el server siempre ve `false` y causaría hydration mismatch.
 
-### Variantes disponibles (`lib/motion.ts`)
-`fadeUp`, `fadeLeft`, `fadeRight`, `zoomIn`, `cardReveal` (= zoomIn), `fadeIn`, `heroSequence(index)`, `alternateReveal(index)` (columna izquierda desde la izquierda, derecha desde la derecha).
-
-Recorridos y curva iguales a la landing de Grupo Cumulus: subir 80 px, laterales ±160 px, zoom desde 0.8; transform 1.2 s con `revealEase` y opacidad 0.9 s.
-
-- **`withDelay(variants, s)`** para escalonar: el `transition` de la variante tiene prioridad sobre la prop `transition` del componente y no se mezclan, así que `transition={{ delay }}` en el componente no retrasa nada.
-- Los laterales necesitan `overflow-x-clip` en `<main>` (ya está). En `<body>` no sirve: el navegador lo pasa a la ventana y no recorta igual (medido: 127 px de desborde en celular).
+- Los laterales (±160 px) necesitan `overflow-x-clip` en `<main>` (ya está). En `<body>` no sirve: el navegador lo pasa a la ventana y no recorta igual (medido: 127 px de desborde en celular).
 
 ### Parallax
-`<Parallax factor photo>`: mide el padre (no a sí mismo) y se limita a ±160 px, o al 7 % del alto del marco si es `photo`, que además va con `scale(1.15)` para que no se vean bordes. Con reduced motion no se registra.
+`<Parallax factor photo>`: CSS `view()` sobre el rango `cover`, de −d a +d mientras cruza la pantalla, con d = min(160 px, |factor| × 450 px). Con `photo`, d es el 7 % del alto y la imagen va con `scale: 1.15` para que no se vean bordes. `view()` mide la posición de layout (sin transforms), así que no se retroalimenta con su propio `translate`.
 
 ### Scroll suavizado y anclas
 Lenis 1.3.27 respeta `scroll-margin-top`: el espacio para el header fijo lo da `scroll-mt-20` en cada sección (`SectionWrapper` ya lo pone). No volver a pasar `offset: -80` (se suman y la sección queda a 160 px).

@@ -6,7 +6,7 @@ import { SectionLabel } from "@/components/primitives/SectionLabel"
 import { FadeIn } from "@/components/primitives/FadeIn"
 import { ScrollReveal } from "@/components/primitives/ScrollReveal"
 import { AmbientBlobs } from "@/components/primitives/AmbientBlobs"
-import { alternateReveal, withDelay } from "@/lib/motion"
+import { alternate } from "@/lib/scene"
 import { getApproach } from "@/lib/data/approach"
 import { useLanguage } from "@/lib/i18n"
 
@@ -25,7 +25,7 @@ export function Approach() {
   const approach = getApproach(language)
 
   return (
-    <SectionWrapper id="approach" className="relative overflow-hidden">
+    <SectionWrapper id="approach" className="relative overflow-clip">
       <AmbientBlobs flip />
       <FadeIn>
         <SectionLabel>{language === "es" ? "Enfoque" : "Approach"}</SectionLabel>
@@ -41,7 +41,8 @@ export function Approach() {
             <ScrollReveal
               key={principle.index}
               as="article"
-              variants={withDelay(alternateReveal(i), (i % 2) * 0.12)}
+              direction={alternate(i)}
+              stagger={i % 2}
               className="glass-panel group relative flex flex-col gap-6 rounded-3xl p-7 md:p-8 overflow-hidden hover:border-accent/40 transition-colors duration-300"
             >
               {/* Barra superior de color */}

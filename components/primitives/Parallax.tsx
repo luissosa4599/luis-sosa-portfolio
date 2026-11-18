@@ -1,7 +1,3 @@
-"use client"
-
-import { useEffect, useRef } from "react"
-import { onScrollFrame } from "@/lib/scroll-frame"
 import { cn } from "@/lib/utils"
 
 interface ParallaxProps {
@@ -9,8 +5,8 @@ interface ParallaxProps {
   /** Cuánto se mueve respecto al scroll. Positivo: más lento que la página. */
   factor: number
   /**
-   * Para imágenes dentro de un marco con overflow-hidden: la imagen va ampliada (`zoom`)
-   * y su desplazamiento se limita al 7 % del alto del marco, para que nunca se vean bordes.
+   * Para imágenes dentro de un marco recortado: la imagen va ampliada (`zoom`) y su
+   * desplazamiento se limita al 7 % de su alto, para que nunca se vean bordes.
    */
   photo?: boolean
   /** Ampliación de la imagen cuando `photo` (por defecto 1.15). */
@@ -19,39 +15,23 @@ interface ParallaxProps {
 }
 
 /**
- * Desplaza su contenido con el scroll (parallax), como en la landing de Grupo Cumulus:
- *
- *   c   = centro del PADRE − centro de la ventana
- *   lim = photo ? alto del padre × 0.07 : 160
- *   y   = clamp(−c × factor, −lim, +lim)
- *
- * Se mide el padre, no el propio elemento, para no retroalimentarse con su transform.
- * En el HTML del servidor no hay desplazamiento; con "reducir movimiento" no se registra.
+ * Desplaza su contenido con el scroll (parallax), en CSS con animation-timeline: view()
+ * ("Parallax" en globals.css): sin listeners de scroll ni medidas en JS.
+ * - Recorrido: de +d a −d mientras el elemento cruza la pantalla (rango `cover`).
+ *   d = min(160 px, |factor| × 450 px), con el signo del factor.
+ * - En el HTML del servidor, sin soporte o con "reducir movimiento" se queda en su lugar.
+ * - El marco que lo recorta debe usar overflow-clip, no overflow-hidden: hidden crea un
+ *   contenedor de scroll y la línea de tiempo view() se quedaría quieta.
  */
 export function Parallax({ children, factor, photo = false, zoom = 1.15, className }: ParallaxProps) {
-  const ref = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const el = ref.current
-    if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
-
-    return onScrollFrame(() => {
-      const parent = el.parentElement
-      if (!parent) return
-      const rect = parent.getBoundingClientRect()
-      if (rect.bottom < -200 || rect.top > window.innerHeight + 200) return // fuera de vista
-      const c = rect.top + rect.height / 2 - window.innerHeight / 2
-      const lim = photo ? rect.height * 0.07 : 160
-      const y = Math.max(-lim, Math.min(lim, -c * factor))
-      el.style.transform = `translate3d(0, ${y.toFixed(1)}px, 0)${photo ? ` scale(${zoom})` : ""}`
-    })
-  }, [factor, photo, zoom])
+  const travel = photo
+    ? `${Math.sign(factor) * 7}%`
+    : `${(Math.sign(factor) * Math.min(160, Math.abs(factor) * 450)).toFixed(0)}px`
 
   return (
     <div
-      ref={ref}
-      className={cn("will-change-transform", className)}
-      style={photo ? { transform: `scale(${zoom})` } : undefined}
+      className={cn("parallax", className)}
+      style={{ "--px": travel, scale: photo ? String(zoom) : undefined } as React.CSSProperties}
     >
       {children}
     </div>

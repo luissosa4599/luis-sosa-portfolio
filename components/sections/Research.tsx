@@ -1,16 +1,15 @@
 "use client"
 
 import { useState, type ReactNode } from "react"
-import { motion, type Variants } from "framer-motion"
+import { motion } from "framer-motion"
 import { Eye, ScanFace, Award, Search, Copy, Check } from "lucide-react"
 import { Container } from "@/components/layout/Container"
 import { SectionLabel } from "@/components/primitives/SectionLabel"
 import { AccentLink } from "@/components/primitives/AccentLink"
 import { ScrollReveal } from "@/components/primitives/ScrollReveal"
+import { FadeIn } from "@/components/primitives/FadeIn"
 import { getResearch } from "@/lib/data/research"
-import { useReducedMotion } from "@/hooks/useReducedMotion"
-import { useScrollReveal, instantHidden } from "@/hooks/useScrollReveal"
-import { heroSequence } from "@/lib/motion"
+import { sceneVars } from "@/lib/scene"
 import { useLanguage } from "@/lib/i18n"
 import type { ResearchEntry } from "@/lib/types"
 
@@ -152,90 +151,66 @@ function CiteButton({ entry }: { entry: ResearchEntry }) {
   )
 }
 
-// ─── Detection circle reveal wrapper ──────────────────────────────────────────
-// Los estados "hidden"/"visible" solo bajan a descendientes que declaran `variants`.
-// Los anillos usan su propio `animate` y los arcos son CSS, así que siguen girando.
-const circleReveal: Variants = {
-  hidden: { opacity: 0, scale: 0.75 },
-  visible: { opacity: 1, scale: 1, transition: { duration: 0.7, ease: "easeOut", delay: 0.25 } },
-}
-
-function DetectionCircleReveal() {
-  const { ref, animate } = useScrollReveal<HTMLDivElement>()
-
-  return (
-    <motion.div ref={ref} variants={instantHidden(circleReveal)} initial={false} animate={animate}>
-      <DetectionCircle />
-    </motion.div>
-  )
-}
-
 // ─── Main section ──────────────────────────────────────────────────────────────
-
-const seq = (i: number, reduced: boolean) =>
-  reduced
-    ? { hidden: { opacity: 1, y: 0 }, visible: { opacity: 1, y: 0 } }
-    : heroSequence(i)
 
 export function Research() {
   const { language } = useLanguage()
-  const reduced = useReducedMotion()
 
   const entry = getResearch(language)[0]
   if (!entry) return null
 
   return (
-    <section id="research" className="relative flex items-center overflow-hidden scroll-mt-20 bg-band">
+    <section id="research" className="relative flex items-center overflow-clip scroll-mt-20 bg-band">
 
       <Container className="w-full section-y">
         <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
 
           {/* ── Left column — content ─────────────────────────────── */}
-          {/* ScrollReveal owns the inView + ready gate; children cascade via variants */}
+          {/* El panel entra completo y sus hijos en cascada (--i), siguiendo el scroll */}
           <ScrollReveal
-            variants={{ hidden: {}, visible: {} }}
+            direction="up"
             className="glass-panel flex flex-col gap-6 rounded-3xl p-6 md:p-8"
           >
             {/* Section label */}
-            <motion.div variants={seq(0, reduced)}>
+            <div style={sceneVars("up", 0)} className="scene-in">
               <SectionLabel>{language === "es" ? "Investigación" : "Research"}</SectionLabel>
-            </motion.div>
+            </div>
 
             {/* Heading */}
-            <motion.h2
-              variants={seq(1, reduced)}
-              className="text-[clamp(2.2rem,4.5vw,3.4rem)] font-semibold tracking-tight leading-[1.1] text-foreground"
+            <h2
+              style={sceneVars("up", 1)}
+              className="scene-in text-[clamp(2.2rem,4.5vw,3.4rem)] font-semibold tracking-tight leading-[1.1] text-foreground"
             >
               {language === "es" ? "Publicaciones" : "Research Papers"}
-            </motion.h2>
+            </h2>
 
             {/* Paper title */}
-            <motion.h3
-              variants={seq(2, reduced)}
-              className="text-lead font-medium text-muted leading-snug tracking-tight max-w-[48ch]"
+            <h3
+              style={sceneVars("up", 2)}
+              className="scene-in text-lead font-medium text-muted leading-snug tracking-tight max-w-[48ch]"
             >
               {entry.title}
-            </motion.h3>
+            </h3>
 
             {/* Abstract */}
-            <motion.p
-              variants={seq(3, reduced)}
-              className="text-body text-muted max-w-[60ch]"
+            <p
+              style={sceneVars("up", 3)}
+              className="scene-in text-body text-muted max-w-[60ch]"
             >
               {entry.abstract}
-            </motion.p>
+            </p>
 
-            <motion.p
-              variants={seq(4, reduced)}
-              className="text-body text-muted-2 max-w-[60ch]"
+            <p
+              style={sceneVars("up", 4)}
+              className="scene-in text-body text-muted-2 max-w-[60ch]"
             >
               {language === "es"
                 ? "Incluyo este trabajo porque refleja cómo abordo problemas de producto: research estructurado, decisiones claras y la capacidad de llevar una idea hasta un sistema real."
                 : "I include this work because it reflects how I approach product problems: structured research, clear decision-making, and shipping an actual system instead of stopping at the concept."}
-            </motion.p>
+            </p>
 
             {/* Year + venue + tags */}
-            <motion.div variants={seq(5, reduced)} className="flex flex-col gap-3">
+            <div style={sceneVars("up", 5)} className="scene-in flex flex-col gap-3">
               <div className="flex items-center gap-3 flex-wrap">
                 <span className="text-sm font-medium text-foreground tabular-nums">
                   {entry.year}
@@ -257,15 +232,15 @@ export function Research() {
                   </li>
                 ))}
               </ul>
-            </motion.div>
+            </div>
 
             {/* CTA + Cite */}
-            <motion.div variants={seq(6, reduced)} className="flex items-center gap-4 flex-wrap">
+            <div style={sceneVars("up", 6)} className="scene-in flex items-center gap-4 flex-wrap">
               <AccentLink href={entry.url} external>
                 {language === "es" ? "Ver publicación" : "View publication"}
               </AccentLink>
               <CiteButton entry={entry} />
-            </motion.div>
+            </div>
           </ScrollReveal>
 
           {/* ── Right column — detection visual ───────────────────── */}
@@ -278,7 +253,9 @@ export function Research() {
               <Badge icon={<ScanFace size={22} />} wrapperStyle={{ bottom: "9%", right: "24%" }} />
 
               {/* Detection circle — centered */}
-              <DetectionCircleReveal />
+              <FadeIn direction="zoom">
+                <DetectionCircle />
+              </FadeIn>
             </div>
           </div>
 

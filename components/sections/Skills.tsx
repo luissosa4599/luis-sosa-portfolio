@@ -10,47 +10,11 @@ import {
   siReactquery, siExpo, siFlutter, siKotlin, siIos, siAndroid,
   siGooglecloud, siVercel,
 } from "simple-icons"
-import { motion, type Variants } from "framer-motion"
 import { cn } from "@/lib/utils"
 import { FadeIn } from "@/components/primitives/FadeIn"
 import { Container } from "@/components/layout/Container"
 import { useLanguage } from "@/lib/i18n"
-import { useScrollReveal, instantHidden } from "@/hooks/useScrollReveal"
-
-// ── Animation variants ───────────────────────────────────────────────────────
-
-/** Group wrapper: slides up as it enters view, then staggers its children */
-const groupVariant: Variants = {
-  hidden: { opacity: 0, y: 22 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.4,
-      ease: [0, 0, 0.2, 1],
-      staggerChildren: 0.04,
-      delayChildren: 0.12,
-    },
-  },
-}
-
-/** Category label: slides in from the left */
-const labelVariant: Variants = {
-  hidden: { opacity: 0, x: -12 },
-  visible: { opacity: 1, x: 0, transition: { duration: 0.32, ease: [0, 0, 0.2, 1] } },
-}
-
-/** Pills row: passes "visible" down to stagger its children */
-const pillsRowVariant: Variants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.038 } },
-}
-
-/** Individual pill: pops in with scale + lift */
-const pillVariant: Variants = {
-  hidden: { opacity: 0, scale: 0.82, y: 10 },
-  visible: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.26, ease: [0, 0, 0.2, 1] } },
-}
+import { sceneVars } from "@/lib/scene"
 
 // ── Icon renderer ────────────────────────────────────────────────────────────
 function SkillIcon({ icon }: { icon: SimpleIcon }) {
@@ -200,37 +164,29 @@ function SkillGroupItem({
   group: SkillGroup
   language: Language
 }) {
-  const { ref, animate } = useScrollReveal<HTMLDivElement>()
-
   return (
-    <motion.div
-      ref={ref}
-      variants={instantHidden(groupVariant)}
-      initial={false}
-      animate={animate}
-      className="w-full flex flex-col gap-4"
-    >
-      <motion.span
-        variants={labelVariant}
-        className="font-mono text-xs uppercase tracking-widest text-accent-fg"
+    <div className="scene-out w-full flex flex-col gap-4">
+      <span
+        className="scene-in font-mono text-xs uppercase tracking-widest text-accent-fg"
+        style={sceneVars("left")}
       >
         {group.category[language]}
-      </motion.span>
+      </span>
 
-      <motion.div variants={pillsRowVariant} className="flex flex-wrap gap-2.5">
-        {group.items.map(({ label, es, icon }) => (
-          <motion.span
+      {/* Cascada: cada pastilla entra un paso de scroll (--scene-step) después de la anterior */}
+      <div className="flex flex-wrap gap-2.5" style={{ "--scene-step": "1.2svh" } as React.CSSProperties}>
+        {group.items.map(({ label, es, icon }, j) => (
+          <span
             key={label}
-            variants={pillVariant}
-            className="inline-flex items-center gap-2 rounded-lg border border-border px-3 py-1.5 text-sm font-mono text-muted hover:text-foreground hover:border-border-strong transition-colors duration-150 backdrop-blur-sm"
-            style={{ backgroundColor: "var(--badge-bg)" }}
+            className="scene-in inline-flex items-center gap-2 rounded-lg border border-border px-3 py-1.5 text-sm font-mono text-muted hover:text-foreground hover:border-border-strong transition-colors duration-150 backdrop-blur-sm"
+            style={{ ...sceneVars("pop", j), backgroundColor: "var(--badge-bg)" }}
           >
             {icon && <SkillIcon icon={icon} />}
             {language === "es" && es ? es : label}
-          </motion.span>
+          </span>
         ))}
-      </motion.div>
-    </motion.div>
+      </div>
+    </div>
   )
 }
 

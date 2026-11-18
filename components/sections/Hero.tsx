@@ -80,7 +80,7 @@ export function Hero() {
   return (
     <section
       id="hero"
-      className="relative flex items-center justify-center min-h-svh pt-20 overflow-hidden text-center"
+      className="relative flex items-center justify-center min-h-svh pt-20 overflow-clip text-center"
     >
       {/* Manchas de luz del color de la paleta (como el hero de Cumulus). Entran despacio y
           se mueven con el scroll en sentidos opuestos (parallax). */}

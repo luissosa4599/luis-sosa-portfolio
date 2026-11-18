@@ -211,7 +211,7 @@ export function CaseStudyView({ slug }: { slug: string }) {
 
           {/* Hero screenshot */}
           {project.screenshots && project.screenshots.length > 0 && (
-            <FadeIn delay={0.1} className="mt-10">
+            <FadeIn outerClassName="mt-10">
               <div className="rounded-2xl overflow-hidden border border-border">
                 <ThemedImage
                   src={project.screenshots[0].src}
@@ -299,10 +299,8 @@ export function CaseStudyView({ slug }: { slug: string }) {
                     <ScrollReveal
                       as="li"
                       key={i}
-                      variants={{
-                        hidden: { opacity: 0, x: -8 },
-                        visible: { opacity: 1, x: 0, transition: { duration: 0.3, delay: i * 0.07 } },
-                      }}
+                      direction="left"
+                      stagger={i}
                       className="flex items-start gap-3"
                     >
                       <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 shrink-0" />

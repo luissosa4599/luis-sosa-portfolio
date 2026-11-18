@@ -247,6 +247,90 @@ body {
   .enter-rise, .enter-down { animation: none; }
 }
 
+/* ─── Escenas: entrar y salir atado al scroll ────────────────────────────────────
+   Scroll-driven animations (animation-timeline: view()): el avance de la animación ES la
+   posición del elemento en pantalla, así que todo avanza y retrocede con el scroll, sin JS
+   y desde el HTML del servidor. Soporte: Chrome 115, Safari 26, Firefox 159 (Baseline).
+   - .scene-in  (FadeIn/ScrollReveal, elemento interno): entra mientras su borde superior
+                sube del fondo de la pantalla hasta --scene-in-len (40 % del alto).
+                Recorrido por dirección en --in-x/--in-y/--in-s (lib/scene.ts);
+                cascada con --i (pasos de --scene-step).
+   - .scene-out (elemento externo): sale mientras su borde inferior cruza el último
+                --scene-out-len superior. Medido desde el borde inferior, no el superior,
+                para que una tarjeta alta no se desvanezca mientras aún se lee.
+   - .parallax  (Parallax): de −--px a +--px mientras cruza la pantalla.
+   Rangos con longitudes (svh), no %, para que un bloque alto entre al mismo ritmo que uno
+   bajo. Sin soporte, con "reducir movimiento" o al imprimir: quieto y visible.
+   OJO: un ancestro con overflow: hidden es un contenedor de scroll y view() se mediría
+   contra él (quieto): usar overflow-clip para recortar. */
+
+:root {
+  --scene-in-len: 40svh;
+  --scene-out-len: 30svh;
+  --scene-step: 3svh;
+  --out-y: -64px;
+  --out-s: 0.94;
+}
+
+@keyframes scene-in {
+  from { opacity: 0; translate: var(--in-x, 0px) var(--in-y, 80px); scale: var(--in-s, 0.96); }
+}
+
+@keyframes scene-out {
+  to { opacity: 0; translate: 0 var(--out-y); scale: var(--out-s); }
+}
+
+@keyframes parallax {
+  from { translate: 0 calc(-1 * var(--px, 0px)); }
+  to   { translate: 0 var(--px, 0px); }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    /* El shorthand `animation` reinicia timeline y range: van después */
+    .scene-in {
+      animation: scene-in cubic-bezier(0.2, 0.7, 0.25, 1) both;
+      animation-timeline: view();
+      animation-range:
+        cover calc(var(--i, 0) * var(--scene-step))
+        cover calc(var(--scene-in-len) + var(--i, 0) * var(--scene-step));
+    }
+
+    .scene-out {
+      animation: scene-out cubic-bezier(0.55, 0, 0.75, 0.3) both;
+      animation-timeline: view();
+      animation-range: cover calc(100% - var(--scene-out-len)) cover 100%;
+    }
+
+    .parallax {
+      animation: parallax linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 100%;
+    }
+  }
+}
+
+@media print {
+  .scene-in, .scene-out, .parallax { animation: none !important; }
+}
+
+/* Barra de progreso de lectura (SectionProgress): crece con el scroll de la página.
+   Sin soporte no se muestra (es decorativa). */
+@keyframes progress-grow {
+  from { scale: 0 1; }
+  to   { scale: 1 1; }
+}
+
+.scroll-progress { display: none; }
+
+@supports (animation-timeline: scroll()) {
+  .scroll-progress {
+    display: block;
+    animation: progress-grow linear both;
+    animation-timeline: scroll(root);
+  }
+}
+
 /* ─── Cristal (Liquid Glass de Apple, iOS 26 → iOS 27) ──────────────────────────
    - .glass        → capa flotante: header, controles, selector de color, botón de subir,
                      botones secundarios. Como en iOS, el cristal vive sobre el contenido.

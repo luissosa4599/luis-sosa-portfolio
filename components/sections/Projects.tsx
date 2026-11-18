@@ -11,7 +11,7 @@ import { Parallax } from "@/components/primitives/Parallax"
 import { AmbientBlobs } from "@/components/primitives/AmbientBlobs"
 import { getProjects } from "@/lib/data/projects"
 import { useLanguage } from "@/lib/i18n"
-import { alternateReveal, withDelay } from "@/lib/motion"
+import { alternate } from "@/lib/scene"
 import type { ProjectEntry } from "@/lib/types"
 
 // ─── Visuals ──────────────────────────────────────────────────────────────────
@@ -133,10 +133,10 @@ function ProjectCard({ project }: { project: ProjectEntry }) {
 
   return (
     <div
-      className="glass-panel group relative flex flex-col rounded-3xl overflow-hidden hover:border-accent/40 transition-colors duration-300 h-full"
+      className="glass-panel group relative flex flex-col rounded-3xl overflow-clip hover:border-accent/40 transition-colors duration-300 h-full"
     >
       {/* Visual */}
-      <div className="relative overflow-hidden" style={{ height: 220 }}>
+      <div className="relative overflow-clip" style={{ height: 220 }}>
         {/* Las capturas se desplazan dentro de su marco al hacer scroll (parallax); la tarjeta
             de investigación es texto y va fija. */}
         {project.slug === "salva-lomitos" ? (
@@ -215,7 +215,7 @@ export function Projects() {
   const projects = getProjects(language)
 
   return (
-    <section id="work" className="section-y scroll-mt-20 relative overflow-hidden">
+    <section id="work" className="section-y scroll-mt-20 relative overflow-clip">
       <AmbientBlobs />
       <Container size="md">
         <FadeIn>
@@ -226,7 +226,8 @@ export function Projects() {
           {projects.map((project, i) => (
             <ScrollReveal
               key={project.slug}
-              variants={withDelay(alternateReveal(i), (i % 2) * 0.12)}
+              direction={alternate(i)}
+              stagger={i % 2}
             >
               <ProjectCard project={project} />
             </ScrollReveal>

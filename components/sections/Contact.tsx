@@ -56,7 +56,7 @@ export function Contact() {
   return (
     // Bloque de tinta en ambos temas (surface-ink), con manchas de luz del color: el cierre
     // fuerte de la página, como el "Pide tu terminal" de la landing de Grupo Cumulus.
-    <SectionWrapper id="contact" containerSize="md" className="surface-ink relative overflow-hidden">
+    <SectionWrapper id="contact" containerSize="md" className="surface-ink relative overflow-clip">
       <div
         aria-hidden
         className="pointer-events-none absolute -top-32 -right-24 w-[30rem] h-[30rem] rounded-full"
@@ -68,7 +68,7 @@ export function Contact() {
         style={{ background: "radial-gradient(circle closest-side, var(--blob-b), transparent)" }}
       />
 
-      <FadeIn className="relative z-10 text-center flex flex-col items-center">
+      <FadeIn outerClassName="relative z-10" className="text-center flex flex-col items-center">
         {/* Estado con el verde de estados (fijo en todas las paletas) */}
         <p className="mb-5 inline-flex items-center gap-2.5 text-meta font-medium text-success-fg">
           <span className="relative flex h-2.5 w-2.5">
