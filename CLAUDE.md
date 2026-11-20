@@ -37,7 +37,7 @@ app/
   page.tsx         — Server Component. Renderiza todas las secciones. <main id="main"> es el destino del SkipLink
   work/[slug]/page.tsx — Case studies. Slugs y metadata salen de lib/data/projects.ts; dynamicParams=false → slug desconocido = 404
   robots.ts, sitemap.ts, opengraph-image.tsx — SEO. La OG es estática (sin edge runtime); en ImageResponse todo div con >1 hijo necesita display:flex
-  globals.css      — Tokens, entradas CSS al cargar (.enter-rise, .enter-down) y escenas atadas al scroll (.scene-in, .scene-out, .parallax, .scroll-progress)
+  globals.css      — Tokens, entradas CSS al cargar (.enter-rise, .enter-down), escenas atadas al scroll (.scene, .scene-in, .parallax, .scroll-progress), títulos fijos (.section-head), cartas apiladas (.stack) y escenas especiales
 components/
   layout/
     LanguageTransition.tsx  — AnimatePresence mode="wait", key={language}, remonta el tree al cambiar idioma
@@ -49,7 +49,8 @@ components/
     FadeIn.tsx       — Escena: un elemento que entra y sale atado al scroll (as, direction, stagger). CSS puro, sin JS
     ScrollReveal.tsx — Alias de FadeIn para tarjetas (la tarjeta de cristal ES la escena)
     SectionHeading.tsx — Título de sección con el formato único (título + punto de acento, subtítulo opcional); fijo arriba al recorrer la sección
-    WordReveal.tsx   — Título que se enciende palabra por palabra (rama inmersivo)
+    WordReveal.tsx   — Título que se enciende palabra por palabra
+    PalettePicker.tsx — Panel de apariencia: tema, color, cristal, sortear y candado (ver "Cristal y panel de apariencia")
     ThemedImage.tsx  — Par de screenshots dark/light con next/image (lazy: solo se descarga la del tema activo)
     Parallax.tsx     — Desplaza su contenido con el scroll (capturas de proyectos, brillo del hero). CSS view(), sin JS
     SectionProgress.tsx — Barra de lectura arriba. CSS scroll(root), sin JS
@@ -59,9 +60,11 @@ components/
     About.tsx, Skills.tsx, Experience.tsx, Projects.tsx, Research.tsx, Approach.tsx, Contact.tsx
 hooks/
   useMounted.ts       — Retorna true después de 2 requestAnimationFrame (garantiza hidratación)
-  useReducedMotion.ts — Wrapper de useReducedMotion de Framer Motion
+  useReducedMotion.ts — En main devuelve siempre false (versión inmersiva, ver "Sistema de animaciones"); en base-4-escenas es el useReducedMotion de Framer Motion
 lib/
   scene.ts         — Recorridos de entrada por dirección (sceneVars) y alternate(i) para cuadrículas
+  palette-config.ts — Paletas, constantes del cristal, claves de localStorage y PALETTE_BOOT_SCRIPT. Sin React (lo importa layout.tsx)
+  palette.ts       — Tienda de paleta, cristal y candado (useSyncExternalStore), setPalette/setGlass/setLocked/shuffleAppearance
   motion.ts        — Curvas de Framer Motion que quedan (título rotativo, header)
   i18n.tsx         — LanguageProvider y useLanguage. Store sobre localStorage vía useSyncExternalStore (server snapshot "en" → sin hydration mismatch). Sincroniza <html lang>
   language.ts      — Constante LANGUAGE_STORAGE_KEY y tipo Language
@@ -128,10 +131,11 @@ Estilo general en ambos temas, a partir del Liquid Glass de Apple (iOS 26) y su 
   - **Tema:** Claro / Oscuro / Sistema (control segmentado; `setTheme` de next-themes). Sistema sigue al dispositivo y es el valor por defecto.
   - **Color:** 6 muestras.
   - **Cristal:** el deslizante de transparencia.
-- **Accesibilidad:** tema y color son radiogroups (flechas, Enter y Espacio). Al abrir, el foco va al tema activo. Escape o clic fuera cierran y devuelven el foco al botón, cuyo `aria-label` dice paleta y tema ("Apariencia: Azul, sistema").
+  - **Sortear y Mantener:** botón 🎲 y candado, con una línea debajo que dice si la apariencia se mantiene o cambia al recargar (ver "Apariencia al azar y candado").
+- **Accesibilidad:** tema y color son radiogroups (flechas, Enter y Espacio). Al abrir, el foco va al tema activo. Escape o clic fuera cierran y devuelven el foco al botón, cuyo `aria-label` dice paleta y tema ("Apariencia: Azul, sistema"). El candado es un botón con `aria-pressed` y `aria-label` "Mantener esta apariencia al recargar"; la línea de debajo es `aria-live="polite"`.
 - **Dónde vive:**
   - `lib/palette-config.ts`: datos y script de arranque, sin React (lo importa el layout de servidor).
-  - `lib/palette.ts`: tienda sobre localStorage con `useSyncExternalStore` (como `i18n.tsx`). Claves: `portfolio-palette` y `portfolio-glass`.
+  - `lib/palette.ts`: tienda sobre localStorage con `useSyncExternalStore` (como `i18n.tsx`). Claves: `portfolio-palette`, `portfolio-glass` y `portfolio-appearance-lock`.
 - **Sin destello del azul:** `PALETTE_BOOT_SCRIPT` va en el `<head>` (`layout.tsx`) y aplica `data-palette` y `--glass-opacity` antes del primer pintado (verificado: antes de `DOMContentLoaded`). El servidor siempre pinta azul.
 - **Apariencia al azar y candado (2026-11-18):**
   - Con el candado abierto, cada recarga sortea paleta (las 6) y cristal (0.35–0.90 en pasos de 0.05). Lo hace `PALETTE_BOOT_SCRIPT` antes del primer pintado y lo guarda, para que el panel muestre lo que salió.
@@ -154,16 +158,23 @@ Las secciones no llevan líneas (`border-y`, `hr`): alternan fondo (`bg-backgrou
 
 ## Sistema de animaciones
 
-> **Rama `inmersivo` (2026-11-18): el movimiento no se limita con "reducir movimiento".** Decisión del usuario: verlo "en toda su expresión". `useReducedMotion` devuelve siempre `false`, el CSS no tiene bloques `prefers-reduced-motion`, no hay clases `motion-reduce:` y Lenis va con `respectReducedMotion: false`.
+> **`main` es la versión inmersiva (2026-11-18).** Se hicieron dos ramas desde el mismo punto para comparar:
+> - **`inmersivo`:** se eligió. Se fusionó en `main` junto con la apariencia al azar (`apariencia-aleatoria`) y se subió a `origin/main` el 2026-11-18 (`3ac42c4`).
+> - **`base-4-escenas`:** solo local, sin push. Es la versión sobria: capa base y 4 escenas (telón, cartas apiladas, línea de Experiencia y apertura de Contacto), con recorridos más cortos, y respeta "reducir movimiento". Se quedó en `0d443c8`, así que no tiene títulos fijos ni apariencia al azar.
 >
-> La rama `base-4-escenas` (y `main`) sí lo respeta. Donde este documento dice que algo "queda quieto con reducir movimiento", eso aplica solo a esas ramas. Si esta rama se publica, valorar volver a respetarlo: afecta a personas con trastornos vestibulares (WCAG 2.3.3, nivel AAA).
+> **El movimiento no se limita con "reducir movimiento".** Lo decidió el usuario, que quiere verlo "en toda su expresión":
+> - `useReducedMotion` devuelve siempre `false`.
+> - El CSS no tiene bloques `prefers-reduced-motion` ni clases `motion-reduce:`.
+> - Lenis va con `respectReducedMotion: false`.
+>
+> Donde este documento dice que algo "queda quieto con reducir movimiento", eso solo aplica a `base-4-escenas`. Queda pendiente valorar si se vuelve a respetar ahora que está en `main`, porque afecta a personas con trastornos vestibulares (WCAG 2.3.3, nivel AAA). No cambiarlo sin preguntarle al usuario.
 
 ### Regla base: el contenido llega visible en el HTML
 Nada de contenido puede renderizarse con `opacity:0` en el HTML del servidor (antes 98 elementos lo hacían: la página salía negra sin JS y el LCP en celular era de ~3.9 s). Por eso:
 
 - **Al cargar (hero y headers): animaciones CSS** (`.enter-rise`, `.enter-down` en `globals.css`). Arrancan en cuanto llega el HTML, sin esperar a React. El hero pasa recorrido y retraso por variables (`--enter-y`, `--enter-scale`, `--enter-delay`, `--enter-duration`, `--enter-opacity`). Van con `fill: backwards` (no `both`) para que se suelten al terminar; ver "Cristal y animaciones".
 - **LCP:** Chrome no registra el LCP de un texto que empieza en `opacity: 0` y solo anima la opacidad (no lo vuelve a pintar). El párrafo del hero (el texto más grande) arranca en `--enter-opacity: 0.2`. Medido en celular simulado con CPU 4×: LCP ~0.6 s (antes ~3.9 s).
-- **Al hacer scroll: escenas CSS atadas al scroll** (ver "Escenas" abajo). Son CSS puro: funcionan sin JS y antes de hidratar. Sin soporte, con "reducir movimiento" o al imprimir no se aplican y el contenido queda quieto y visible.
+- **Al hacer scroll: escenas CSS atadas al scroll** (ver "Escenas" abajo). Son CSS puro: funcionan sin JS y antes de hidratar. Si el navegador no las soporta o se imprime la página, no se aplican y el contenido queda quieto y visible. En `base-4-escenas` también pasa con "reducir movimiento".
 - Ya no existen `useScrollReveal`, `instantHidden`, `PageReveal` ni `lib/scroll-frame.ts`.
 
 ### Escenas: entrar y salir atado al scroll (2026-11-18)
@@ -174,10 +185,11 @@ Scroll-driven animations (`animation-timeline: view()`): la animación avanza y 
   - La entrada se aplica antes y durante su tramo (`backwards`) y la salida durante y después del suyo (`forwards`). En reposo no queda ninguna aplicada.
   - `.scene-in` (solo entrada) queda para hijos en cascada dentro de una escena (la columna de Research).
 - **Rangos medidos en `svh`, no en %**, para que un bloque alto entre al mismo ritmo que uno bajo:
-  - **Entrada:** mientras el borde superior sube del fondo de la pantalla al 60 % (`--scene-in-len`).
-  - **Salida:** mientras el borde inferior cruza el 30 % superior (`--scene-out-len`). Se mide desde el borde inferior para que una tarjeta alta no se desvanezca mientras se lee.
-- **Direcciones** en `lib/scene.ts`: `up`, `left`, `right`, `zoom`, `pop` y `none`. Recorridos iguales a la landing de Grupo Cumulus (80 px, ±160 px, zoom desde 0.8). Van como variables `--in-x`, `--in-y` y `--in-s`.
-- **Cascada con `stagger`** (`--i`): en una línea de tiempo de scroll no hay `delay`, así que cada paso retrasa el rango `--scene-step` (3 svh). Las pastillas de Skills usan un paso de 1.2 svh.
+  - **Entrada:** mientras el borde superior sube `--scene-in-len` (45 svh) desde el fondo de la pantalla.
+  - **Salida:** mientras el borde inferior cruza los `--scene-out-len` (32 svh) de arriba. Se mide desde el borde inferior para que una tarjeta alta no se desvanezca mientras se lee.
+- **Direcciones** en `lib/scene.ts`: `up`, `left`, `right`, `zoom`, `pop` y `none`. Los recorridos son 1.5× los de la landing de Grupo Cumulus (ver "Inmersivo"). Van como variables `--in-x`, `--in-y`, `--in-s` y `--in-r` (giro).
+  - En `base-4-escenas` son iguales a la landing: 80 px, ±160 px y zoom desde 0.8, con rangos de 40 y 30 svh.
+- **Cascada con `stagger`** (`--i`): en una línea de tiempo de scroll no hay `delay`, así que cada paso retrasa el rango `--scene-step` (3 svh). Lo usan la columna de Research y los botones de Contacto.
 - **`overflow-clip`, nunca `overflow-hidden`, en un ancestro de algo animado:** `hidden` crea un contenedor de scroll y `view()` se mediría contra él (quieto). Ya están en clip Hero, Work (sección, tarjeta y marco de la captura), Research, Approach y Contact.
 - **Cartas apiladas (Proyectos):** cada `.stack-item` es `sticky`, un escalón (`--stack-step`) más abajo que el anterior, y la siguiente tarjeta sube encima.
   - La pila declara `view-timeline: --stack`, y sus descendientes la usan sin `timeline-scope`. Mientras la pila cruza el borde superior (`exit-crossing`), la tarjeta i se encoge (hasta 1 − 0.05·rev) y se oscurece (`.stack-dim`) en su tramo [i/n, (n−1)/n].
@@ -185,7 +197,7 @@ Scroll-driven animations (`animation-timeline: view()`): la animación avanza y 
   - Las tarjetas son anchas (captura a la izquierda, texto a la derecha; en celular, una sobre otra).
   - Verificado igual en Chrome, WebKit y Firefox.
 
-### Títulos de sección fijos (rama inmersivo, 2026-11-18)
+### Títulos de sección fijos (2026-11-18, no está en `base-4-escenas`)
 **Formato único** (`SectionHeading`): título `text-section` con punto de acento, que se enciende palabra por palabra, y subtítulo opcional debajo. Sin etiquetas pequeñas encima: `SectionLabel` se eliminó.
 
 Títulos actuales: Selected work · Skills & Tools · Experience · Research Papers · How I work · What people say · Let's build something useful (Contact, centrado, con el mismo punto). About no lleva título: es la tarjeta de perfil.
@@ -210,10 +222,12 @@ Se detectó porque la tarjeta de arriba de la pila dejaba leer nítido el texto 
 
 Reglas:
 - **La escena debe ser el propio elemento de cristal** (`<ScrollReveal as="article" className="glass-panel …">`), nunca un envoltorio. La animación en el propio elemento no afecta su desenfoque.
-- Así quedaron Experience (la tarjeta, sin el punto), Testimonials (la `figure`), Contact (cada botón es su escena), los botones del hero (cada uno lleva `.hero-layer-body`), las pastillas de Skills y las tarjetas de Proyectos.
+- Así quedaron Experience (la tarjeta, sin el punto), Testimonials (la `figure`), Contact (cada botón es su escena), los botones del hero (cada uno lleva `.hero-layer-body`), las tarjetas de Proyectos y los íconos de Research (`.orbit-badge`).
 - **Animaciones por tiempo con `fill: backwards`** (`.enter-rise`, `.enter-down`): se sueltan al terminar y el estado final es el mismo.
 - Animar `translate` o `scale` en un ancestro sí está bien (`.stack-card`, `.parallax`).
-### Inmersivo (solo rama `inmersivo`)
+- **Para probar:** poner un texto de color nítido detrás del cristal (fijo, `z-index: 0`). Si se lee, está roto; si sale como brillo, desenfoca. Compararlo contra fondos difusos (manchas de luz) no detecta el problema.
+
+### Inmersivo (lo que `main` tiene además de `base-4-escenas`)
 - **Más amplitud:**
   - Recorridos de entrada 1.5× (`lib/scene.ts`: 120 px hacia arriba, ±240 px a los lados con giro de ±4°, zoom desde 0.7).
   - Salida a −96 px con escala 0.9.
@@ -237,9 +251,9 @@ Reglas:
   - **Escritorio:** caen en la cuadrícula de 2×2.
   - **Debajo de `md`:** comparten la celda (`grid-area: 1 / 1`) y se apilan como un mazo; cada una se lee mientras está arriba.
   - **Sin soporte:** la sección queda alta con el escenario fijo y las tarjetas quietas.
-- **Auditoría de contraste:** `contrast-all.mjs` apaga las animaciones con CSS para medir en reposo, porque ya no se congelan emulando "reducir movimiento". 0 fallas en 284 textos.
+- **Auditoría de contraste:** `contrast-all.mjs` apaga las animaciones con CSS para medir en reposo, porque ya no se congelan emulando "reducir movimiento". 0 fallas en 287 textos.
 - **Verificado igual en Chrome 157, WebKit 27.2 y Firefox 159.**
-- **Para probar:** poner un texto de color nítido detrás del cristal (fijo, `z-index: 0`). Si se lee, está roto; si sale como brillo, desenfoca. Compararlo contra fondos difusos (manchas de luz) no detecta el problema.
+
 ### Escenas especiales (CSS, en globals.css)
 - **Telón del hero:**
   - En `app/page.tsx`, el hero es `sticky top-0` dentro de un envoltorio que termina después de About. La cinta y About van en un `relative z-10` encima y son opacos (`bg-band-deep`, `bg-band`).
@@ -259,21 +273,22 @@ Reglas:
 La transición anima **solo `opacity`**. Un `transform` (p. ej. `y`) en ese `motion.div` lo convierte en containing block de todos los descendientes `position: fixed` (header, `DustField`, dot-grid, `SectionProgress`, `BackToTop`) y los hace saltar durante la transición.
 
 ### DustField
-Partículas de fondo (`components/primitives/DustField.tsx`) creadas imperativamente en `useEffect`. Con `prefers-reduced-motion` se renderizan estáticas (sin `animation`), no se ocultan.
+Partículas de fondo (`components/primitives/DustField.tsx`) creadas imperativamente en `useEffect`. Con "reducir movimiento" se renderizan estáticas (sin `animation`), no se ocultan. Eso solo pasa en `base-4-escenas`: en `main` siempre se mueven.
 
 ### Header
 Nav de escritorio visible desde `lg` (1024px); debajo usa hamburguesa. En `md` los labels en español no caben.
 
 ### Hero
-Entrada con CSS (ver "Regla base"). Es sticky y sale con el telón (ver "Escenas especiales"). `useMounted` solo se usa para no aplicar reduced motion al título rotativo antes de hidratar.
+Entrada con CSS (ver "Regla base"). Es sticky y sale con el telón (ver "Escenas especiales"). `useMounted` solo se usa para no aplicar reduced motion al título rotativo antes de hidratar. En `main` no cambia nada, porque `useReducedMotion` siempre es `false`.
 
 ### Reduced motion en animaciones CSS
-(En la rama `inmersivo` no aplica: ver la nota al inicio de esta sección.) Para animaciones CSS infinitas usar clases `motion-reduce:` de Tailwind (p. ej. `animate-[spin-cw_9s_linear_infinite] motion-reduce:animate-none`) en lugar de gatear con `useReducedMotion`: el server siempre ve `false` y causaría hydration mismatch.
+(En `main` no aplica: ver la nota al inicio de esta sección. Es la regla a seguir si se vuelve a respetar "reducir movimiento".) Para animaciones CSS infinitas usar clases `motion-reduce:` de Tailwind (p. ej. `animate-[spin-cw_9s_linear_infinite] motion-reduce:animate-none`) en lugar de gatear con `useReducedMotion`: el server siempre ve `false` y causaría hydration mismatch.
 
 - Los laterales (±160 px) necesitan `overflow-x-clip` en `<main>` (ya está). En `<body>` no sirve: el navegador lo pasa a la ventana y no recorta igual (medido: 127 px de desborde en celular).
 
 ### Parallax
-`<Parallax factor photo>`: CSS `view()` sobre el rango `cover`, de −d a +d mientras cruza la pantalla, con d = min(160 px, |factor| × 450 px). Con `photo`, d es el 7 % del alto y la imagen va con `scale: 1.15` para que no se vean bordes. `view()` mide la posición de layout (sin transforms), así que no se retroalimenta con su propio `translate`.
+`<Parallax factor photo>`: CSS `view()` sobre el rango `cover`, de −d a +d mientras cruza la pantalla, con d = min(240 px, |factor| × 650 px). Con `photo`, d es el 10 % del alto y la imagen va con `scale: 1.24` (prop `zoom`) para que no se vean bordes.
+- En `base-4-escenas`: min(160 px, |factor| × 450 px), 7 % y 1.15. `view()` mide la posición de layout (sin transforms), así que no se retroalimenta con su propio `translate`.
 
 ### Scroll suavizado y anclas
 Lenis 1.3.27 respeta `scroll-margin-top`: el espacio para el header fijo lo da `scroll-mt-20` en cada sección (`SectionWrapper` ya lo pone). No volver a pasar `offset: -80` (se suman y la sección queda a 160 px).
