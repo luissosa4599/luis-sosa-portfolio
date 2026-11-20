@@ -157,9 +157,10 @@ function ProjectCard({ project, style }: { project: ProjectEntry; style?: React.
       {/* Info */}
       <div className="flex flex-col gap-4 p-6 md:p-8 border-t md:border-t-0 md:border-l border-border/50 flex-1">
         <div>
-          <h2 className="text-xl md:text-2xl font-semibold tracking-tight text-foreground group-hover:text-accent-fg transition-colors duration-200">
+          {/* h3: va dentro de la sección "Selected work" (h2) */}
+          <h3 className="text-xl md:text-2xl font-semibold tracking-tight text-foreground group-hover:text-accent-fg transition-colors duration-200">
             {project.title}
-          </h2>
+          </h3>
           <p className="mt-2 text-body text-muted line-clamp-3">
             {project.description}
           </p>

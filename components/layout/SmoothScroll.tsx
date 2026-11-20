@@ -5,7 +5,9 @@ import Lenis from "lenis"
 
 /**
  * Scroll suavizado de la rueda del mouse (Lenis 1.3.27).
- * - `lerp: 0.1`: suave sin sentirse pesado (antes 0.08). No cambia la velocidad.
+ * - `lerp: 0.06`: un giro de rueda llega al 95 % en ~0.85 s, parecido a GSAP ScrollSmoother.
+ *   Con 0.1 eran ~0.58 s; se igualó al de Corazón Cafetalero, que el usuario prefirió (2026-11-20).
+ *   No cambia la velocidad, solo cuánto se desliza.
  * - Celular y trackpad conservan su scroll nativo (`syncTouch` apagado por defecto).
  * - Rama inmersivo: `respectReducedMotion: false`, el suavizado sigue aunque el sistema pida
  *   reducir movimiento (decisión del usuario, 2026-11-18).
@@ -17,7 +19,7 @@ import Lenis from "lenis"
  */
 export function SmoothScroll({ children }: { children: React.ReactNode }) {
   useEffect(() => {
-    const lenis = new Lenis({ autoRaf: true, lerp: 0.1, respectReducedMotion: false })
+    const lenis = new Lenis({ autoRaf: true, lerp: 0.06, respectReducedMotion: false })
 
     function onAnchorClick(e: MouseEvent) {
       if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return

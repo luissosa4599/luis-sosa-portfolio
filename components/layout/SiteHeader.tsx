@@ -53,7 +53,9 @@ export function SiteHeader() {
       let current = "hero"
       for (const id of sectionIds) {
         const el = document.getElementById(id)
-        if (el && el.offsetTop <= threshold) current = id
+        // Posición en la página, no offsetTop: About vive dentro del envoltorio del telón del hero
+        // y su offsetTop se medía contra ese envoltorio (~80 px), así que salía activo desde arriba.
+        if (el && el.getBoundingClientRect().top + window.scrollY <= threshold) current = id
       }
       setActiveSection(current)
     }

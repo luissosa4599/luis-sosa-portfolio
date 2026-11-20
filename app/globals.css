@@ -304,6 +304,15 @@ body {
       cover calc(100% - var(--scene-out-len)) cover 100%;
   }
 
+  /* Contacto es lo último de la página: al llegar abajo ya no queda scroll para completar un
+     rango medido en svh (los botones se quedaban entre 11 y 57 % de su entrada). Sus escenas
+     usan "entry", que termina cuando el elemento ya está completo en pantalla. */
+  .contact-open .scene {
+    animation-range:
+      entry calc(min(var(--i, 0) * 8%, 48%)) entry 100%,
+      cover calc(100% - var(--scene-out-len)) cover 100%;
+  }
+
   .scene-in {
     animation: scene-in cubic-bezier(0.2, 0.7, 0.25, 1) backwards;
     animation-timeline: view();

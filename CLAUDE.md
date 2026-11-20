@@ -27,7 +27,7 @@ Revisar si hay información nueva sobre arquitectura, patrones o decisiones téc
 - **Lenguaje:** TypeScript
 - **Estilos:** Tailwind CSS + shadcn/ui
 - **Animaciones:** CSS scroll-driven (`animation-timeline`) para todo lo que se mueve con el scroll; Framer Motion v12 para la interfaz (header, panel de apariencia, título rotativo)
-- **Scroll suave:** Lenis 1.3.27 (`lerp: 0.1`, `autoRaf`, sin wrapper personalizado — usa el scroll nativo de window)
+- **Scroll suave:** Lenis 1.3.27 (`lerp: 0.06`, `autoRaf`, sin wrapper personalizado: usa el scroll nativo de window). Un giro de rueda llega al 95 % en ~0.85 s, igual que en Corazón Cafetalero. Antes `0.1` (~0.58 s); cambió el 2026-11-20
 - **i18n:** Sistema propio (EN/ES), sin librería externa
 
 ## Estructura de carpetas relevante
@@ -85,6 +85,9 @@ Auditado con WCAG AA en ambos temas (2026-11-18): **0 textos bajo 4.5:1** (antes
     - `text-meta` (14 → 15 px): fechas, empresa y metadatos.
     - `text-section` (30 → 44 px): h2 de sección.
   - **Interfaz, fija:** `text-xs` = 13 px y `text-sm` = 15 px (sobrescritos). Para menú, botones y etiquetas. No subirla: el menú en español deja de caber a 1024 px.
+  - **Los tamaños propios están registrados en tailwind-merge** (`extendTailwindMerge` en `lib/utils.ts`). Si no, `cn("text-section text-foreground")` borraba `text-section` porque lo tomaba por un color.
+    - Pasaba con todo lo que va por `FadeIn` y `ScrollReveal`. El título de Contacto salía a 16 px en vez de 44, y su párrafo y el subtítulo de Skills también a 16 (detectado con la skill `revisar-sitio-web`, 2026-11-20).
+    - **Al agregar un tamaño nuevo en `@theme`, registrarlo también ahí.**
   - **Todo texto que se lee va en `text-body`/`text-lead`**, nunca en `text-sm`. Mínimo en el sitio: 12 px (`text-[12px]`, solo etiquetas mono).
 - **Ancho de línea:** los párrafos llevan `max-w-[60ch]`–`[75ch]` aunque el contenedor sea más ancho (medido: ~55 caracteres por línea).
 - **Espacio:**
@@ -202,6 +205,8 @@ Scroll-driven animations (`animation-timeline: view()`): la animación avanza y 
 
 Títulos actuales: Selected work · Skills & Tools · Experience · Research Papers · How I work · What people say · Let's build something useful (Contact, centrado, con el mismo punto). About no lleva título: es la tarjeta de perfil.
 
+Los nombres de los proyectos son `h3`, porque van dentro de "Selected work" (`h2`). Antes eran `h2`.
+
 - **Fijo:** solo el título (una línea) se queda fijo debajo del header (`.section-head`, `top: --head-top` = 4.5rem) mientras se recorre la sección. El subtítulo se va con el contenido. En Approach no hace falta: su escenario entero ya es sticky (`sticky={false}`).
 - **Franja:** una franja del color de la sección (`--section-bg`, prop `bg`) sube desde el borde de la pantalla y baja 2rem por debajo del título, desvaneciéndose ahí. Así el título siempre queda sobre fondo sólido y el contenido pasa por detrás. Si el degradado empezara dentro del título, el texto de abajo se asomaba detrás de su parte baja.
 - **La franja aparece solo cuando el título ya está fijo:** la sección lleva `section-scope` (`view-timeline: --sec`) y la franja se enciende en `exit-crossing 0 → 4 %`.
@@ -264,6 +269,9 @@ Reglas:
   - En scroll 0 no aplican nada, así que el LCP no cambia: medido con A/B intercalado, el ruido del equipo es mayor que cualquier diferencia.
 - **Línea de Experiencia:** `.timeline-fill` crece con `scale: 1 0 → 1` y su punta queda siempre al 60 % de la pantalla (rango `cover 40svh` → `cover calc(100% - 60svh)`). Cada `.timeline-dot` se prende (relleno, halo y escala 1.2) cuando la punta lo alcanza. Debajo queda un riel tenue (`bg-accent/15`).
 - **Apertura de Contacto:** `.contact-open` lleva `clip-path` de `inset(7% 6% 0 round 3rem)` a `inset(0)` mientras el bloque sube. El `to` es explícito porque de `inset()` a `none` no se interpola.
+- **Las escenas de Contacto usan el rango `entry`** (`.contact-open .scene`), no `cover` en svh.
+  - Contacto es lo último de la página: al llegar abajo ya no queda scroll para completar 45svh. Los botones se quedaban entre el 11 y el 57 % de su entrada, más chicos y a alturas distintas.
+  - `entry` termina cuando el elemento ya está completo en pantalla. Verificado: al 100 % en 390, 1280, 1536 y 1920 px.
 - **Verificado en Chrome, WebKit 27.2 y Firefox 159** con los mismos valores.
 - **Para probar:** Lenis reacciona a los `scrollTo` programados y mueve el scroll un poco después del salto. En las pruebas automatizadas, medir con `offsetTop` (sin transforms) y leer después de esperar.
 
@@ -276,6 +284,8 @@ La transición anima **solo `opacity`**. Un `transform` (p. ej. `y`) en ese `mot
 Partículas de fondo (`components/primitives/DustField.tsx`) creadas imperativamente en `useEffect`. Con "reducir movimiento" se renderizan estáticas (sin `animation`), no se ocultan. Eso solo pasa en `base-4-escenas`: en `main` siempre se mueven.
 
 ### Header
+**Sección activa del menú:** se calcula con `getBoundingClientRect().top + scrollY`, no con `offsetTop`. About vive dentro del envoltorio del telón del hero, y su `offsetTop` se medía contra ese envoltorio (~80 px), así que el menú marcaba About desde arriba (corregido el 2026-11-20).
+
 Nav de escritorio visible desde `lg` (1024px); debajo usa hamburguesa. En `md` los labels en español no caben.
 
 ### Hero
